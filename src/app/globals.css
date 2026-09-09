@@ -1,0 +1,136 @@
+@import "tailwindcss";
+
+:root,
+[data-theme="ocean"] {
+  --background: #e7f4f8;
+  --surface: #f7fbfd;
+  --surface-elevated: #ffffff;
+  --surface-muted: #d5e8f0;
+  --primary: #1a6c76;
+  --primary-foreground: #f4fbfc;
+  --primary-deep: #0e4450;
+  --secondary: #3d82a0;
+  --accent: #c05632;
+  --accent-hover: #9e4324;
+  --accent-foreground: #fffaf7;
+  --accent-soft: #f6d7cc;
+  --text: #14343d;
+  --text-muted: #3b5d67;
+  --border: #c2d6df;
+  --success: #1f7a6a;
+  --focus: #1a6c76;
+  --elevation-card: 0 12px 28px rgb(14 68 80 / 0.08);
+  --elevation-hero: 0 18px 40px rgb(14 68 80 / 0.22);
+  --environment-sky:
+    linear-gradient(
+      180deg,
+      #eef8fb 0%,
+      #e4f3f8 48%,
+      #d7edf4 68%,
+      #c5e0ea 84%,
+      #b4d5e1 100%
+    );
+  --environment-glow: #fff6e0;
+  --environment-horizon: #b4d5e1;
+  --environment-water: #5a9eae;
+  --environment-water-deep: #3d7d90;
+  --environment-foam: #f3eee4;
+  --environment-sand: #eadcc8;
+
+  /* Aliases so existing screens keep using canvas / ink / teal classes. */
+  --canvas: var(--background);
+  --ink: var(--text);
+  --ink-muted: var(--text-muted);
+  --line: var(--border);
+  --teal: var(--primary);
+  --teal-deep: var(--primary-deep);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-surface-elevated: var(--surface-elevated);
+  --color-surface-muted: var(--surface-muted);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary-deep: var(--primary-deep);
+  --color-secondary: var(--secondary);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent-soft: var(--accent-soft);
+  --color-text: var(--text);
+  --color-text-muted: var(--text-muted);
+  --color-border: var(--border);
+  --color-success: var(--success);
+  --color-focus: var(--focus);
+  --color-canvas: var(--canvas);
+  --color-ink: var(--ink);
+  --color-ink-muted: var(--ink-muted);
+  --color-line: var(--line);
+  --color-teal: var(--teal);
+  --color-teal-deep: var(--teal-deep);
+  --shadow-card: var(--elevation-card);
+  --shadow-hero: var(--elevation-hero);
+  --font-sans: var(--font-lexend);
+}
+
+html {
+  height: 100%;
+}
+
+body {
+  min-height: 100%;
+  background: var(--background);
+  color: var(--text);
+  font-family: var(--font-lexend), ui-sans-serif, system-ui, sans-serif;
+}
+
+.theme-environment-sky {
+  background-image: var(--environment-sky);
+}
+
+.theme-environment-glow {
+  background: radial-gradient(circle, var(--environment-glow) 0%, transparent 70%);
+}
+
+dialog:not([open]) {
+  display: none;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.animate-rise {
+  animation: rise 0.55s ease-out both;
+}
+
+@keyframes current-flow {
+  to {
+    stroke-dashoffset: -36;
+  }
+}
+
+.animate-current {
+  animation: current-flow 1.1s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

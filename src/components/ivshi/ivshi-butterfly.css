@@ -1,0 +1,21 @@
+.ivshi-butterfly-art {
+  display: block;
+  pointer-events: none;
+  background: none;
+  border: 0;
+  max-width: none;
+  transform: none;
+  filter: none;
+  animation: none;
+  transition: none;
+  clip-path: none;
+  mask-image: none;
+  -webkit-mask-image: none;
+}
+
+[data-ivshi-flyer] {
+  transform: none;
+  filter: none;
+  animation: none;
+  transition: none;
+}
