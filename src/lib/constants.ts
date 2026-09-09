@@ -13,6 +13,9 @@ export const ROUTES = {
     me: "/student/me",
     notifications: "/student/notifications",
   },
+  api: {
+    askIvshi: "/api/ask-ivshi",
+  },
   /**
    * Parent and teacher homes are reserved for later phases.
    * Do not add screens here until those experiences are in scope.

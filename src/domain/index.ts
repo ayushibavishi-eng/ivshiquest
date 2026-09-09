@@ -63,13 +63,24 @@ export type {
   AskChallenge,
   AskChallengeChoice,
   AskCompanionContext,
+  AskConversationMessage,
   AskIvshiEngine,
+  AskIvshiErrorBody,
+  AskIvshiErrorCode,
   AskIvshiReply,
+  AskIvshiRequest,
+  AskIvshiResponse,
+  AskLearnerContext,
+  AskLearnerProgress,
   AskMessage,
   AskMessageRole,
   AskRespondInput,
   AskResponseChoice,
   AskSuggestedPrompt,
+} from "./ask-ivshi";
+export {
+  ASK_IVSHI_MAX_HISTORY,
+  ASK_IVSHI_MAX_MESSAGE_CHARS,
 } from "./ask-ivshi";
 export type { IvshiCompanionState } from "./ivshi-companion";
 export { IVSHI_COMPANION_STATES } from "./ivshi-companion";

@@ -26,8 +26,36 @@ export type AskSuggestedPrompt = {
   text: string;
 };
 
+/** Kept for unused mock content. The live Ask Ivshi flow uses AskLearnerContext. */
 export type AskCompanionContext = {
   topicTitle: string;
+};
+
+export type AskConversationMessage = {
+  role: AskMessageRole;
+  text: string;
+};
+
+export type AskLearnerProgress = {
+  growing: number;
+  learned: number;
+  mastered: number;
+};
+
+/**
+ * Structured learner context for Ask Ivshi.
+ * Fields that the product does not yet track are null.
+ */
+export type AskLearnerContext = {
+  grade: number | null;
+  subjects: string[];
+  currentSubject: string | null;
+  currentTopic: string | null;
+  learningDNA: null;
+  previousMistakes: null;
+  learnerPreferences: null;
+  progress: AskLearnerProgress | null;
+  parentApprovedContext: null;
 };
 
 export type AskMessage = {
@@ -38,6 +66,31 @@ export type AskMessage = {
   challenge?: AskChallenge;
 };
 
+export type AskIvshiRequest = {
+  message: string;
+  history: AskConversationMessage[];
+  context: AskLearnerContext;
+};
+
+export type AskIvshiResponse = {
+  text: string;
+  choices?: AskResponseChoice[];
+};
+
+export type AskIvshiErrorCode =
+  | "missing_api_key"
+  | "invalid_request"
+  | "empty_message"
+  | "openai_error"
+  | "timeout";
+
+export type AskIvshiErrorBody = {
+  code: AskIvshiErrorCode;
+  message: string;
+  developerMessage?: string;
+};
+
+/** Kept so unused mock engine files still typecheck. */
 export type AskRespondInput = {
   text: string;
   choiceId?: string;
@@ -51,10 +104,9 @@ export type AskIvshiReply = {
   challenge?: AskChallenge;
 };
 
-/**
- * Companion reply port. Swap the mock engine for a real AI service later
- * without changing the conversation UI.
- */
 export type AskIvshiEngine = {
   respond: (input: AskRespondInput) => Promise<AskIvshiReply>;
 };
+
+export const ASK_IVSHI_MAX_MESSAGE_CHARS = 2000;
+export const ASK_IVSHI_MAX_HISTORY = 16;
