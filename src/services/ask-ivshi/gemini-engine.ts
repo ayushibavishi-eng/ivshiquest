@@ -51,10 +51,15 @@ function readGeminiOutputText(response: GenerateContentResponse): string {
 /** Current Flash model for Gemini Developer API free-tier testing. */
 export const ASK_IVSHI_MODEL = "gemini-3.5-flash";
 
-const ASK_IVSHI_RATE_LIMIT_RETRY_MS = 1_000;
+const ASK_IVSHI_MAX_RETRIES = 2;
+const ASK_IVSHI_RETRY_BACKOFF_MS = [1_000, 2_000] as const;
 
-function isGeminiRateLimit(error: unknown): boolean {
-  return error instanceof ApiError && error.status === 429;
+function isGeminiTransientError(error: unknown): error is ApiError {
+  if (!(error instanceof ApiError)) {
+    return false;
+  }
+
+  return error.status === 429 || error.status === 503 || error.status === 408;
 }
 
 function sleep(ms: number): Promise<void> {
@@ -110,17 +115,25 @@ export async function createAskIvshiReply(
   const client = new GoogleGenAI({ apiKey });
 
   try {
-    try {
-      return await generateAskIvshiContent(client, input);
-    } catch (error) {
-      if (!isGeminiRateLimit(error)) {
-        throw error;
-      }
+    for (let attempt = 0; attempt <= ASK_IVSHI_MAX_RETRIES; attempt += 1) {
+      try {
+        return await generateAskIvshiContent(client, input);
+      } catch (error) {
+        const shouldRetry =
+          isGeminiTransientError(error) && attempt < ASK_IVSHI_MAX_RETRIES;
 
-      console.error("[ask-ivshi] Gemini API error status=429; retrying once.");
-      await sleep(ASK_IVSHI_RATE_LIMIT_RETRY_MS);
-      return await generateAskIvshiContent(client, input);
+        if (!shouldRetry) {
+          throw error;
+        }
+
+        console.error(
+          `[ask-ivshi] Gemini API error status=${String(error.status)}; retrying (${String(attempt + 1)}/${String(ASK_IVSHI_MAX_RETRIES)}).`,
+        );
+        await sleep(ASK_IVSHI_RETRY_BACKOFF_MS[attempt] ?? 2_000);
+      }
     }
+
+    throw new AskIvshiEngineError("openai_error", FRIENDLY_ERROR);
   } catch (error) {
     if (error instanceof AskIvshiEngineError) {
       throw error;
