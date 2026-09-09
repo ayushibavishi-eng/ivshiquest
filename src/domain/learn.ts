@@ -55,6 +55,7 @@ export type CuriosityExploration = {
 export type SubjectArea = {
   areaId: string;
   title: string;
+  group?: string;
 };
 
 export type LearningConnection = {

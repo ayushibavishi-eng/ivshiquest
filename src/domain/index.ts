@@ -84,3 +84,34 @@ export {
 } from "./ask-ivshi";
 export type { IvshiCompanionState } from "./ivshi-companion";
 export { IVSHI_COMPANION_STATES } from "./ivshi-companion";
+export type {
+  CurriculumConcept,
+  CurriculumExperience,
+  CurriculumGrade,
+  CurriculumNode,
+  CurriculumProgressState,
+  CurriculumQuestion,
+  CurriculumSkill,
+  CurriculumTopic,
+  CurriculumWorld,
+  LearningExperiencePhase,
+} from "./curriculum";
+export {
+  CURRICULUM_GRADES,
+  CURRICULUM_NODE_KINDS,
+  LEARNING_EXPERIENCE_PHASE_LABELS,
+  LEARNING_EXPERIENCE_PHASES,
+} from "./curriculum";
+export type {
+  CompleteLessonDefinition,
+  CompleteLessonPhase,
+  GradeLessonContent,
+  LessonExample,
+  LessonExploreActivity,
+  LessonQuestion,
+  ResolvedCompleteLesson,
+} from "./complete-lesson";
+export {
+  COMPLETE_LESSON_PHASE_LABELS,
+  COMPLETE_LESSON_PHASES,
+} from "./complete-lesson";
