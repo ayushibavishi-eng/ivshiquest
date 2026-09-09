@@ -1,6 +1,5 @@
 import type { ReactNode } from "react";
 import { AskIvshi } from "@/components/companion/ask-ivshi";
-import { IvshiCompanionLayer } from "@/components/ivshi/IvshiCompanionLayer";
 import { IvshiPresenceProvider } from "@/components/ivshi/ivshi-presence";
 import { BottomNav } from "@/components/layout/bottom-nav";
 import { ThemeEnvironment } from "@/components/theme";
@@ -30,7 +29,6 @@ export function AppShell({ themeId, children }: AppShellProps) {
             {children}
           </main>
         </div>
-        <IvshiCompanionLayer />
         <AskIvshi />
         <BottomNav />
       </div>

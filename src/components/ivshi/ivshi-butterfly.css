@@ -13,9 +13,3 @@
   -webkit-mask-image: none;
 }
 
-[data-ivshi-flyer] {
-  transform: none;
-  filter: none;
-  animation: none;
-  transition: none;
-}
