@@ -1,0 +1,200 @@
+import {
+  C,
+  G7,
+  G78,
+  G8,
+  compileWorlds,
+  type WorldSpec,
+} from "@/content/curriculum/build";
+
+const SCIENCE_MIDDLE: WorldSpec[] = [
+  {
+    id: "science-acids-bases",
+    title: "Acids, Bases & Neutral",
+    subject: "science",
+    category: "Matter",
+    grades: G7,
+    hook: "Taste is not a lab test — indicators and properties are safer clues.",
+    concepts: [
+      C("science-ab-classify", "Acidic, Basic, Neutral", G7, "Is lemon juice acidic, basic, or neutral?", "Classify everyday substances using properties and indicators.", "Acids often taste sour (never taste in a lab). Bases feel soapy. Neutral is in between. Indicators change colour.", ["Classify a substance", "Use an indicator idea"]),
+      C("science-ab-neutralisation", "Neutralisation Intro", G7, "What happens when an acid and a base meet carefully?", "Describe neutralisation as acid and base acting together.", "An acid and a base can produce a salt and water. Antacids are a household story of this idea.", ["Name the partners", "Give an everyday example"]),
+    ],
+  },
+  {
+    id: "science-metals-nonmetals",
+    title: "Metals & Non-metals",
+    subject: "science",
+    category: "Matter",
+    grades: G7,
+    hook: "Shine, bend, and conduct — or not. Materials sort by properties.",
+    concepts: [
+      C("science-mn-properties", "Properties of Metals & Non-metals", G7, "Why is copper used in wires and sulphur not?", "Compare metals and non-metals by properties.", "Many metals are shiny, malleable, and conduct heat and electricity. Many non-metals do not.", ["Give a metal use", "Give a non-metal property"]),
+    ],
+  },
+  {
+    id: "science-physical-chemical",
+    title: "Physical & Chemical Change",
+    subject: "science",
+    category: "Matter",
+    grades: G7,
+    hook: "Some changes are costumes; some make a new substance.",
+    concepts: [
+      C("science-pc-tell-apart", "Telling Changes Apart", G7, "Is melting ice the same kind of change as rusting?", "Distinguish physical and chemical changes.", "Physical changes can often be reversed and keep the substance. Chemical changes make new substances, like rust or cooking.", ["Spot physical", "Spot chemical"]),
+    ],
+  },
+  {
+    id: "science-particles",
+    title: "Particles of Matter",
+    subject: "science",
+    category: "Matter",
+    grades: G8,
+    hook: "Matter is made of tiny particles with space and motion.",
+    concepts: [
+      C("science-part-states", "Particles and States", G8, "Why can you compress a gas more easily than a solid?", "Use particle spacing to explain states.", "Solids: close, vibrating. Liquids: close, sliding. Gases: far apart, fast. More space means more compressibility.", ["Describe solid particles", "Describe gas particles"]),
+      C("science-part-pure", "Elements, Compounds, Mixtures", G8, "Is air an element?", "Distinguish element, compound, and mixture.", "An element is one kind of atom. A compound is bonded in a fixed way. A mixture can be separated by physical means. Air is a mixture.", ["Give an element", "Give a mixture"]),
+      C("science-part-solutions", "Solutions", G8, "What is the solute in salty water?", "Identify solute, solvent, and solution.", "The solvent does the dissolving (often water). The solute is dissolved. A solution is uniform.", ["Name solute", "Name solvent"]),
+    ],
+  },
+  {
+    id: "science-cells-microbes",
+    title: "Cells & Microbes",
+    subject: "science",
+    category: "Living World",
+    grades: G8,
+    hook: "Life has building blocks too small to see without help.",
+    concepts: [
+      C("science-cell-unit", "Cell as a Unit of Life", G8, "Are you made of one cell or many?", "Explain that living things are made of cells.", "Cells are the basic units of life. Plants and animals are many-celled. Some microbes are one-celled.", ["State the cell idea", "Contrast uni- and multicellular"]),
+      C("science-microbes", "Microorganisms", G8, "Are all microbes harmful?", "Give helpful and harmful roles of microbes.", "Some microbes cause disease. Others ferment food, recycle waste, or live in soil. 'Germ' is not the whole story.", ["Give a helpful role", "Give a harmful role"]),
+    ],
+  },
+  {
+    id: "science-life-processes",
+    title: "Life Processes",
+    subject: "science",
+    category: "Living World",
+    grades: G7,
+    hook: "Living things keep going through nutrition, transport, and exchange.",
+    concepts: [
+      C("science-lp-animals", "Life Processes in Animals", G7, "What does an animal do with food besides chewing?", "Describe nutrition and other animal life processes at a simple level.", "Animals take in food, break it down, transport materials, and exchange gases. Organs work as a system.", ["Name a process", "Link food to energy"]),
+      C("science-lp-plants", "Life Processes in Plants", G7, "How does water get to a leaf?", "Describe plant transport and food-making as life processes.", "Roots take water. Stems transport. Leaves make food in light. This is deeper than naming plant parts.", ["Name transport", "Name food-making"]),
+    ],
+  },
+  {
+    id: "science-adolescence",
+    title: "Adolescence",
+    subject: "science",
+    category: "Human Body",
+    grades: G7,
+    hook: "Growing up is a biological chapter, not a test of worth.",
+    concepts: [
+      C("science-ado-changes", "Growth & Change", G7, "Why do people of the same age grow at different speeds?", "Describe adolescence as a stage of growth and change.", "Adolescence brings body changes, new feelings, and a need for nutrition, sleep, respect, and accurate information.", ["Name a change", "Name a care habit"]),
+    ],
+  },
+  {
+    id: "science-health-middle",
+    title: "Health & Disease",
+    subject: "science",
+    category: "Human Body",
+    grades: G8,
+    hook: "Health is more than not falling sick.",
+    concepts: [
+      C("science-health-meaning", "What Health Includes", G8, "Can someone be unwell without a germ?", "Describe health as physical, mental, and social wellbeing.", "Health includes food, sleep, feelings, and community. Diseases can be communicable or not.", ["Define health broadly", "Give a stay-healthy action"]),
+      C("science-health-disease", "Causes of Disease", G8, "Why are some diseases not passed from person to person?", "Contrast communicable and non-communicable diseases.", "Communicable diseases spread by germs. Non-communicable ones may link to nutrition, environment, or other causes.", ["Give a communicable example", "Give a non-communicable example"]),
+    ],
+  },
+  {
+    id: "science-force-pressure",
+    title: "Force & Pressure",
+    subject: "science",
+    category: "Energy & Forces",
+    grades: G8,
+    hook: "Force can push, pull, twist — and pressure is force spread out.",
+    concepts: [
+      C("science-force-explore", "Exploring Forces", G8, "Is gravity a contact force?", "Classify contact and non-contact forces.", "Muscular push is contact. Magnetism and gravity can act without touching. Forces can change speed, direction, or shape.", ["Name a contact force", "Name a non-contact force"]),
+      C("science-pressure", "Pressure", G8, "Why does a sharp pin go in more easily than a blunt one?", "Relate pressure to force and area.", "Pressure is larger when the same force sits on a smaller area. School bags with wide straps use this idea kindly.", ["Relate area and pressure", "Give an everyday example"]),
+    ],
+  },
+  {
+    id: "science-electricity-middle",
+    title: "Electricity",
+    subject: "science",
+    category: "Energy & Forces",
+    grades: G78,
+    hook: "A circuit is a complete path with a job to do.",
+    concepts: [
+      C("science-el-circuits", "Circuits & Components", G7, "Why does a bulb stay dark if a wire is off the cell?", "Describe a simple circuit.", "A closed path lets current flow. Cell, bulb, switch, and wires are components. An open switch is a gap.", ["Name components", "Explain open vs closed"]),
+      C("science-el-effects", "Heating & Magnetic Effects", G8, "Why does a wire get warm, and why can it move a compass?", "Describe heating and magnetic effects of current.", "Current can heat a wire. It can also make a magnetic field that affects a compass.", ["Give a heating example", "Give a magnetic example"]),
+    ],
+  },
+  {
+    id: "science-heat-middle",
+    title: "Heat Transfer",
+    subject: "science",
+    category: "Energy & Forces",
+    grades: G7,
+    hook: "Heat moves — through stuff, through fluids, and as radiation.",
+    concepts: [
+      C("science-heat-ways", "Conduction, Convection, Radiation", G7, "Why does the metal handle of a pan heat faster than a wooden one?", "Name three ways heat transfers.", "Conduction through solids. Convection in fluids. Radiation can travel without a medium, like sunlight.", ["Name three ways", "Match an example"]),
+    ],
+  },
+  {
+    id: "science-light-middle",
+    title: "Light",
+    subject: "science",
+    category: "Energy & Forces",
+    grades: G78,
+    hook: "Light travels, makes shadows, bounces, and can bend in lenses.",
+    concepts: [
+      C("science-light-shadows", "Shadows & Reflection", G7, "Why is a shadow similar in outline to the object?", "Explain shadows and simple reflection.", "Light travels in straight lines. An opaque object blocks it. Smooth surfaces reflect more regularly.", ["Explain a shadow", "Describe reflection"]),
+      C("science-light-lenses", "Mirrors & Lenses", G8, "How can a lens make something look bigger?", "Describe mirrors and lenses at a simple level.", "Mirrors reflect. Lenses refract (bend) light and can form magnified or diminished images.", ["Describe a mirror", "Describe a lens"]),
+    ],
+  },
+  {
+    id: "science-earth-sky-middle",
+    title: "Earth, Moon, Sun & Sky Time",
+    subject: "science",
+    category: "Earth & Space",
+    grades: G78,
+    hook: "The sky is a clock the Earth has been keeping for a long time.",
+    concepts: [
+      C("science-ems-system", "Earth, Moon, and the Sun", G7, "What makes day and night?", "Relate rotation and the Sun to day and night.", "Earth rotates. The side facing the Sun has day. The Moon orbits Earth and we see changing lit parts.", ["Explain day and night", "Describe a moon idea"]),
+      C("science-sky-time", "Keeping Time with the Skies", G8, "How did people keep months before phone calendars?", "Connect sky cycles to timekeeping.", "Day, month, and year link to Earth and Moon motions. Calendars grew from those cycles.", ["Link a cycle to a unit of time", "Name a sky timekeeper"]),
+    ],
+  },
+  {
+    id: "science-weather-storms-middle",
+    title: "Winds, Storms & Cyclones",
+    subject: "science",
+    category: "Earth & Space",
+    grades: G8,
+    hook: "Air pressure differences help write the wind.",
+    concepts: [
+      C("science-storms-pressure", "Pressure, Winds, and Storms", G8, "Why do winds blow from some places toward others?", "Relate pressure differences to wind and storm safety.", "Air tends to move from higher to lower pressure. Storms need moisture and energy. Safety: sturdy shelter, not open fields.", ["Relate pressure to wind", "Give a safety rule"]),
+    ],
+  },
+  {
+    id: "science-ecosystems-middle",
+    title: "Ecosystems in Harmony",
+    subject: "science",
+    category: "Environment",
+    grades: G8,
+    hook: "Who eats whom is only the start of how a place stays in balance.",
+    concepts: [
+      C("science-eco-harmony", "How Nature Works in Harmony", G8, "What happens if one species in a food web disappears?", "Describe interactions and balance in an ecosystem.", "Producers, consumers, and decomposers share a place. A change in one population can ripple. Waste is recycled in nature.", ["Read a food relation", "Describe a ripple"]),
+      C("science-earth-home", "Earth, a Life-Sustaining Planet", G8, "What makes Earth able to hold life when some worlds cannot?", "Give features that help Earth sustain life.", "Air, water, suitable temperature, and a protective atmosphere matter. We share the duty not to spoil them.", ["Name a life-supporting feature", "Give a care action"]),
+    ],
+  },
+  {
+    id: "science-inquiry-middle",
+    title: "Investigation",
+    subject: "science",
+    category: "Inquiry",
+    grades: G78,
+    hook: "Grade 7–8 science asks you to investigate, not only to remember.",
+    concepts: [
+      C("science-inq-investigate", "Investigative Questions", G78, "How is 'why does dough rise?' different from 'what is dough?'", "Write a question you could test.", "A good investigation question can be probed with observation or a simple experiment. Evidence can change your mind.", ["Write a testable question", "Say what evidence would count"]),
+    ],
+  },
+];
+
+export const SCIENCE_MIDDLE_WORLDS = compileWorlds(SCIENCE_MIDDLE);

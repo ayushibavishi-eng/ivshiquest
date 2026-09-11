@@ -15,13 +15,30 @@ export type {
   DiscoveryChoice,
   DiscoveryContent,
   DiscoveryExplanation,
+  DiscoveryExplorationVisual,
   DiscoveryPhase,
 } from "./discovery";
 export {
   DISCOVERY_PHASE_LABELS,
   DISCOVERY_PHASES,
   getExplanationForGrade,
+  resolveDiscoveryForGrade,
 } from "./discovery";
+export type {
+  CuriosityCategory,
+  DiscoveryDifficulty,
+  DiscoveryLearnerContext,
+} from "./curiosity";
+export {
+  CURIOSITY_CATEGORIES,
+  CURIOSITY_CATEGORY_LABELS,
+  RELATED_CURIOSITY_CATEGORIES,
+  calendarDateISO,
+  hashString,
+  subjectForCuriosityCategory,
+} from "./curiosity";
+export { discoveriesForGrade, selectTodaysDiscovery } from "./curiosity-select";
+export { selectTodaysDiscovery as getTodaysDiscovery } from "./curiosity-select";
 export type {
   ConceptStatus,
   CuriosityExploration,
@@ -71,6 +88,7 @@ export type {
   AskIvshiRequest,
   AskIvshiResponse,
   AskLearnerContext,
+  AskLessonContext,
   AskLearnerProgress,
   AskMessage,
   AskMessageRole,
@@ -85,9 +103,19 @@ export {
 export type { IvshiCompanionState } from "./ivshi-companion";
 export { IVSHI_COMPANION_STATES } from "./ivshi-companion";
 export type {
+  CompanionFeedbackKind,
+  CompanionGradeBand,
+} from "./companion-feedback";
+export {
+  companionFeedbackPhrase,
+  companionGradeBand,
+  lookTogetherPhrase,
+} from "./companion-feedback";
+export type {
   CurriculumConcept,
   CurriculumExperience,
   CurriculumGrade,
+  CurriculumNcertRef,
   CurriculumNode,
   CurriculumProgressState,
   CurriculumQuestion,
@@ -95,12 +123,15 @@ export type {
   CurriculumTopic,
   CurriculumWorld,
   LearningExperiencePhase,
+  NcertSourceStatus,
 } from "./curriculum";
 export {
   CURRICULUM_GRADES,
   CURRICULUM_NODE_KINDS,
   LEARNING_EXPERIENCE_PHASE_LABELS,
   LEARNING_EXPERIENCE_PHASES,
+  NCERT_SOURCE_STATUSES,
+  isCurriculumGrade,
 } from "./curriculum";
 export type {
   CompleteLessonDefinition,
@@ -108,10 +139,64 @@ export type {
   GradeLessonContent,
   LessonExample,
   LessonExploreActivity,
+  LessonExploreInvestigation,
+  LessonLoopStage,
+  LessonMisconception,
+  LessonPrompt,
   LessonQuestion,
+  LessonTutorContext,
+  OpenResponseEvaluation,
+  OpenResponseState,
   ResolvedCompleteLesson,
 } from "./complete-lesson";
 export {
   COMPLETE_LESSON_PHASE_LABELS,
   COMPLETE_LESSON_PHASES,
+  LESSON_LOOP_HINTS,
+  LESSON_LOOP_LABELS,
+  LESSON_LOOP_STAGES,
+  lessonLoopStage,
+  OPEN_RESPONSE_STATES,
+  SAFE_WRITE_PLACEHOLDER,
+  buildLessonTutorContext,
+  evaluateOpenResponse,
+  isWriteQuestion,
+  lessonIdFor,
+  normalizeLessonAnswer,
+  openResponseAllowsContinue,
+  openResponseShowsUnderstanding,
+  parseLessonId,
+  writeAnswerIsClose,
+  writeAnswerMatches,
+  writeAnswerSucceeds,
+  writeQuestionPlaceholder,
 } from "./complete-lesson";
+export type {
+  KnowledgeTreeCluster,
+  KnowledgeTreeConceptNode,
+  KnowledgeTreeDomainBranch,
+  KnowledgeTreeEdge,
+  KnowledgeTreeFocus,
+  KnowledgeTreeGraph,
+  KnowledgeTreeLayout,
+  KnowledgeTreeNodeState,
+  KnowledgeTreeRelationshipKind,
+} from "./knowledge-tree";
+export {
+  KNOWLEDGE_TREE_NODE_STATES,
+  KNOWLEDGE_TREE_NODE_STATE_LABELS,
+  KNOWLEDGE_TREE_PROGRESS_LABELS,
+  KNOWLEDGE_TREE_RELATIONSHIP_KINDS,
+  fitLivingTreeView,
+  layoutKnowledgeTree,
+  layoutLivingKnowledgeTree,
+  livingTreeFocusBox,
+  livingTreePortraitBox,
+  placeLivingTreeLabels,
+  resolveKnowledgeTreeNodeState,
+} from "./knowledge-tree";
+export {
+  layoutMagicalKnowledgeTree,
+  magicalTreeLabelMode,
+  placeMagicalTreeLabels,
+} from "./living-tree-layout";

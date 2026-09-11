@@ -17,6 +17,7 @@ import { PracticeQuestionCard } from "@/features/practice/practice-question-card
 import { PracticeReview } from "@/features/practice/practice-review";
 import { recordPracticeSession } from "@/services/practice/practice-repository";
 import { writeActiveCurriculumTopic } from "@/services/curriculum";
+import type { Grade } from "@/domain/types";
 
 type QuestionAttempt = {
   selectedChoiceId: string | null;
@@ -40,9 +41,13 @@ function emptyAttempt(): QuestionAttempt {
 
 type PracticeExperienceProps = {
   practice: PracticeSet;
+  grade: Grade;
 };
 
-export function PracticeExperience({ practice }: PracticeExperienceProps) {
+export function PracticeExperience({
+  practice,
+  grade,
+}: PracticeExperienceProps) {
   const [view, setView] = useState<PracticeView>("question");
   const [questionIndex, setQuestionIndex] = useState(0);
   const [status, setStatus] = useState<PracticeCheckStatus>("idle");
@@ -74,13 +79,11 @@ export function PracticeExperience({ practice }: PracticeExperienceProps) {
   );
 
   const summary = useMemo(() => buildPracticeSummary(signals), [signals]);
-  const improved = attempt?.incorrect ?? false;
   const ivshi = getPracticeIvshiMoment({
     view,
     status,
     questionIndex,
     difficulty: question?.difficulty ?? "easy",
-    improved,
   });
 
   const reviewItems = practice.questions.map((item, index) => {
@@ -181,6 +184,8 @@ export function PracticeExperience({ practice }: PracticeExperienceProps) {
           />
           <PracticeFeedback
             status={status}
+            grade={grade}
+            questionId={question.id}
             explanation={question.explanation}
             hint={question.hint}
             onNext={goNext}

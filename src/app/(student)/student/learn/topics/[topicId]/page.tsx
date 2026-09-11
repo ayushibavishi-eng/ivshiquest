@@ -28,6 +28,8 @@ import {
 import { getCompleteLesson } from "@/services/lessons";
 import { getCurrentStudent } from "@/services/student";
 
+export const dynamic = "force-dynamic";
+
 type TopicStartPageProps = {
   params: Promise<{ topicId: string }>;
 };
@@ -110,6 +112,7 @@ export default async function TopicStartPage({ params }: TopicStartPageProps) {
             concept={concept}
             worldTitle={world.title}
             worldId={world.id}
+            grade={grade}
             nextConcept={pathNextRef}
           />
         );

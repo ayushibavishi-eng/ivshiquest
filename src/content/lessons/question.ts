@@ -21,8 +21,11 @@ export function q(
   return {
     id,
     prompt,
+    format: "choice",
     choices,
     correctChoiceId: `${id}-${correct}`,
+    acceptedAnswers: [],
+    keyIdeas: [],
     explanation,
     hint,
     misconception,
@@ -31,5 +34,54 @@ export function q(
       [`${id}-b`]: feedback.b,
       [`${id}-c`]: feedback.c,
     },
+  };
+}
+
+export function writeQ(
+  id: string,
+  prompt: string,
+  acceptedAnswers: string[],
+  explanation: string,
+  hint: string,
+  misconception: string,
+  keyIdeas: string[] = [],
+): LessonQuestion {
+  return {
+    id,
+    prompt,
+    format: "write",
+    choices: [],
+    correctChoiceId: "",
+    acceptedAnswers,
+    keyIdeas,
+    explanation,
+    hint,
+    misconception,
+    feedbackByChoice: {},
+  };
+}
+
+export function explainQ(
+  id: string,
+  prompt: string,
+  modelAnswer: string,
+  hint: string,
+  misconception: string,
+  keyIdeas: string[],
+  placeholder = "Write why, in your own words.",
+): LessonQuestion {
+  return {
+    id,
+    prompt,
+    format: "write",
+    choices: [],
+    correctChoiceId: "",
+    acceptedAnswers: [],
+    keyIdeas,
+    placeholder,
+    explanation: modelAnswer,
+    hint,
+    misconception,
+    feedbackByChoice: {},
   };
 }

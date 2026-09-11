@@ -47,6 +47,7 @@ function concept(input: {
     goal: input.goal,
     explainer: input.experience.explore.text,
     skills: input.skills,
+    objectives: input.skills.map((item) => item.title),
     prerequisites: input.prerequisites,
     experience: input.experience,
   };

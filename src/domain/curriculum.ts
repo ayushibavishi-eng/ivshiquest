@@ -1,7 +1,25 @@
 import type { Subject } from "./types";
 
-export const CURRICULUM_GRADES = [4, 5, 6] as const;
+export const CURRICULUM_GRADES = [4, 5, 6, 7, 8] as const;
 export type CurriculumGrade = (typeof CURRICULUM_GRADES)[number];
+
+export const NCERT_SOURCE_STATUSES = ["official", "needs-verification"] as const;
+export type NcertSourceStatus = (typeof NCERT_SOURCE_STATUSES)[number];
+
+export type CurriculumNcertRef = {
+  book: string;
+  class: CurriculumGrade;
+  chapter?: string;
+  status: NcertSourceStatus;
+  note?: string;
+};
+
+export function isCurriculumGrade(value: unknown): value is CurriculumGrade {
+  return (
+    typeof value === "number" &&
+    (CURRICULUM_GRADES as readonly number[]).includes(value)
+  );
+}
 
 export const CURRICULUM_NODE_KINDS = ["world", "topic", "concept", "skill"] as const;
 export type CurriculumNodeKind = (typeof CURRICULUM_NODE_KINDS)[number];
@@ -88,8 +106,10 @@ export type CurriculumConcept = {
   goal: string;
   explainer: string;
   skills: CurriculumSkill[];
+  objectives: string[];
   prerequisites?: string[];
   experience?: CurriculumExperience;
+  ncert?: CurriculumNcertRef;
 };
 
 export type CurriculumTopic = {
@@ -105,6 +125,7 @@ export type CurriculumTopic = {
   explainer: string;
   prerequisites?: string[];
   concepts: CurriculumConcept[];
+  ncert?: CurriculumNcertRef;
 };
 
 export type CurriculumWorld = {
@@ -119,6 +140,7 @@ export type CurriculumWorld = {
   path: string[];
   topics: CurriculumTopic[];
   concepts: CurriculumConcept[];
+  ncert?: CurriculumNcertRef;
 };
 
 export type CurriculumNode =

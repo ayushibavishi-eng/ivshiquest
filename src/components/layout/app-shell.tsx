@@ -4,6 +4,7 @@ import { IvshiPresenceProvider } from "@/components/ivshi/ivshi-presence";
 import { BottomNav } from "@/components/layout/bottom-nav";
 import { ThemeEnvironment } from "@/components/theme";
 import type { StudentThemeId } from "@/domain/theme";
+import { BreakthroughLayer } from "@/features/lesson/feedback/breakthrough-moment";
 
 type AppShellProps = {
   themeId: StudentThemeId;
@@ -22,6 +23,7 @@ export function AppShell({ themeId, children }: AppShellProps) {
           Skip to content
         </a>
         <div className="relative mx-auto w-full max-w-2xl">
+          <BreakthroughLayer />
           <main
             id="main"
             className="flex min-h-dvh flex-col px-5 pb-[calc(8.5rem+env(safe-area-inset-bottom))] pt-[max(1rem,env(safe-area-inset-top))] md:px-8"

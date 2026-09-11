@@ -4,6 +4,7 @@ import { getLearnPracticeIds, getLearnPracticeTitle } from "@/content/mocks/lear
 import { PracticeExperience } from "@/features/practice";
 import { ROUTES } from "@/lib/constants";
 import { getPracticeSet } from "@/services/practice";
+import { getCurrentStudent } from "@/services/student";
 
 type PracticePageProps = {
   params: Promise<{ areaId: string }>;
@@ -30,7 +31,8 @@ export default async function LearnPracticePage({ params }: PracticePageProps) {
   const practice = await getPracticeSet(areaId);
 
   if (practice) {
-    return <PracticeExperience practice={practice} />;
+    const student = await getCurrentStudent();
+    return <PracticeExperience practice={practice} grade={student.grade} />;
   }
 
   const title = getLearnPracticeTitle(areaId) ?? "This area";

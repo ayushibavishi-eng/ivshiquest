@@ -593,7 +593,7 @@ const ENGLISH: WorldSpec[] = [
     id: "english-comprehension",
     title: "Reading Comprehension",
     subject: "english",
-    category: "Reading",
+    category: "Reading comprehension",
     grades: G456,
     hook: "Comprehension is understanding, not just saying the words.",
     concepts: [
@@ -605,7 +605,7 @@ const ENGLISH: WorldSpec[] = [
     id: "english-main-idea",
     title: "Main Idea",
     subject: "english",
-    category: "Reading",
+    category: "Reading comprehension",
     grades: G456,
     hook: "The main idea is what the whole text is mostly about.",
     concepts: [
@@ -617,7 +617,7 @@ const ENGLISH: WorldSpec[] = [
     id: "english-details",
     title: "Supporting Details",
     subject: "english",
-    category: "Reading",
+    category: "Reading comprehension",
     grades: G456,
     hook: "Details prove, explain, or paint the main idea.",
     concepts: [
@@ -628,7 +628,7 @@ const ENGLISH: WorldSpec[] = [
     id: "english-sequencing",
     title: "Sequencing",
     subject: "english",
-    category: "Reading",
+    category: "Reading comprehension",
     grades: G45,
     hook: "Order words keep events from getting scrambled.",
     concepts: [
@@ -639,7 +639,7 @@ const ENGLISH: WorldSpec[] = [
     id: "english-cause-effect",
     title: "Cause & Effect",
     subject: "english",
-    category: "Reading",
+    category: "Reading comprehension",
     grades: G456,
     hook: "A cause makes something happen; the effect is what happens.",
     concepts: [
@@ -650,7 +650,7 @@ const ENGLISH: WorldSpec[] = [
     id: "english-compare-contrast",
     title: "Compare & Contrast",
     subject: "english",
-    category: "Reading",
+    category: "Reading comprehension",
     grades: G456,
     hook: "Compare finds likeness; contrast finds difference.",
     concepts: [
@@ -661,7 +661,7 @@ const ENGLISH: WorldSpec[] = [
     id: "english-inference",
     title: "Inference",
     subject: "english",
-    category: "Reading",
+    category: "Reading comprehension",
     grades: G456,
     hook: "An inference is a smart guess using clues plus what you know.",
     concepts: [
@@ -673,7 +673,7 @@ const ENGLISH: WorldSpec[] = [
     id: "english-prediction",
     title: "Prediction",
     subject: "english",
-    category: "Reading",
+    category: "Reading comprehension",
     grades: G45,
     hook: "A prediction is a thoughtful guess about what might happen next.",
     concepts: [
@@ -684,7 +684,7 @@ const ENGLISH: WorldSpec[] = [
     id: "english-fact-opinion",
     title: "Fact vs Opinion",
     subject: "english",
-    category: "Reading",
+    category: "Reading comprehension",
     grades: G456,
     hook: "A fact can be checked; an opinion is a belief or preference.",
     concepts: [
@@ -695,7 +695,7 @@ const ENGLISH: WorldSpec[] = [
     id: "english-summarizing",
     title: "Summarizing",
     subject: "english",
-    category: "Reading",
+    category: "Reading comprehension",
     grades: G56,
     hook: "A summary is the important ideas in fewer words, in your own words.",
     concepts: [
@@ -955,7 +955,7 @@ const ENGLISH: WorldSpec[] = [
     id: "english-listening",
     title: "Listening Comprehension",
     subject: "english",
-    category: "Speaking & Listening",
+    category: "Listening",
     grades: G456,
     hook: "Listening is catching meaning, not only waiting to talk.",
     concepts: [
@@ -967,7 +967,7 @@ const ENGLISH: WorldSpec[] = [
     id: "english-conversation",
     title: "Conversation",
     subject: "english",
-    category: "Speaking & Listening",
+    category: "Speaking",
     grades: G456,
     hook: "Conversation is taking turns, building on ideas, and staying kind.",
     concepts: [
@@ -978,7 +978,7 @@ const ENGLISH: WorldSpec[] = [
     id: "english-asking",
     title: "Asking Questions",
     subject: "english",
-    category: "Speaking & Listening",
+    category: "Speaking",
     grades: G45,
     hook: "Good questions open doors; yes/no questions sometimes close them too soon.",
     concepts: [
@@ -989,7 +989,7 @@ const ENGLISH: WorldSpec[] = [
     id: "english-answering",
     title: "Answering Clearly",
     subject: "english",
-    category: "Speaking & Listening",
+    category: "Speaking",
     grades: G45,
     hook: "A clear answer names the point, then a because.",
     concepts: [
@@ -1000,7 +1000,7 @@ const ENGLISH: WorldSpec[] = [
     id: "english-instructions",
     title: "Giving Instructions",
     subject: "english",
-    category: "Speaking & Listening",
+    category: "Speaking",
     grades: G456,
     hook: "Instructions work when the order is possible to follow.",
     concepts: [
@@ -1011,7 +1011,7 @@ const ENGLISH: WorldSpec[] = [
     id: "english-storytelling",
     title: "Storytelling",
     subject: "english",
-    category: "Speaking & Listening",
+    category: "Speaking",
     grades: G456,
     hook: "Spoken stories need a hook, a problem, and a voice the room can hear.",
     concepts: [
@@ -1022,7 +1022,7 @@ const ENGLISH: WorldSpec[] = [
     id: "english-presentation",
     title: "Presentation",
     subject: "english",
-    category: "Speaking & Listening",
+    category: "Speaking",
     grades: G56,
     hook: "A presentation teaches an idea out loud, with a plan.",
     concepts: [
@@ -1033,7 +1033,7 @@ const ENGLISH: WorldSpec[] = [
     id: "english-opinions-speak",
     title: "Expressing Opinions",
     subject: "english",
-    category: "Speaking & Listening",
+    category: "Speaking",
     grades: G456,
     hook: "You can disagree without being unkind.",
     concepts: [
@@ -1044,7 +1044,7 @@ const ENGLISH: WorldSpec[] = [
     id: "english-discussion",
     title: "Discussion",
     subject: "english",
-    category: "Speaking & Listening",
+    category: "Speaking",
     grades: G56,
     hook: "A discussion builds a shared idea, not a winner-takes-all fight.",
     concepts: [
@@ -1055,7 +1055,7 @@ const ENGLISH: WorldSpec[] = [
     id: "english-debate",
     title: "Debate Basics",
     subject: "english",
-    category: "Speaking & Listening",
+    category: "Speaking",
     grades: G6,
     hook: "A debate has sides, reasons, and rules — not shouting.",
     concepts: [
@@ -1066,12 +1066,25 @@ const ENGLISH: WorldSpec[] = [
     id: "english-communication",
     title: "Communication Skills",
     subject: "english",
-    category: "Speaking & Listening",
+    category: "Speaking",
     grades: G456,
     hook: "Communication is making sure the message that left you is the one that arrived.",
     concepts: [
       C("english-comm-audience", "Know Your Listener", G45, "Would you explain this the same way to a five-year-old and a teacher?", "Adjust words for the listener.", "Shorter words for a younger child. More precise words for a report. Eye contact and a kind tone help any audience.", ["Simplify for a younger listener", "Keep a respectful tone"]),
       C("english-comm-clarity", "Say It So They Can Do It", G56, "What would you check at the end?", "Close the loop: message, check, repair.", "After instructions, ask them to repeat the key step. If they misheard, rephrase, do not only repeat louder.", ["Check understanding", "Rephrase a mix-up"]),
+    ],
+  },
+  {
+    id: "english-usage",
+    title: "Language Usage",
+    subject: "english",
+    category: "Language usage",
+    grades: G456,
+    hook: "Usage is choosing words and forms that fit the job and the listener.",
+    concepts: [
+      C("english-use-situation", "Fit the Situation", G45, "Would you say the same words to a friend and in a school notice?", "Choose language that fits the situation.", "A notice is short and public. A chat with a friend can be informal. Mixing them confuses the job.", ["Choose a school notice voice", "Choose a friendly voice"]),
+      C("english-use-clear", "Say What You Mean", G56, "If they could mean two groups, what should you do?", "Keep pronouns and references clear.", "Name the group again if they is unclear. Use this, then, so a reader does not guess.", ["Fix an unclear they", "Add a linking word"]),
+      C("english-use-edit", "A Usage Pass", G6, "Can you check verbs and punctuation without rewriting the whole idea?", "Edit a short paragraph for usage.", "Read once for meaning, once for verbs, once for end marks. One job per pass.", ["Fix a verb slip", "Fix an end mark"]),
     ],
   },
 ];

@@ -86,7 +86,16 @@ export function AskIvshiExperience({
     <div className="flex flex-1 flex-col gap-6 pb-24">
       <AskIvshiHeader />
       {context.currentTopic ? (
-        <p className="self-start rounded-full bg-surface-elevated px-3 py-1.5 text-sm text-ink-muted shadow-card ring-1 ring-line">
+        <p
+          className="self-start rounded-full bg-surface-elevated px-3 py-1.5 text-sm text-ink-muted shadow-card ring-1 ring-line"
+          data-ask-lesson-id={context.lesson?.lessonId}
+          data-ask-concept-id={context.lesson?.conceptId}
+          data-ask-lesson-grade={
+            context.lesson ? String(context.lesson.grade) : undefined
+          }
+          data-ask-lesson-subject={context.lesson?.subject}
+          data-ask-lesson-stage={context.lesson?.currentLearningStage}
+        >
           You&apos;re exploring {context.currentTopic}
         </p>
       ) : null}

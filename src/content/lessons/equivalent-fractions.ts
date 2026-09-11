@@ -1,5 +1,5 @@
 import type { CompleteLessonDefinition, GradeLessonContent } from "@/domain/complete-lesson";
-import { q } from "@/content/lessons/question";
+import { explainQ, q, writeQ } from "@/content/lessons/question";
 
 const grade4: GradeLessonContent = {
   objective:
@@ -144,9 +144,46 @@ const grade4: GradeLessonContent = {
       },
     ),
   ],
+  retrieve: [
+    q(
+      "ef4-t1",
+      "What does the denominator tell you?",
+      "how many equal pieces the whole was cut into",
+      "how hungry you are",
+      "that the fraction is always bigger",
+      "a",
+      "The bottom number names the equal pieces. Fourths means four equal pieces.",
+      "Look at the bottom of 3/4.",
+      "The denominator is not 'how much you like it'.",
+      {
+        a: "Piece size comes from how many equal cuts.",
+        b: "Hunger is not a fraction part.",
+        c: "More cuts make smaller pieces, not automatically more food.",
+      },
+    ),
+    writeQ(
+      "ef4-t2",
+      "Write a fraction that names the same amount as 1/2.",
+      ["2/4", "3/6", "4/8", "5/10", "6/12", "8/16"],
+      "Any of 2/4, 3/6, 4/8… names half of the same whole. You multiplied top and bottom by the same number.",
+      "Cut each half into 2, 3, or 4 smaller equal pieces.",
+      "Writing 1/3 or 2/3 is a different amount, not another name for half.",
+    ),
+  ],
+  misconceptions: [
+    {
+      idea: "Bigger digits mean more food.",
+      correction: "2/4 can equal 1/2 because the pieces got smaller. Compare amounts of the same whole, not the look of the digits.",
+    },
+    {
+      idea: "Any two pieces are a fair fraction.",
+      correction: "Fractions need equal pieces. Unequal cuts cannot be named honestly as 1/2 or 1/4.",
+    },
+  ],
   reflect: {
     prompt:
       "How would you explain to a younger child that 2/4 is still half, using a sandwich or a roti?",
+    keyIdeas: ["same amount", "equal pieces", "half"],
   },
   mastery: q(
     "ef4-m1",
@@ -169,45 +206,85 @@ const grade4: GradeLessonContent = {
   teach: {
     prompt:
       "Teach Ivshi, in your own words: what is a numerator, what is a denominator, and why 2/4 can equal 1/2?",
+    keyIdeas: ["numerator", "denominator", "same amount", "equal"],
   },
 };
 
+const grade5Misconceptions = [
+  {
+    idea: "Bigger numbers mean a bigger amount.",
+    correction:
+      "8/12 can equal 2/3. The pieces got smaller. Compare the share of the same whole.",
+  },
+  {
+    idea: "Add the same number to top and bottom to make an equivalent fraction.",
+    correction:
+      "Adding 1 to 2/5 gives 3/6, which is 1/2 — a different amount. Multiply or divide both by the same non-zero number.",
+  },
+  {
+    idea: "Change only the numerator, or only the denominator.",
+    correction:
+      "2/5 → 4/5 doubled the count of pieces without shrinking them, so the amount grew. Both numbers must change together.",
+  },
+  {
+    idea: "Equivalent fractions can ignore the size of the whole.",
+    correction:
+      "3/4 of a cup and 3/4 of a jug are the same portion, not the same millilitres, if the wholes differ.",
+  },
+];
+
 const grade5: GradeLessonContent = {
   objective:
-    "Create equivalent fractions by multiplying or dividing the numerator and denominator by the same number, and use that to compare or simplify.",
+    "Explain what a fraction is, create equivalent fractions by multiplying or dividing the numerator and denominator by the same non-zero number, simplify, compare equivalent names, and catch common traps.",
   wonder: {
     prompt:
-      "If you multiply the top and bottom of 2/3 by 4, you get 8/12. Did the amount grow, shrink, or stay the same — and how do you know?",
+      "A recipe needs 1/2 cup of milk. You only have a 1/4-cup scoop. Your friend says 'just pour two scoops — that's 2/4, which is bigger than 1/2.' Who is right, and how would you show it?",
   },
   explore: {
-    text: "You can split every piece into n smaller equal pieces. That multiplies both the numerator and the denominator by n. The whole has not grown. You can also group small pieces back into bigger ones by dividing both numbers by the same factor.",
+    text: "A fraction names a fair share of a whole. The denominator (bottom) tells how many equal pieces the whole was cut into. The numerator (top) tells how many of those pieces you have. Equivalent fractions are different names for the same share of the same whole.",
     activity: {
-      prompt: "Start with 2/5. Which move makes an equivalent fraction?",
+      prompt:
+        "Compare the bars. Which statement is true about Bar A (1/2) and Bar B (2/4)?",
+      models: [
+        {
+          caption: "Bar A — 1/2",
+          diagram: "[########|        ]",
+        },
+        {
+          caption: "Bar B — 2/4",
+          diagram: "[####|####|    |    ]",
+        },
+        {
+          caption: "Bar C — 1/3 (not a half)",
+          diagram: "[######|      |      ]",
+        },
+      ],
       choices: [
         {
-          id: "times-three",
-          label: "Multiply top and bottom by 3 → 6/15",
-          note: "Yes. Each fifth is split into 3. You still have the same share of the whole: 6/15 = 2/5.",
+          id: "same-share",
+          label: "Bar A and Bar B shade the same amount of the same-length bar",
+          note: "Yes. Two of four equal pieces cover the same half as one of two. 2/4 is another name for 1/2. Bar C is a different amount.",
         },
         {
-          id: "times-top-only",
-          label: "Multiply only the top by 3 → 6/5",
-          note: "That changes the amount. You added pieces without making them smaller. 6/5 is more than a whole; 2/5 is not.",
+          id: "b-more",
+          label: "Bar B is more because 2 and 4 look bigger than 1 and 2",
+          note: "The digits grew because you cut smaller pieces, not because you shaded more of the bar. Look at the shaded length — it matches Bar A.",
         },
         {
-          id: "add-two",
-          label: "Add 2 to top and bottom → 4/7",
-          note: "Adding the same number to both is not the rule. 4/7 is a different amount from 2/5.",
+          id: "c-same",
+          label: "Bar C also equals 1/2 because it is one piece",
+          note: "One piece is not always a half. Bar C is one of three equal pieces — a third, which is less than a half.",
         },
       ],
     },
   },
   understand: {
     paragraphs: [
-      "The rule: multiply or divide the numerator and the denominator by the same counting number (not zero). That is how you rename a fraction without changing its value.",
-      "Why it works: multiplying both by 3 means every piece is cut into 3, and you count 3 times as many of the new smaller pieces. The shaded region stays put.",
-      "Simplifying is the reverse. 6/8 ÷ 2/2 = 3/4. You are grouping pieces, not throwing cake away.",
-      "A common mistake is adding the same number to top and bottom, or changing only one number. That builds a different amount.",
+      "A fraction names a fair share of one whole. The pieces must be equal. The numerator (top) counts how many pieces you have. The denominator (bottom) tells how many equal pieces make that whole.",
+      "Two fractions are equivalent when they name the same share of the same whole. 1/2, 2/4, and 4/8 can all shade the same half of a same-length bar.",
+      "To rename without changing the amount, multiply the numerator and the denominator by the same non-zero number. 2/3 × 4/4 = 8/12. You multiplied by 1, so the value stays put. Each of the 3 pieces was cut into 4; you now count 8 smaller pieces covering the same region.",
+      "To simplify, divide both numbers by the same non-zero common factor. 8/12 ÷ 4/4 = 2/3. You grouped pieces; you did not throw cake away.",
+      "Do not add the same number to top and bottom (2/5 → 3/6 is 1/2, not 2/5). Do not change only one number (2/5 → 4/5 grew). Always ask: the same whole?",
     ],
   },
   examples: [
@@ -234,29 +311,53 @@ const grade5: GradeLessonContent = {
   practice: [
     q(
       "ef5-p1",
+      "In 5/6, what does the 6 tell you?",
+      "The whole is cut into 6 equal pieces",
+      "You have 6 pieces",
+      "The fraction is bigger than 6 wholes",
+      "a",
+      "Denominator = equal pieces in one whole. Numerator 5 means you have five of those sixths.",
+      "Bottom number = piece size. Top number = how many you count.",
+      "Swapping numerator and denominator is a common mix-up.",
+      {
+        a: "Six equal sixths make one whole.",
+        b: "That would be the numerator's job — here the numerator is 5.",
+        c: "5/6 is less than one whole.",
+      },
+    ),
+    q(
+      "ef5-p2",
       "Which fraction is equivalent to 2/5?",
       "6/15",
       "3/5",
       "2/10",
       "a",
-      "2/5 × 3/3 = 6/15. 3/5 changed only the top. 2/10 changed only the bottom (×2 on the 5, not on the 2).",
+      "2/5 × 3/3 = 6/15. 3/5 changed only the top. 2/10 changed only the bottom.",
       "Ask: what did I multiply both numbers by?",
-      "Changing one number only, or adding, will not keep the amount.",
+      "Changing one number only will not keep the amount.",
       {
         a: "Both 2 and 5 were multiplied by 3.",
         b: "3/5 is a larger share of the same whole.",
         c: "2/10 is 1/5, which is smaller than 2/5.",
       },
     ),
+    writeQ(
+      "ef5-p3",
+      "Write one fraction equivalent to 3/4 by multiplying top and bottom by 2. Write it as a/b.",
+      ["6/8"],
+      "3×2=6 and 4×2=8, so 6/8. You multiplied by 2/2, which equals 1.",
+      "Multiply both parts by the same number. 3×2 and 4×2.",
+      "Changing only 3, or adding 2 to both parts, makes a different amount.",
+    ),
     q(
-      "ef5-p2",
+      "ef5-p4",
       "Simplify 8/12 to lowest terms.",
       "2/3",
       "4/6",
       "8/12 cannot be simplified",
       "a",
       "Divide by 4: 8/12 = 2/3. 4/6 is equivalent but not fully simplified (still divisible by 2).",
-      "What is the greatest number that divides 8 and 12?",
+      "What is the greatest number that divides both 8 and 12?",
       "Simplest form means no common factor greater than 1 remains.",
       {
         a: "2 and 3 share no common factor other than 1.",
@@ -264,60 +365,112 @@ const grade5: GradeLessonContent = {
         c: "8 and 12 both divide by 4.",
       },
     ),
+    writeQ(
+      "ef5-p5",
+      "A chocolate bar is split into 8 equal squares. You eat 4. Write that amount as a fraction equivalent to 1/2.",
+      ["4/8"],
+      "Four of eight squares is 4/8, which equals 1/2 of the same bar.",
+      "Numerator = squares eaten. Denominator = equal squares in the whole bar.",
+      "2/8 would be a quarter, not a half. 4/4 would be the whole bar.",
+    ),
     q(
-      "ef5-p3",
-      "To test if 4/10 and 6/15 are equivalent, you can...",
-      "see if both simplify to the same fraction (here, 2/5)",
-      "add the tops and add the bottoms",
-      "compare only the denominators",
+      "ef5-p6",
+      "Which pair names the same share of the same whole?",
+      "5/10 and 1/2",
+      "5/10 of a cracker and 5/10 of a loaf as the same number of grams",
+      "2/3 and 3/2",
       "a",
-      "4/10 = 2/5 and 6/15 = 2/5, so they match. Adding parts would invent a new fraction.",
-      "Simplify each one, or cross-multiply: 4×15 and 10×6.",
-      "Matching bottoms is not enough; 3/10 and 4/10 share a denominator but not an amount.",
+      "5/10 = 1/2 of that whole. Same fraction of different wholes is not the same food. 3/2 is more than one whole.",
+      "Same share and same whole — both matter.",
+      "Ignoring the whole, or flipping the fraction, are both traps.",
       {
-        a: "Same simplified name means same amount.",
-        b: "Adding would mix two different amounts into one new pair of numbers.",
-        c: "Denominators alone do not decide equivalence.",
+        a: "Five tenths fill half of that whole.",
+        b: "Always ask: 5/10 of what?",
+        c: "Reciprocals are not equivalent.",
       },
     ),
   ],
   reasoning: [
-    q(
+    explainQ(
       "ef5-r1",
-      "A bottle is 3/4 full. Mira pours until 6/8 is left. Did the amount of water change?",
-      "No — 6/8 is equivalent to 3/4, so the water is the same",
-      "Yes — 6/8 must be more because 6 > 3",
-      "Yes — eighths are always less than quarters",
-      "a",
-      "3/4 × 2/2 = 6/8. Same water, finer scale on the bottle.",
-      "What do you multiply 3 and 4 by to reach 6 and 8?",
-      "The 'bigger numbers mean more water' mix-up shows up in measurement too.",
-      {
-        a: "The marks got closer together; the water line did not need to move.",
-        b: "6 and 8 grew because the scale was split, not because water was added.",
-        c: "Eighths are smaller units, but six of them fill three-quarters.",
-      },
+      "Why does multiplying 2/3 by 4/4 (getting 8/12) keep the amount the same? Write in your own words.",
+      "You split each of the 3 pieces into 4, so you have 8 smaller pieces that still cover the same 2/3 of the whole. 4/4 equals 1, so you multiplied by 1.",
+      "Think: smaller pieces, more of them, same bar length shaded.",
+      "Bigger digits do not mean more cake when both parts grew by the same factor.",
+      ["smaller pieces", "same whole", "multiplied by 1"],
+    ),
+    explainQ(
+      "ef5-r2",
+      "A classmate says 2/5 and 3/6 are equivalent because they added 1 to the top and 1 to the bottom. Explain why that is wrong.",
+      "Adding the same number to numerator and denominator changes the value. 2/5 is not 1/2; 3/6 is 1/2. Equivalent fractions use multiply or divide by the same non-zero number, not add.",
+      "Try a picture, or compare both to tenths.",
+      "Adding to both parts is the usual false shortcut.",
+      ["adding changes", "multiply", "divide"],
     ),
     q(
-      "ef5-r2",
-      "Why is multiplying only the numerator by 2 the wrong way to make an equivalent fraction?",
-      "You doubled the count of pieces without making each piece half as big, so the amount grew",
-      "The denominator is decoration",
-      "Equivalent fractions are not allowed to use even numbers",
+      "ef5-r3",
+      "You have 6/8 of a sandwich. Which statement is true?",
+      "That is the same share as 3/4 of that sandwich",
+      "That is more than 3/4 because 6 and 8 are bigger digits",
+      "You should add 2 to both numbers to simplify",
       "a",
-      "2/3 becomes 4/3 if only the top doubles — more than a whole. To keep the amount, the pieces must shrink in step with the count.",
-      "Picture 2/3 of a bar, then shade two extra thirds without recutting.",
-      "Both numbers have jobs; only one changing breaks the balance.",
+      "Divide 6 and 8 by 2: 6/8 = 3/4. Simplifying uses divide, not add. Bigger digits can still name the same share.",
+      "What common factor do 6 and 8 share?",
+      "Comparing digits instead of shares, or adding to simplify, are both traps.",
       {
-        a: "That is the meaning of the ×n / ×n rule.",
-        b: "The denominator is the piece size.",
-        c: "Even numbers are fine: 2/4 is a classic equivalent of 1/2.",
+        a: "6÷2=3, 8÷2=4.",
+        b: "Compare the share, not the look of the numerals.",
+        c: "6/8 ÷ 2/2 = 3/4.",
       },
     ),
   ],
+  retrieve: [
+    q(
+      "ef5-t1",
+      "What does the numerator tell you?",
+      "How many equal pieces you have",
+      "How many equal pieces make the whole",
+      "The size of the whole in centimetres",
+      "a",
+      "Top number = pieces you count. Bottom number = pieces in one whole. The whole can be any size; the fraction is a share.",
+      "Look at 5/8. Which number is the count you ate?",
+      "Swapping numerator and denominator mixes the jobs.",
+      {
+        a: "In 5/8 you have five eighths.",
+        b: "That is the denominator.",
+        c: "Always name the whole separately if you need grams or centimetres.",
+      },
+    ),
+    writeQ(
+      "ef5-t2",
+      "Fill in the missing number: 4/5 = 12/□",
+      ["15"],
+      "×3 on top (4×3=12), so ×3 on bottom (5×3=15).",
+      "Whatever you multiply the numerator by, do the same to the denominator.",
+      "Leaving the 5 alone, or adding 8 to get 13, would break equivalence.",
+    ),
+    q(
+      "ef5-t3",
+      "Which move does NOT make an equivalent fraction from 3/7?",
+      "Add 2 to top and bottom → 5/9",
+      "Multiply top and bottom by 2 → 6/14",
+      "Multiply top and bottom by 5 → 15/35",
+      "a",
+      "Adding changes the value. Multiplying both parts by the same non-zero number keeps it.",
+      "Which move is not × or ÷ both parts by the same number?",
+      "Add-the-same is the trap this question is catching.",
+      {
+        a: "5/9 is a different amount from 3/7.",
+        b: "Same non-zero factor on both parts.",
+        c: "Same non-zero factor on both parts.",
+      },
+    ),
+  ],
+  misconceptions: grade5Misconceptions,
   reflect: {
     prompt:
       "In your own words, why must the numerator and denominator change by the same factor? What goes wrong if they don't?",
+    keyIdeas: ["numerator", "denominator", "same", "amount"],
   },
   mastery: q(
     "ef5-m1",
@@ -336,10 +489,11 @@ const grade5: GradeLessonContent = {
     },
   ),
   masteryCriteria:
-    "You can rename a fraction by ×/÷ the same factor, simplify 8/12 to 2/3, and explain a measurement example like 3/4 = 6/8.",
+    "You can say what numerator and denominator mean, write an equivalent fraction by multiplying or dividing both parts by the same non-zero number, simplify (for example 8/12 to 2/3), and explain why adding to both parts, changing only one part, or ignoring the whole is wrong.",
   teach: {
     prompt:
-      "Teach Ivshi the ×n / ×n rule using 2/3. Show one equivalent fraction, and show a wrong move (changing only one number) and why it fails.",
+      "Teach a Grade 5 friend what equivalent fractions are. Include: what a fraction is, how to make 2/3 into 8/12, how to simplify 8/12, and why 2/5 is not equivalent to 3/6.",
+    keyIdeas: ["same amount", "multiply", "simplify", "adding"],
   },
 };
 
@@ -354,6 +508,16 @@ const grade6: GradeLessonContent = {
     text: "Equivalent fractions, decimals, and percentages are languages for the same portion. 1/2 = 2/4 = 50/100 = 0.5 = 50%. Cross-multiplying tests equivalence without drawing: a/b = c/d when a×d = b×c.",
     activity: {
       prompt: "Which test shows 3/5 and 6/10 are equivalent?",
+      models: [
+        {
+          caption: "Same point, two names",
+          diagram: "0 ---- 3/5 ---- 1\n0 ---- 6/10 --- 1",
+        },
+        {
+          caption: "Cross-multiply",
+          diagram: "3/5 ? 6/10\n3×10 = 30\n5×6  = 30",
+        },
+      ],
       choices: [
         {
           id: "cross",
@@ -375,7 +539,8 @@ const grade6: GradeLessonContent = {
   },
   understand: {
     paragraphs: [
-      "Two fractions a/b and c/d (with b and d not zero) are equivalent exactly when a×d = b×c. That is the same as saying they simplify to the same fraction, or they sit at the same point on a number line.",
+      "A fraction still names a share of a whole: numerator counts pieces, denominator names how many equal pieces make that whole. Equivalent fractions are different names for the same share of the same whole.",
+      "Two fractions a/b and c/d (b and d not zero) are equivalent exactly when a×d = b×c. That is the same as saying they simplify to the same fraction, or they sit at the same point on a number line. You can also multiply or divide both parts by the same non-zero number.",
       "You can scale to hundredths to meet percentages: 3/5 = 60/100 = 60% = 0.60. That is still equivalent-fraction thinking, just with a denominator of 10 or 100.",
       "In a story, keep the whole the same. 3/4 of a 1-litre bottle and 6/8 of that same bottle match. 3/4 of a 2-litre bottle is a different amount of liquid.",
       "Multi-step work often needs a common name first: to compare 4/6 and 5/8, rename, then decide. Equivalence is the tool; comparison is the next move.",
@@ -420,14 +585,22 @@ const grade6: GradeLessonContent = {
         c: "8/3 is more than two wholes.",
       },
     ),
-    q(
+    writeQ(
       "ef6-p2",
+      "Simplify 8/12 to lowest terms. Write the fraction as a/b.",
+      ["2/3"],
+      "Divide top and bottom by 4: 8/12 = 2/3. You can check with cross-multiply: 8×3 = 24 and 12×2 = 24.",
+      "What number divides both 8 and 12?",
+      "Stopping at 4/6 leaves a common factor. Changing only one number is not simplifying.",
+    ),
+    q(
+      "ef6-p3",
       "A recipe needs 2/5 litre of milk. You have a 100 ml measure (0.1 litre). How many 100 ml cups is 2/5 litre?",
       "4 cups",
       "2 cups",
       "5 cups",
       "a",
-      "2/5 = 4/10 = 0.4 litre = 400 ml. Each cup is 100 ml, so 4 cups. 2/5 is not 2 cups unless each cup were 1/5 litre.",
+      "2/5 = 4/10 = 0.4 litre = 400 ml. Each cup is 100 ml, so 4 cups.",
       "Rename 2/5 as tenths, then as millilitres.",
       "Do not treat the numerator as a count of cups.",
       {
@@ -436,8 +609,16 @@ const grade6: GradeLessonContent = {
         c: "Five cups would be 500 ml = 1/2 litre.",
       },
     ),
+    writeQ(
+      "ef6-p4",
+      "Write 3/4 as a percent.",
+      ["75%", "75 percent", "75"],
+      "3/4 = 75/100 = 75%. You scaled to hundredths — still equivalent fractions.",
+      "What equivalent fraction has denominator 100?",
+      "3/4 is not 34% or 3.4%. The whole is 100 equal hundredths.",
+    ),
     q(
-      "ef6-p3",
+      "ef6-p5",
       "Cross-multiply to test 9/12 and 12/16.",
       "9×16 = 144 and 12×12 = 144, so they are equivalent",
       "9×12 = 108 and 16×16, so they cannot be compared",
@@ -454,24 +635,24 @@ const grade6: GradeLessonContent = {
     ),
   ],
   reasoning: [
-    q(
+    explainQ(
       "ef6-r1",
-      "Two glasses: Glass A is 2/3 full of a 300 ml glass. Glass B is 4/6 full of a 600 ml glass. Same fraction family — same amount of juice?",
-      "No. The wholes are different, so 2/3 of 300 ml is 200 ml and 4/6 of 600 ml is 400 ml",
-      "Yes, because 2/3 = 4/6",
-      "Yes, because both glasses look equally full",
-      "a",
-      "Equivalence of 2/3 and 4/6 is true for the same whole. Here the wholes doubled, so the juice doubled too.",
+      "Glass A is 2/3 of a 300 ml glass. Glass B is 4/6 of a 600 ml glass. 2/3 = 4/6. Are the juices the same amount? Explain why or why not.",
+      "The fractions are equivalent names for the same portion, but the wholes are different. 2/3 of 300 ml is 200 ml; 4/6 of 600 ml is 400 ml. Same share of a bigger whole is more juice.",
       "Compute millilitres, not only the fraction names.",
       "The trap is using equivalent fractions while silently changing the whole.",
-      {
-        a: "Same portion of different totals are different amounts.",
-        b: "2/3 = 4/6 only compares portions of one shared whole.",
-        c: "Looking 'equally full' is about the portion, not the millilitres.",
-      },
+      ["same portion", "different whole", "millilitres"],
+    ),
+    explainQ(
+      "ef6-r2",
+      "Why is adding 1 to the top and bottom of 2/5 (getting 3/6) not a legal way to make an equivalent fraction?",
+      "Adding changes the value. 2/5 is not equal to 1/2, but 3/6 is 1/2. The legal moves are multiply or divide both parts by the same non-zero number, or check equal cross-products.",
+      "Compare 2/5 and 3/6 with pictures, decimals, or cross-multiply.",
+      "Add-the-same is a Grade 5 leftover trap that still shows up in Grade 6.",
+      ["adding changes", "multiply", "divide"],
     ),
     q(
-      "ef6-r2",
+      "ef6-r3",
       "A map scale uses 1/4 cm for 1 km. A new map uses 2/8 cm for 1 km. Is the new map using a different scale?",
       "No — 2/8 cm is equivalent to 1/4 cm, so 1 km is still that same mark length",
       "Yes — 2/8 is twice as long as 1/4",
@@ -487,9 +668,74 @@ const grade6: GradeLessonContent = {
       },
     ),
   ],
+  retrieve: [
+    q(
+      "ef6-t1",
+      "What must stay the same for two equivalent fractions to name the same amount of liquid?",
+      "The whole (the bottle or jug you are measuring)",
+      "The colour of the liquid",
+      "That both denominators look even",
+      "a",
+      "Same portion of different wholes is different millilitres. Colour and 'even bottoms' are not tests.",
+      "3/4 of a cup versus 3/4 of a jug.",
+      "Forgetting the whole is the Grade 6 trap.",
+      {
+        a: "Portion + same whole.",
+        b: "Colour does not rename a fraction.",
+        c: "3/7 and 5/9 can both have odd parts.",
+      },
+    ),
+    writeQ(
+      "ef6-t2",
+      "Fill in the missing number: 5/8 = 15/□",
+      ["24"],
+      "×3 on top (5×3=15), so ×3 on bottom (8×3=24).",
+      "Whatever factor you used on the numerator, use on the denominator.",
+      "Leaving 8, or adding 10 to get 18, breaks equivalence.",
+    ),
+    q(
+      "ef6-t3",
+      "3/4 as a decimal is...",
+      "0.75",
+      "0.34",
+      "3.4",
+      "a",
+      "3÷4 = 0.75, which is also 75/100 = 75%. 0.34 would be 34/100.",
+      "Divide 3 by 4, or scale to hundredths.",
+      "Reading the digits 3 and 4 as 0.34 is the mix-up.",
+      {
+        a: "Same amount, decimal language.",
+        b: "That would be 34 hundredths, not 75.",
+        c: "3.4 is more than three wholes.",
+      },
+    ),
+  ],
+  misconceptions: [
+    {
+      idea: "Bigger digits mean a bigger amount.",
+      correction:
+        "8/12 can equal 2/3. Test with ×/÷ the same factor or with equal cross-products, not with how the digits look.",
+    },
+    {
+      idea: "If the fractions are equivalent, the amounts of juice (or soup) always match.",
+      correction:
+        "Only if the whole is the same. 3/4 of a small bottle is not the same millilitres as 3/4 of a large bottle.",
+    },
+    {
+      idea: "Add the same number to top and bottom, or change only one number.",
+      correction:
+        "Those moves change the value. Multiply or divide both parts by the same non-zero number.",
+    },
+    {
+      idea: "A decimal or percent is a different amount from the fraction.",
+      correction:
+        "3/4 = 0.75 = 75% are three names for the same portion of the same whole.",
+    },
+  ],
   reflect: {
     prompt:
       "When is it useful to rename a fraction as a decimal or a percent, and when would a picture of equal pieces still be wiser?",
+    keyIdeas: ["decimal", "percent", "same whole"],
   },
   mastery: q(
     "ef6-m1",
@@ -512,6 +758,7 @@ const grade6: GradeLessonContent = {
   teach: {
     prompt:
       "Teach Ivshi how to test 8/12 and 10/15, then explain why 3/4 of a small bottle is not the same millilitres as 3/4 of a large bottle.",
+    keyIdeas: ["cross-multiply", "same whole", "different"],
   },
 };
 

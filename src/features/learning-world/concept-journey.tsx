@@ -2,14 +2,18 @@
 
 import { useEffect, useState } from "react";
 import { IvshiCompanion, IvshiMark } from "@/components/companion";
+import { useIvshiPresence } from "@/components/ivshi/ivshi-presence";
 import { Button, ButtonLink } from "@/components/ui/button";
+import { companionFeedbackPhrase, lookTogetherPhrase } from "@/domain/companion-feedback";
 import type {
   CurriculumConcept,
   CurriculumQuestion,
   LearningExperiencePhase,
 } from "@/domain/curriculum";
 import { LEARNING_EXPERIENCE_PHASE_LABELS } from "@/domain/curriculum";
+import type { Grade } from "@/domain/types";
 import { AnswerChoice } from "@/features/discovery/answer-choice";
+import { QuestionResult } from "@/features/lesson/feedback/question-result";
 import {
   ConceptExploreScene,
   ConceptTryScene,
@@ -42,6 +46,7 @@ type ConceptJourneyProps = {
   concept: CurriculumConcept;
   worldTitle: string;
   worldId: string;
+  grade: Grade;
   nextConcept?: { id: string; title: string };
 };
 
@@ -49,6 +54,7 @@ export function ConceptJourney({
   concept,
   worldTitle,
   worldId,
+  grade,
   nextConcept,
 }: ConceptJourneyProps) {
   const [phaseIndex, setPhaseIndex] = useState(0);
@@ -222,7 +228,9 @@ export function ConceptJourney({
           ) : null}
           {phase === "practice" && practiceQuestion ? (
             <QuestionBlock
+              key={practiceQuestion.id}
               question={practiceQuestion}
+              grade={grade}
               selectedId={selectedId}
               checked={checked}
               onSelect={setSelectedId}
@@ -236,7 +244,10 @@ export function ConceptJourney({
           ) : null}
           {phase === "mastery" ? (
             <QuestionBlock
+              key={experience.mastery.id}
               question={experience.mastery}
+              grade={grade}
+              breakthrough
               selectedId={selectedId}
               checked={checked}
               onSelect={setSelectedId}
@@ -310,17 +321,45 @@ function WonderBlock({ text }: { text: string }) {
 
 function QuestionBlock({
   question,
+  grade,
+  breakthrough = false,
   selectedId,
   checked,
   onSelect,
   onCheck,
 }: {
   question: CurriculumQuestion;
+  grade: Grade;
+  breakthrough?: boolean;
   selectedId: string | null;
   checked: boolean;
   onSelect: (id: string) => void;
   onCheck: () => void;
 }) {
+  const ivshiPresence = useIvshiPresence();
+  const [lookCount, setLookCount] = useState(0);
+  const ideaWorked = selectedId === question.correctChoiceId;
+  const lookingTogether = checked && !ideaWorked;
+
+  function handleCheck() {
+    if (ideaWorked) {
+      if (breakthrough) {
+        ivshiPresence.noteBreakthrough();
+      } else {
+        ivshiPresence.noteSuccess();
+      }
+      onCheck();
+      return;
+    }
+
+    ivshiPresence.noteMistake();
+    const nextLooks = lookCount + 1;
+    setLookCount(nextLooks);
+    if (nextLooks >= 3) {
+      onCheck();
+    }
+  }
+
   return (
     <div className="flex flex-col gap-4">
       <h2 className="text-[1.35rem] font-semibold leading-snug text-ink">
@@ -341,12 +380,35 @@ function QuestionBlock({
         ))}
       </fieldset>
       {!checked ? (
-        <Button onClick={onCheck} disabled={!selectedId} className="self-start">
+        <Button onClick={handleCheck} disabled={!selectedId} className="self-start">
           Check
         </Button>
-      ) : (
-        <p className="text-base leading-7 text-ink-muted">{question.explanation}</p>
-      )}
+      ) : null}
+      {checked && ideaWorked ? (
+        <QuestionResult
+          kind="found"
+          phrase={companionFeedbackPhrase("found", grade, question.id)}
+          detail={question.explanation}
+          showMark={!breakthrough}
+        />
+      ) : null}
+      {lookingTogether ? (
+        <QuestionResult
+          kind="look-together"
+          phrase={lookTogetherPhrase(grade)}
+          detail={question.explanation}
+        />
+      ) : null}
+      {!checked && lookCount > 0 ? (
+        <QuestionResult
+          kind="look-again"
+          phrase={companionFeedbackPhrase(
+            "look-again",
+            grade,
+            `${question.id}:look-again:${String(lookCount)}`,
+          )}
+        />
+      ) : null}
     </div>
   );
 }

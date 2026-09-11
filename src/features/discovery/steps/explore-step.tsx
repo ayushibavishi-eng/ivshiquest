@@ -1,9 +1,12 @@
 import { Button } from "@/components/ui/button";
 import { ExplorationVisual } from "@/features/discovery/exploration-visual";
+import type { DiscoveryExplorationVisual } from "@/domain";
 
 type ExploreStepProps = {
   prompt: string;
+  lookPrompt: string;
   captionAfterReveal: string;
+  visual: DiscoveryExplorationVisual;
   revealed: boolean;
   onReveal: () => void;
   onContinue: () => void;
@@ -11,7 +14,9 @@ type ExploreStepProps = {
 
 export function ExploreStep({
   prompt,
+  lookPrompt,
   captionAfterReveal,
+  visual,
   revealed,
   onReveal,
   onContinue,
@@ -23,12 +28,13 @@ export function ExploreStep({
           Let&apos;s look closely
         </h2>
         <p className="mt-2 max-w-prose text-base leading-7 text-ink-muted">
-          Watch where the electricity prefers to travel.
+          {lookPrompt}
         </p>
       </div>
       <ExplorationVisual
         prompt={prompt}
         captionAfterReveal={captionAfterReveal}
+        visual={visual}
         revealed={revealed}
         onReveal={onReveal}
       />

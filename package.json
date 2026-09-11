@@ -8,7 +8,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "test": "tsx --test src/domain/complete-lesson.test.ts src/content/curriculum/catalogue.test.ts src/content/lessons/grade-4-math.test.ts src/content/curiosity/library.test.ts src/domain/curiosity-select.test.ts"
   },
   "engines": {
     "node": ">=20"
@@ -32,6 +33,7 @@
     "eslint": "^9",
     "eslint-config-next": "16.3.4",
     "tailwindcss": "^4",
+    "tsx": "^4.23.13",
     "typescript": "^5"
   }
 }

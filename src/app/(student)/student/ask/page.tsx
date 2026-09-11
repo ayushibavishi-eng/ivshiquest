@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { AskIvshiExperience } from "@/features/ask-ivshi";
 import { getAskContext, getSuggestedPrompts } from "@/services/ask-ivshi";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "Ask Ivshi",
 };

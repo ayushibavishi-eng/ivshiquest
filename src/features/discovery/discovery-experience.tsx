@@ -15,6 +15,9 @@ import { RetrieveStep } from "@/features/discovery/steps/retrieve-step";
 import { WonderStep } from "@/features/discovery/steps/wonder-step";
 import { ROUTES } from "@/lib/constants";
 import { markConceptLearned } from "@/services/knowledge-tree";
+import { recordDiscoveryCompleted } from "@/services/discovery/client-history";
+import { DiscoveryDayLock } from "@/services/discovery/client-history";
+import { calendarDateISO } from "@/domain/curiosity";
 import { useIvshiPresence } from "@/components/ivshi/ivshi-presence";
 
 type DiscoveryStep =
@@ -49,7 +52,7 @@ export function DiscoveryExperience({
 }: DiscoveryExperienceProps) {
   const [step, setStep] = useState<DiscoveryStep>("wonder");
   const [guessId, setGuessId] = useState<string | null>(null);
-  const [wireRevealed, setWireRevealed] = useState(false);
+  const [revealed, setRevealed] = useState(false);
   const [retrieveId, setRetrieveId] = useState<string | null>(null);
   const [retrieveStatus, setRetrieveStatus] = useState<
     "idle" | "incorrect" | "correct"
@@ -88,13 +91,17 @@ export function DiscoveryExperience({
   }
 
   function finishDiscovery() {
-    markConceptLearned(discovery.conceptId);
+    recordDiscoveryCompleted(discovery.id);
+    if (discovery.conceptId) {
+      markConceptLearned(discovery.conceptId);
+    }
     ivshiPresence.noteSuccess();
     setStep("complete");
   }
 
   return (
     <div className="flex flex-1 flex-col gap-8">
+      <DiscoveryDayLock date={calendarDateISO()} discoveryId={discovery.id} />
       <header className="flex items-start justify-between gap-4">
         <DiscoveryProgress current={STEP_PHASE[step]} />
         <ButtonLink
@@ -129,9 +136,11 @@ export function DiscoveryExperience({
         {step === "explore" ? (
           <ExploreStep
             prompt={discovery.exploration.prompt}
+            lookPrompt={discovery.exploration.lookPrompt}
             captionAfterReveal={discovery.exploration.captionAfterReveal}
-            revealed={wireRevealed}
-            onReveal={() => setWireRevealed(true)}
+            visual={discovery.exploration.visual}
+            revealed={revealed}
+            onReveal={() => setRevealed(true)}
             onContinue={() => setStep("explain")}
           />
         ) : null}
@@ -144,12 +153,13 @@ export function DiscoveryExperience({
         {step === "retrieve" ? (
           <RetrieveStep
             question={discovery.retrieval.question}
+            questionId={discovery.id}
+            grade={grade}
             choices={discovery.retrieval.choices}
             selectedId={retrieveId}
             status={retrieveStatus}
             showHint={showHint}
             incorrectFeedback={discovery.retrieval.incorrectFeedback}
-            correctFeedback={discovery.retrieval.correctFeedback}
             hint={discovery.retrieval.hint}
             onSelect={setRetrieveId}
             onCheck={checkRetrieve}

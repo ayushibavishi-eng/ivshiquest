@@ -1,0 +1,75 @@
+.ivshi-breakthrough {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 20;
+  overflow: hidden;
+}
+
+.ivshi-breakthrough-fly {
+  position: absolute;
+  left: 6%;
+  top: 22%;
+  z-index: 1;
+  animation: ivshi-travel 2.6s ease-in-out forwards;
+  transform-origin: center;
+}
+
+.ivshi-breakthrough-bloom {
+  position: absolute;
+  left: 78%;
+  top: 28%;
+  transform-origin: 50% 85%;
+  animation: ivshi-bloom 1.15s ease-out 1.55s both;
+}
+
+@keyframes ivshi-travel {
+  0% {
+    left: 6%;
+    top: 38%;
+    transform: rotate(-14deg);
+  }
+
+  48% {
+    left: 42%;
+    top: 14%;
+    transform: rotate(10deg);
+  }
+
+  100% {
+    left: 74%;
+    top: 30%;
+    transform: rotate(0deg);
+  }
+}
+
+@keyframes ivshi-bloom {
+  0% {
+    transform: scale(0.7);
+    opacity: 0.55;
+  }
+
+  70% {
+    transform: scale(1.08);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ivshi-breakthrough-fly,
+  .ivshi-breakthrough-bloom {
+    animation: none;
+    opacity: 1;
+  }
+
+  .ivshi-breakthrough-fly {
+    left: 74%;
+    top: 30%;
+    transform: none;
+  }
+}

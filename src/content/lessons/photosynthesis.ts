@@ -1,5 +1,5 @@
 import type { CompleteLessonDefinition, GradeLessonContent } from "@/domain/complete-lesson";
-import { q } from "@/content/lessons/question";
+import { explainQ, q, writeQ } from "@/content/lessons/question";
 
 const grade4: GradeLessonContent = {
   objective:
@@ -144,9 +144,56 @@ const grade4: GradeLessonContent = {
       },
     ),
   ],
+  retrieve: [
+    q(
+      "ph4-t1",
+      "Where do green plants mainly make their food?",
+      "in the leaves",
+      "by chewing soil",
+      "only in the flowers",
+      "a",
+      "Leaves are the usual kitchen. Soil holds water and minerals; flowers help make seeds.",
+      "Which part is green and flat to catch light?",
+      "Plants do not swallow dirt as lunch.",
+      {
+        a: "That is the food-making place.",
+        b: "Roots hold the plant and take water; they are not a mouth.",
+        c: "Flowers are not the main food-makers.",
+      },
+    ),
+    q(
+      "ph4-t2",
+      "A seedling in a dark cupboard has soil and water. Why might it still struggle to make food?",
+      "It is missing light",
+      "It needs a plate of roti",
+      "Soil has run out of sandwiches",
+      "a",
+      "Light is part of the recipe. Soil is not a sandwich.",
+      "Think of the window plant versus the cupboard plant.",
+      "The soil-as-lunch mix-up hides the missing light.",
+      {
+        a: "Without light, the leaf kitchen cannot keep making sugar well.",
+        b: "Plants make food; they do not eat the way we do.",
+        c: "Soil is not a packed lunch.",
+      },
+    ),
+  ],
+  misconceptions: [
+    {
+      idea: "Plants eat soil the way animals eat food.",
+      correction:
+        "Roots take water and minerals and hold the plant. The sugary food is made in the leaves using light, water, and air.",
+    },
+    {
+      idea: "A plant with soil and water will make food even in the dark.",
+      correction:
+        "Light is part of the recipe. A cupboard plant often grows pale and weak because the leaf cannot catch light.",
+    },
+  ],
   reflect: {
     prompt:
       "How would you explain a plant's 'meal' to someone who thinks plants eat soil? Use a leaf and a window in your explanation.",
+    keyIdeas: ["leaf", "light", "soil"],
   },
   mastery: q(
     "ph4-m1",
@@ -169,6 +216,7 @@ const grade4: GradeLessonContent = {
   teach: {
     prompt:
       "Teach Ivshi why a green plant on a sunny window can make food, and why hiding it in the dark is a problem — without saying 'plants eat soil'.",
+    keyIdeas: ["light", "leaf", "food"],
   },
 };
 
@@ -316,9 +364,61 @@ const grade5: GradeLessonContent = {
       },
     ),
   ],
+  retrieve: [
+    q(
+      "ph5-t1",
+      "Which gas does a photosynthesising leaf take in, and which does it give out?",
+      "takes in carbon dioxide, gives out oxygen",
+      "takes in oxygen, gives out only nitrogen",
+      "takes in steam, gives out soil",
+      "a",
+      "CO₂ in, O₂ out when photosynthesis is running strongly.",
+      "Remember: plants take the gas we breathe out in larger amounts, and give the one we need.",
+      "Do not swap the gases, and do not treat soil as a gas output.",
+      {
+        a: "That is the gas swap to remember.",
+        b: "That is closer to animal breathing.",
+        c: "Soil is not a gas output of the leaf.",
+      },
+    ),
+    q(
+      "ph5-t2",
+      "Chlorophyll is important because it...",
+      "helps the leaf catch light energy",
+      "is a kind of soil the plant swallows",
+      "stops water entering the roots",
+      "a",
+      "The green pigment captures light so the leaf can build sugar.",
+      "Why are so many photosynthesising parts green?",
+      "Chlorophyll is not a soil meal.",
+      {
+        a: "Light-catching is its job.",
+        b: "It sits inside leaf cells, not in a mouthful of dirt.",
+        c: "Roots still take water.",
+      },
+    ),
+  ],
+  misconceptions: [
+    {
+      idea: "Plants eat soil.",
+      correction:
+        "Soil holds water and minerals. Glucose is made in the leaf from carbon dioxide and water, using light caught by chlorophyll.",
+    },
+    {
+      idea: "Photosynthesis is the same as breathing (respiration).",
+      correction:
+        "Photosynthesis builds sugar and typically gives out oxygen in the light. Respiration uses sugar and oxygen. Plants can do both.",
+    },
+    {
+      idea: "Glucose and carbon dioxide are the same thing.",
+      correction:
+        "Carbon dioxide is an input gas. Glucose is the sugar the plant makes and can store as starch.",
+    },
+  ],
   reflect: {
     prompt:
       "Draw or list arrows for a leaf: what goes in, what is made, what leaves. Then say why chlorophyll belongs on the diagram.",
+    keyIdeas: ["carbon dioxide", "water", "oxygen", "chlorophyll"],
   },
   mastery: q(
     "ph5-m1",
@@ -341,20 +441,42 @@ const grade5: GradeLessonContent = {
   teach: {
     prompt:
       "Teach Ivshi the inputs and outputs of photosynthesis, and why a dark cupboard starch test would look different from a sunny-leaf test.",
+    keyIdeas: ["carbon dioxide", "oxygen", "light", "starch"],
   },
 };
 
 const grade6: GradeLessonContent = {
   objective:
-    "Explain photosynthesis as energy transfer that supports food chains, reason about limiting factors, and connect leaf processes to carbon dioxide, oxygen, and stored starch.",
+    "Explain what plants need for photosynthesis, where it happens, what chlorophyll, carbon dioxide, water, glucose, and oxygen each do, why the process matters in ecosystems, and catch common mix-ups.",
   wonder: {
     prompt:
       "If every green leaf on Earth stopped photosynthesising tonight, what would fail first — a cow's dinner, a human breath, or a potato's stored energy — and how are those linked?",
   },
   explore: {
-    text: "Photosynthesis stores light energy in chemical energy (glucose). Almost every food chain starts with a producer. In the short term, animals use oxygen and food already present. In the longer term, both the fuel and much of the oxygen cycle depend on photosynthesis. Stored starch in seeds and tubers is last season's sunlight, packed.",
+    text: "Green plants need light, water, and carbon dioxide to make food. Chlorophyll in the leaf catches sunlight. The leaf is the usual kitchen — not the potato underground, and not a mouthful of soil. Predict: if the kitchen is in the dark, can it still cook new sugar?",
     activity: {
       prompt: "A potato is underground in the dark. How can it still be 'sunlight food'?",
+      investigation: {
+        kind: "plant-kitchen",
+        predictPrompt: "What do you think a green leaf needs to make food?",
+        predictChoices: [
+          { id: "light", label: "Light" },
+          { id: "water", label: "Water" },
+          { id: "carbon-dioxide", label: "Carbon dioxide" },
+          { id: "soil", label: "Soil" },
+        ],
+        investigateLabel: "Let's investigate",
+      },
+      models: [
+        {
+          caption: "Above ground (the kitchen)",
+          diagram: "sunlight → green leaf\nCO₂ + water → glucose + oxygen",
+        },
+        {
+          caption: "Below ground (the store)",
+          diagram: "leaf sugar → starch in tuber\n(dark soil, no new photosynthesis)",
+        },
+      ],
       choices: [
         {
           id: "stored",
@@ -376,10 +498,12 @@ const grade6: GradeLessonContent = {
   },
   understand: {
     paragraphs: [
-      "Energy view: light energy → chemical energy in glucose. That glucose can power the plant's own respiration, build new tissue, or be stored. Consumers eat that stored or living plant material; they do not invent the energy.",
-      "Matter view: carbon from carbon dioxide becomes part of sugar. That is why cutting forests and burning stored plant carbon (including fossil fuels formed long ago from living things) is part of the carbon story, not only a 'nice trees' story.",
-      "Limiting factors: if light, carbon dioxide, or temperature is too low, photosynthesis slows. A bright but closed cupboard still lacks light. A well-lit sealed jar may run short of CO₂. Farmers think about this when they grow crops in glasshouses.",
-      "Do not confuse photosynthesis with respiration. Plants photosynthesise in light and also respire, using some oxygen and sugar. In strong light, photosynthesis usually outruns respiration in a healthy leaf — net oxygen out, net carbon dioxide in.",
+      "What plants need: sunlight, water, and carbon dioxide (from air). Minerals in soil help the plant stay healthy, but soil is not a sandwich. Roots drink water; they do not chew dirt for lunch.",
+      "Where it happens: mainly in green leaves. Chlorophyll (the green pigment) in chloroplasts catches light energy. Without chlorophyll, a white patch of leaf cannot cook well even in a sunny window.",
+      "The recipe in words: carbon dioxide + water, with light, become glucose + oxygen. Glucose is the plant's food — used now, or stored as starch. Oxygen is given out. That is why bubbles on pondweed in sunlight are often oxygen leaving.",
+      "Photosynthesis is not the same as respiration. Plants also respire (use some sugar and oxygen). In strong light, photosynthesis usually outruns respiration in a healthy leaf — net oxygen out, net carbon dioxide in. At night, photosynthesis stops; respiration continues.",
+      "Why it matters: almost every food chain starts with a producer that photosynthesises. A cow's grass, your rice, and much of the oxygen you breathe sit on this process. A potato is last season's sunlight, packed as starch.",
+      "Cause and effect: take away light, or water, or carbon dioxide, and the rate drops. A sealed sunny jar may run short of CO₂. Heavy cloud can limit a crop even when the soil is wet.",
     ],
   },
   examples: [
@@ -395,40 +519,90 @@ const grade6: GradeLessonContent = {
       caption: "Day and night",
       body: "At night, photosynthesis stops; respiration continues. A sealed dark box of plants will not keep bubbling oxygen.",
     },
+    {
+      caption: "Variegated leaf",
+      body: "Green patches have chlorophyll and can photosynthesise. White patches cannot catch light well, so they make little sugar.",
+    },
   ],
   connection:
-    "Crop yield, aquarium plants, climate conversations about carbon, and why a forest is more than 'pretty green' all sit on this energy-and-carbon transfer.",
+    "Crop yield, aquarium plants, the air in a forest, and why a potato can feed you in winter all sit on this energy-and-carbon transfer.",
   try: {
     prompt:
       "Two trays of the same seedlings: Tray A extra bright light, same water. Tray B dim light, same water. After a week Tray A is heavier. How does photosynthesis explain that (if nothing else is unfair)?",
     reveal:
-      "More light can mean more photosynthesis, more sugar made, more biomass. Dim light limits the energy input. (A fair test would also keep temperature and CO₂ similar.)",
+      "More light can mean more photosynthesis, more sugar made, more biomass. Dim light limits the energy input. (A fair test would also keep temperature and CO₂ similar.) Water was the same, so the missing piece is light, not 'more soil to eat'.",
   },
   practice: [
     q(
       "ph6-p1",
-      "Photosynthesis is best described as...",
-      "storing light energy in sugar while building sugar from carbon dioxide and water, and releasing oxygen",
-      "plants chewing soil into oxygen",
-      "the same process as boiling water",
+      "Which list is the honest set of what a green leaf needs to photosynthesise?",
+      "sunlight, carbon dioxide, and water (chlorophyll to catch the light)",
+      "only soil, because soil is plant food",
+      "only oxygen, because plants breathe like us and that is photosynthesis",
       "a",
-      "Energy transfer plus a carbon-and-water recipe. Soil-chewing and boiling are different stories.",
-      "Name energy in, energy stored, matter in, matter out.",
-      "Keep soil out of the chemical sentence.",
+      "Light + CO₂ + water, caught by chlorophyll. Soil is not the meal. Photosynthesis is not the same as respiration.",
+      "Name the kitchen, the catcher, the two materials, and the energy.",
+      "Soil-as-lunch and photosynthesis-equals-breathing are the two big mix-ups.",
       {
-        a: "That is the Grade 6 model.",
-        b: "Soil is not converted by chewing into oxygen.",
-        c: "Boiling is a change of state, not sugar-building.",
+        a: "That is the working recipe.",
+        b: "Roots take water and minerals; they do not swallow dirt as food.",
+        c: "Oxygen is usually given out when photosynthesis runs strongly.",
+      },
+    ),
+    writeQ(
+      "ph6-p2",
+      "Name the sugary food a leaf makes, and the gas it typically gives out in the light.",
+      [
+        "glucose and oxygen",
+        "glucose, oxygen",
+        "sugar and oxygen",
+        "sugar, oxygen",
+        "glucose + oxygen",
+      ],
+      "Glucose (a sugar) is the food. Oxygen is the gas product. Carbon dioxide and water were inputs, not the food itself.",
+      "Food molecule versus the bubble gas.",
+      "Do not swap: CO₂ is taken in; soil is not a product.",
+    ),
+    q(
+      "ph6-p3",
+      "Chlorophyll's job is to...",
+      "catch light energy so the leaf can build sugar",
+      "be a kind of soil the plant swallows",
+      "turn the potato brown so it can cook underground",
+      "a",
+      "Green pigment in the leaf catches light. It is not soil, and a brown tuber is a store, not a dark kitchen.",
+      "Why are photosynthesising parts usually green?",
+      "Colour is a clue to the light-catcher, not a snack and not a underground cooker.",
+      {
+        a: "No catcher, little photosynthesis.",
+        b: "Chlorophyll lives in leaf cells.",
+        c: "Potatoes store starch made earlier in leaves.",
       },
     ),
     q(
-      "ph6-p2",
+      "ph6-p4",
+      "Where does photosynthesis mainly happen?",
+      "in green leaves (in chloroplasts that hold chlorophyll)",
+      "inside a potato in dark soil",
+      "only in flowers, because flowers are pretty",
+      "a",
+      "The leaf is the kitchen. Tubers store. Flowers help make seeds.",
+      "Which part is green, flat, and facing the light?",
+      "Underground and 'pretty parts' are the usual wrong kitchens.",
+      {
+        a: "That is the place.",
+        b: "A potato is stored sunlight, not a dark photosynthesising organ.",
+        c: "Pretty is not the mechanism.",
+      },
+    ),
+    q(
+      "ph6-p5",
       "Why can a food chain not start with a lion?",
       "A lion does not store sunlight as sugar; it eats animals that ate plants (or ate plant-eaters)",
       "Lions photosynthesise at night",
       "Lions make carbon dioxide into grass",
       "a",
-      "Producers start chains. Consumers transfer food already made. Lions are consumers.",
+      "Producers start chains. Consumers transfer food already made.",
       "Who captured the sunlight?",
       "Night photosynthesis is not a lion skill.",
       {
@@ -437,82 +611,140 @@ const grade6: GradeLessonContent = {
         c: "That reverses the actual flow.",
       },
     ),
-    q(
-      "ph6-p3",
-      "A well-watered plant in a sealed transparent jar in sunlight may slow its photosynthesis after a time because...",
-      "carbon dioxide inside can be used up",
-      "the sun stops existing",
-      "the jar creates soil",
-      "a",
-      "Light and water are available; CO₂ can become limiting in a sealed volume. (Oxygen rising is another change, but the carbon input is the photosynthesis limiter here.)",
-      "Which input is a gas that can run low in a sealed jar?",
-      "The sun is still there; the closed air is the clue.",
-      {
-        a: "CO₂ as a limiting factor.",
-        b: "The star has not gone out.",
-        c: "Jars do not manufacture soil as the idea.",
-      },
+    writeQ(
+      "ph6-p6",
+      "A well-watered plant sits in a sealed transparent jar in sunlight. After a time photosynthesis may slow. Which input is most likely running low? Write the name of the gas.",
+      ["carbon dioxide", "co2", "co₂"],
+      "Light and water are available; carbon dioxide in the small sealed volume can be used up. That gas is an input, not the sugar product.",
+      "Which input is a gas the leaf takes from air?",
+      "The sun has not gone out, and the jar does not create soil.",
     ),
   ],
   reasoning: [
-    q(
+    explainQ(
       "ph6-r1",
-      "Someone says, 'Plants only help us because they are pretty.' What photosynthesis-based reply is strongest?",
-      "They convert light into food energy and they affect the gases in the air we depend on",
-      "Pretty leaves photosynthesise faster because pink is stronger than green",
-      "Plants do not affect food or air at all",
-      "a",
-      "Function first: energy and gases. Beauty is extra. Pigment colour for catching light is mostly about chlorophyll, not decoration fashion.",
-      "Energy and carbon, not compliments.",
-      "Pretty-as-cause is not the mechanism.",
-      {
-        a: "That is the scientific reply.",
-        b: "Pink fashion is not the light-catching rule.",
-        c: "That claim is false.",
-      },
+      "Someone says plants eat soil, so a cupboard plant with plenty of compost should still make food. Why is that wrong?",
+      "Soil is not the meal. Photosynthesis needs light so chlorophyll can help build glucose from carbon dioxide and water. Compost in the dark does not replace sunlight. The cupboard plant may look pale because the kitchen has no energy input.",
+      "Name what is missing from the recipe, not what is in the pot.",
+      "The soil-as-lunch misconception hides the need for light.",
+      ["soil is not food", "light", "glucose"],
+    ),
+    explainQ(
+      "ph6-r2",
+      "A crop fails during weeks of heavy cloud. Water was enough. Why might photosynthesis explain the poor growth?",
+      "Light is an energy input. Heavy cloud can limit photosynthesis, so less glucose is made and the plants grow poorly. Water was not the missing piece this time. (Temperature and disease could also matter — light is the first photosynthesis hypothesis.)",
+      "Which input arrives from the sky as energy?",
+      "Do not invent 'clouds stole the roots' or 'plants ate insects instead'.",
+      ["light|sunlight"],
     ),
     q(
-      "ph6-r2",
-      "A crop fails during weeks of heavy cloud. Water was enough. Which photosynthesis idea is the best first hypothesis?",
-      "Low light limited photosynthesis, so less sugar and poorer growth",
-      "Clouds stole the plants' roots",
-      "The plants switched to eating insects only",
+      "ph6-r3",
+      "Why is a potato still 'sunlight food' even though it grew in the dark?",
+      "Leaves photosynthesised above ground and stored glucose as starch in the tuber",
+      "The brown skin photosynthesises in soil light",
+      "Potatoes breathe out sugar that animals made",
       "a",
-      "Light as a limiting factor. Roots are still there. Most crop plants are not insect meals as their main food-making method.",
-      "Which input arrives from the sky as energy?",
-      "Keep the hypothesis testable and about the recipe.",
+      "Store versus kitchen. Last season's light is packed as starch.",
+      "Where was the chlorophyll when the sugar was made?",
+      "Underground cooking is the mix-up.",
       {
-        a: "That hypothesis can be checked with growth and weather records.",
-        b: "Clouds do not remove roots.",
-        c: "That is not how those crops feed.",
+        a: "That is the cause-and-effect chain.",
+        b: "Soil is dark; brown skin is not a leaf.",
+        c: "Animals do not send sugar down into tubers that way.",
       },
     ),
   ],
+  retrieve: [
+    q(
+      "ph6-t1",
+      "Carbon dioxide's job in photosynthesis is to...",
+      "provide carbon that becomes part of glucose",
+      "be the sugary food the plant eats from soil",
+      "be the same thing as oxygen",
+      "a",
+      "Matter view: carbon from CO₂ is built into sugar. Glucose is the food; oxygen is a different gas.",
+      "Input gas versus product sugar versus product gas.",
+      "Swapping the names of the chemicals is the trap.",
+      {
+        a: "Carbon is fixed into food.",
+        b: "Glucose is made, not swallowed as CO₂ from dirt.",
+        c: "Oxygen is given out; they are not the same molecule.",
+      },
+    ),
+    writeQ(
+      "ph6-t2",
+      "What pigment in a leaf catches sunlight?",
+      ["chlorophyll"],
+      "Chlorophyll is the green light-catcher in chloroplasts. Without it, a white leaf patch cannot photosynthesise well.",
+      "Why are so many leaves green?",
+      "Soil, water, and oxygen are not the pigment.",
+    ),
+    q(
+      "ph6-t3",
+      "Photosynthesis and respiration are...",
+      "related but not the same: photosynthesis builds sugar (and typically gives oxygen in the light); respiration uses sugar",
+      "two names for plants chewing soil",
+      "only done by animals, never by plants",
+      "a",
+      "Plants photosynthesise in light and also respire. Animals respire; they do not photosynthesise.",
+      "Build sugar versus use sugar.",
+      "Collapsing both words into 'breathing dirt' hides the science.",
+      {
+        a: "Keep the two processes distinct.",
+        b: "Neither process is soil-chewing.",
+        c: "Plants do both; animals do not photosynthesise.",
+      },
+    ),
+  ],
+  misconceptions: [
+    {
+      idea: "Plants eat soil.",
+      correction:
+        "Roots take water and minerals. The food (glucose) is made in leaves from carbon dioxide and water, using light.",
+    },
+    {
+      idea: "Photosynthesis is just plant breathing, or the same as respiration.",
+      correction:
+        "Photosynthesis builds sugar and typically releases oxygen in the light. Respiration uses sugar and oxygen. Plants can do both.",
+    },
+    {
+      idea: "A potato photosynthesises underground.",
+      correction:
+        "The tuber stores starch made in the leaves. Dark soil is not a second sun.",
+    },
+    {
+      idea: "If a plant has water, it will make food even with no light or no chlorophyll.",
+      correction:
+        "Light and chlorophyll are part of the recipe. White leaf tissue and cupboard plants cannot keep cooking sugar well.",
+    },
+  ],
   reflect: {
     prompt:
-      "Explain how last year's sunlight can still be inside a potato today, and how that potato can later be energy for you.",
+      "What did you used to think plants 'ate', and what do you think now? Mention light, chlorophyll, carbon dioxide, water, glucose, and oxygen if you can.",
+    keyIdeas: ["light", "chlorophyll", "carbon dioxide", "glucose"],
   },
   mastery: q(
     "ph6-m1",
-    "Choose the statement that holds energy, matter, and a food-chain idea together.",
-    "Leaves store light energy in sugar made from CO₂ and water; oxygen is released; other living things depend on that food and, over time, on that oxygen",
-    "Photosynthesis is optional decoration on a leaf",
-    "Only animals make sugar; plants only sit in soil",
+    "Choose the statement that holds the kitchen, the recipe, and why it matters.",
+    "Leaves use chlorophyll to catch light, combine carbon dioxide and water into glucose, release oxygen, and that food and gas support other living things",
+    "Photosynthesis is optional decoration on a leaf, and potatoes cook sugar in the dark",
+    "Only animals make sugar; plants only sit in soil and breathe the way we do",
     "a",
-    "Energy stored, carbon fixed, oxygen released, chains begun. That is the connected picture.",
-    "Say it as a chain: sun → leaf → sugar → eater.",
-    "Decoration and 'plants do nothing' are the weak stories.",
+    "Place, catcher, inputs, products, ecosystem. That is the connected picture.",
+    "Say it as: sun → chlorophyll in leaf → sugar + oxygen → eaters and breathers.",
+    "Decoration, underground cooking, and 'plants do nothing' are the weak stories.",
     {
       a: "That is mastery for this idea.",
-      b: "It is a core life process, not decoration.",
+      b: "It is a core life process, not decoration, and tubers are stores.",
       c: "Plants make the sugar; animals eat it.",
     },
   ),
   masteryCriteria:
-    "You can describe photosynthesis as energy storage and carbon-building, name a limiting factor, and place it at the start of a food chain.",
+    "You can name what a plant needs, where photosynthesis happens, the jobs of chlorophyll, carbon dioxide, water, glucose, and oxygen, explain a simple cause-and-effect (light or CO₂ missing), connect it to a food chain or a potato store, and reject soil-as-lunch and potato-in-the-dark cooking.",
   teach: {
     prompt:
-      "Teach Ivshi why a potato is stored sunlight, why a lion cannot start a food chain, and what might limit photosynthesis in a sealed sunny jar.",
+      "Teach Ivshi photosynthesis as if they are younger: what the leaf needs, what chlorophyll does, what is made, why a potato is stored sunlight, and why a lion cannot start a food chain.",
+    keyIdeas: ["chlorophyll", "glucose", "oxygen", "potato", "producer"],
   },
 };
 

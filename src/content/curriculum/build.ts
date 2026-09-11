@@ -2,6 +2,7 @@ import type {
   CurriculumConcept,
   CurriculumExperience,
   CurriculumGrade,
+  CurriculumNcertRef,
   CurriculumSkill,
   CurriculumTopic,
   CurriculumWorld,
@@ -11,10 +12,19 @@ import type { Subject } from "@/domain/types";
 export const G4: CurriculumGrade[] = [4];
 export const G5: CurriculumGrade[] = [5];
 export const G6: CurriculumGrade[] = [6];
+export const G7: CurriculumGrade[] = [7];
+export const G8: CurriculumGrade[] = [8];
 export const G45: CurriculumGrade[] = [4, 5];
 export const G56: CurriculumGrade[] = [5, 6];
 export const G46: CurriculumGrade[] = [4, 6];
+export const G67: CurriculumGrade[] = [6, 7];
+export const G78: CurriculumGrade[] = [7, 8];
 export const G456: CurriculumGrade[] = [4, 5, 6];
+export const G567: CurriculumGrade[] = [5, 6, 7];
+export const G678: CurriculumGrade[] = [6, 7, 8];
+export const G5678: CurriculumGrade[] = [5, 6, 7, 8];
+export const G4567: CurriculumGrade[] = [4, 5, 6, 7];
+export const G45678: CurriculumGrade[] = [4, 5, 6, 7, 8];
 
 export type ConceptSpec = {
   id: string;
@@ -24,8 +34,10 @@ export type ConceptSpec = {
   goal: string;
   explainer: string;
   skills: string[];
+  objectives?: string[];
   prereq?: string[];
   experience?: CurriculumExperience;
+  ncert?: CurriculumNcertRef;
 };
 
 export type TopicSpec = {
@@ -36,6 +48,7 @@ export type TopicSpec = {
   goal: string;
   explainer: string;
   concepts: ConceptSpec[];
+  ncert?: CurriculumNcertRef;
 };
 
 export type WorldSpec = {
@@ -47,6 +60,7 @@ export type WorldSpec = {
   hook: string;
   concepts?: ConceptSpec[];
   topics?: TopicSpec[];
+  ncert?: CurriculumNcertRef;
 };
 
 function slugSkill(parentId: string, index: number, title: string): string {
@@ -66,7 +80,12 @@ export function C(
   goal: string,
   explainer: string,
   skills: string[],
-  extras?: { prereq?: string[]; experience?: CurriculumExperience },
+  extras?: {
+    prereq?: string[];
+    experience?: CurriculumExperience;
+    ncert?: CurriculumNcertRef;
+    objectives?: string[];
+  },
 ): ConceptSpec {
   return {
     id,
@@ -76,8 +95,10 @@ export function C(
     goal,
     explainer,
     skills,
+    objectives: extras?.objectives,
     prereq: extras?.prereq,
     experience: extras?.experience,
+    ncert: extras?.ncert,
   };
 }
 
@@ -89,8 +110,9 @@ export function T(
   goal: string,
   explainer: string,
   concepts: ConceptSpec[],
+  extras?: { ncert?: CurriculumNcertRef },
 ): TopicSpec {
-  return { id, title, grades, hook, goal, explainer, concepts };
+  return { id, title, grades, hook, goal, explainer, concepts, ncert: extras?.ncert };
 }
 
 function compileSkills(
@@ -115,6 +137,7 @@ function compileConcept(
   spec: ConceptSpec,
   category?: string,
 ): CurriculumConcept {
+  const objectives = spec.objectives ?? spec.skills;
   return {
     id: spec.id,
     title: spec.title,
@@ -127,8 +150,10 @@ function compileConcept(
     goal: spec.goal,
     explainer: spec.explainer,
     skills: compileSkills(subject, spec.id, spec.skills, spec.grades),
+    objectives,
     prerequisites: spec.prereq,
     experience: spec.experience,
+    ncert: spec.ncert,
   };
 }
 
@@ -144,6 +169,7 @@ export function compileWorld(spec: WorldSpec): CurriculumWorld {
     hook: topic.hook,
     goal: topic.goal,
     explainer: topic.explainer,
+    ncert: topic.ncert,
     concepts: topic.concepts.map((concept) =>
       compileConcept(spec.subject, topic.id, concept, spec.category),
     ),
@@ -167,6 +193,7 @@ export function compileWorld(spec: WorldSpec): CurriculumWorld {
     path: concepts.map((concept) => concept.id),
     topics,
     concepts,
+    ncert: spec.ncert,
   };
 }
 

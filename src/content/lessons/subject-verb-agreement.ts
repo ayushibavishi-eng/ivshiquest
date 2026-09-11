@@ -1,5 +1,5 @@
 import type { CompleteLessonDefinition, GradeLessonContent } from "@/domain/complete-lesson";
-import { q } from "@/content/lessons/question";
+import { explainQ, q, writeQ } from "@/content/lessons/question";
 
 const grade4: GradeLessonContent = {
   objective:
@@ -144,9 +144,48 @@ const grade4: GradeLessonContent = {
       },
     ),
   ],
+  retrieve: [
+    q(
+      "sva4-t1",
+      "In 'The cats sleep', cats is the... and sleep is the...",
+      "subject (who), verb (the action)",
+      "verb, subject",
+      "adjective, comma",
+      "a",
+      "Subject = who or what the sentence is about. Verb = the action or matching form of be.",
+      "Who is the sentence about? What are they doing?",
+      "Mixing up subject and verb makes the -s rule impossible to apply.",
+      {
+        a: "Cats do the sleeping.",
+        b: "Sleep is what they do; cats are who.",
+        c: "Those are not the jobs here.",
+      },
+    ),
+    writeQ(
+      "sva4-t2",
+      "Write the matching verb: The dog ____ (bark).",
+      ["barks"],
+      "One dog is singular, like it. It barks. The dogs bark.",
+      "Is there one dog or more than one?",
+      "Copying the plural -s from dogs onto the verb, or leaving bark with a singular, both break the match.",
+    ),
+  ],
+  misconceptions: [
+    {
+      idea: "If the noun already has -s, the verb should have -s too.",
+      correction:
+        "The noun's -s (plural) and the verb's -s (singular he/she/it) are different jobs. The cats run. The cat runs.",
+    },
+    {
+      idea: "Add -s to the verb whenever the sentence 'feels finished'.",
+      correction:
+        "Match the subject. I/you/we/they and plurals take the bare verb: they run, not they runs.",
+    },
+  ],
   reflect: {
     prompt:
       "Write two sentences about your morning: one with a singular subject and one with a plural subject. Check the verbs.",
+    keyIdeas: ["singular", "plural"],
   },
   mastery: q(
     "sva4-m1",
@@ -169,6 +208,7 @@ const grade4: GradeLessonContent = {
   teach: {
     prompt:
       "Teach Ivshi the -s rule using The dog barks and The dogs bark. Then correct this mistake: 'She play football.'",
+    keyIdeas: ["barks", "bark", "plays"],
   },
 };
 
@@ -315,9 +355,56 @@ const grade5: GradeLessonContent = {
       },
     ),
   ],
+  retrieve: [
+    q(
+      "sva5-t1",
+      "Choose the correct question.",
+      "Does she like mangoes?",
+      "Do she like mangoes?",
+      "Does she likes mangoes?",
+      "a",
+      "She → does. The main verb stays like, not likes, after does.",
+      "Helper matches she; the second verb stays bare.",
+      "Double -s (does + likes) is a common extra error.",
+      {
+        a: "Does + she + like.",
+        b: "Do belongs with they/you/we.",
+        c: "Does already carries the -s; likes would double it.",
+      },
+    ),
+    q(
+      "sva5-t2",
+      "The pair of shoes ____ by the door.",
+      "is",
+      "are",
+      "be",
+      "a",
+      "Pair is the head noun (singular), so is. Shoes is inside the phrase.",
+      "Cover 'of shoes'. What is left as the subject?",
+      "Nearby plurals steal the verb if you are not careful.",
+      {
+        a: "A pair is one set.",
+        b: "Are would match shoes if shoes were the subject.",
+        c: "Be is not the agreeing present form here.",
+      },
+    ),
+  ],
+  misconceptions: [
+    {
+      idea: "Agree with the nearest noun, even if it sits in an of-phrase.",
+      correction:
+        "Find the head subject. The box of pencils is open (box is). The pencils are sharp (pencils are).",
+    },
+    {
+      idea: "After does, add -s to the main verb too.",
+      correction:
+        "Does already matches she/he/it. The main verb stays bare: Does she play?",
+    },
+  ],
   reflect: {
     prompt:
       "Write a question with does and a statement with a phrase like 'a box of…'. Check both verbs.",
+    keyIdeas: ["does", "box"],
   },
   mastery: q(
     "sva5-m1",
@@ -340,25 +427,36 @@ const grade5: GradeLessonContent = {
   teach: {
     prompt:
       "Teach Ivshi why we say Does she play? not Does she plays?, and why The box of crayons is heavy even though crayons looks plural.",
+    keyIdeas: ["does", "play", "box"],
   },
 };
 
 const grade6: GradeLessonContent = {
   objective:
-    "Keep subject-verb agreement when the subject is delayed, compound, or separated from the verb, and explain the choice.",
+    "Find the subject and the verb, match singular and plural in the present tense, handle compound and tricky subjects, correct and create sentences, and explain why a verb is right.",
   wonder: {
     prompt:
       "Why might 'There is many reasons' sound ordinary in speech but still be the wrong match on the page?",
   },
   explore: {
-    text: "The verb agrees with the real subject, which is not always the first noun you hear. In there is / there are, the true subject follows the verb: There are three cups. Compound subjects joined by and are usually plural: Riya and Aman are here. With or/nor, agree with the nearer subject: Either the teacher or the students are ready; Either the students or the teacher is ready.",
+    text: "First find the subject (who or what the sentence is about) and the verb (the action, or a form of be/do/have). Then match number: singular subjects take singular verbs (she runs, the cat is); plural subjects take plural verbs (they run, the cats are). The real subject is not always the first noun you hear.",
     activity: {
-      prompt: "Which sentence treats the delayed subject honestly?",
+      prompt: "Classify these. Which sentence treats the delayed subject honestly?",
+      models: [
+        {
+          caption: "Flip the sentence",
+          diagram: "There are two mangoes.\n→ Two mangoes are there.",
+        },
+        {
+          caption: "Compound with and",
+          diagram: "Riya and Aman are here.\n(two people → plural verb)",
+        },
+      ],
       choices: [
         {
           id: "are",
           label: "There are two mangoes in the bowl.",
-          note: "Yes. Two mangoes is the real subject, so are. There is a helper-shaped word, not the subject.",
+          note: "Yes. Two mangoes is the real subject, so are. There is not the subject.",
         },
         {
           id: "is-many",
@@ -366,19 +464,20 @@ const grade6: GradeLessonContent = {
           note: "Two mangoes is plural. There is would match one mango: There is a mango.",
         },
         {
-          id: "list",
-          label: "There is a plate, two cups, and a jug — wait, that lists more than one thing so are is safer.",
-          note: "A list of things is plural: There are a plate, two cups, and a jug. (Style can vary; agreement still tracks more-than-one.)",
+          id: "and-wrong",
+          label: "Riya and Aman is here.",
+          note: "And joins two people, so the subject is plural: Riya and Aman are here.",
         },
       ],
     },
   },
   understand: {
     paragraphs: [
-      "Agreement is with grammatical number, not with the nearest tempting noun. The quality of the recordings is poor (quality is). The recordings are poor (recordings are).",
-      "There/here sentences: flip them to test. There are crumbs → crumbs are there. There is a crumb → a crumb is there.",
-      "Each, every, nobody, everyone take a singular verb in standard written English: Everyone is here. Each of the answers is numbered.",
-      "In careful writing, do not let a long plural phrase after of steal a singular head: A list of names is on the desk (list is).",
+      "Subject versus verb: The cat sleeps. Subject = the cat (who). Verb = sleeps (what they do). In the simple present, he/she/it and one person or thing usually take -s/-es: she runs. I, you, we, they, and plurals take the bare verb: they run.",
+      "Do not agree with the nearest tempting noun. The quality of the recordings is poor (quality is). The recordings are poor (recordings are). A list of names is on the desk (list is).",
+      "There/here sentences: the true subject follows the verb. Flip to test. There are crumbs → crumbs are there. Spoken there's + plural is common in talk; standard writing still uses there are for a plural subject.",
+      "Compound subjects: Riya and Aman are here (and → usually plural). With or/nor, agree with the nearer subject: Either the teacher or the students are ready; Either the students or the teacher is ready.",
+      "Tricky singulars in standard writing: each, every, nobody, everyone take a singular verb. Everyone is here. Each of the answers is numbered — each is the subject, not answers.",
     ],
   },
   examples: [
@@ -387,12 +486,16 @@ const grade6: GradeLessonContent = {
       body: "Wrong: There is many ways. Right: There are many ways. Test: Many ways are there.",
     },
     {
-      caption: "Head noun",
+      caption: "Head noun, not the nearest noun",
       body: "The cluster of islands is beautiful (cluster). The islands are beautiful (islands).",
     },
     {
-      caption: "Or / nor",
-      body: "Either Aman or his brothers are driving. Either his brothers or Aman is driving. Agree with the nearer subject.",
+      caption: "And versus or",
+      body: "Aman and his brothers are driving (and → plural). Either his brothers or Aman is driving (or → nearer subject Aman).",
+    },
+    {
+      caption: "Correction",
+      body: "Wrong: Each of the windows are stuck. Right: Each of the windows is stuck.",
     },
   ],
   connection:
@@ -405,22 +508,35 @@ const grade6: GradeLessonContent = {
   practice: [
     q(
       "sva6-p1",
-      "Choose the standard written match.",
-      "A list of names is on the board.",
-      "A list of names are on the board.",
-      "A list of name are on the board.",
+      "In 'The birds sing', the subject is... and the verb is...",
+      "birds (plural who), sing (the action)",
+      "sing (who), birds (the action)",
+      "the (who), birds (the action)",
       "a",
-      "List is the head, singular → is. Names is not the subject.",
-      "Cover of names.",
-      "The nearest plural noun is the trap.",
+      "Subject = who or what. Verb = what they do. Birds is plural, so the verb stays sing, not sings.",
+      "Who is the sentence about? What are they doing?",
+      "Mixing subject and verb makes agreement guesses.",
       {
-        a: "List is.",
-        b: "Are would match names if names were the subject.",
-        c: "That also breaks the noun phrase.",
+        a: "Plural subject, bare present-tense verb.",
+        b: "Sing is not a person.",
+        c: "The is a determiner, not the subject.",
       },
     ),
-    q(
+    writeQ(
       "sva6-p2",
+      "Correct this sentence. Write the full corrected sentence: The list of names are on the board.",
+      [
+        "thelistofnamesisontheboard.",
+        "thelistofnamesisontheboard",
+        "alistofnamesisontheboard.",
+        "alistofnamesisontheboard",
+      ],
+      "List is the head, singular → is. Names is not the subject. The list of names is on the board.",
+      "Cover of names. What is left as the subject?",
+      "The nearest plural noun (names) is the trap.",
+    ),
+    q(
+      "sva6-p3",
       "There ____ several reasons to wait.",
       "are",
       "is",
@@ -435,8 +551,17 @@ const grade6: GradeLessonContent = {
         c: "Be is not agreeing here.",
       },
     ),
+    writeQ(
+      "sva6-p4",
+      "Write one present-tense sentence of your own with a compound subject joined by and. Use a matching verb.",
+      [],
+      "And usually makes a plural subject: Riya and Aman are here. Meera and I walk to school. The verb should match more-than-one.",
+      "Two people or things joined by and — then pick are/walk/play, not is/walks.",
+      "Keeping a singular verb after and is the usual miss (Riya and Aman is…).",
+      ["and"],
+    ),
     q(
-      "sva6-p3",
+      "sva6-p5",
       "Everyone in the teams ____ a badge.",
       "has",
       "have",
@@ -451,49 +576,134 @@ const grade6: GradeLessonContent = {
         c: "Are does not partner with a badge in this pattern.",
       },
     ),
-  ],
-  reasoning: [
     q(
-      "sva6-r1",
-      "A classmate argues: 'The phrase near the verb is names, so the verb must be are in A list of names ___.' How do you answer?",
-      "The head of the noun phrase is list; of names only describes it, so is is the match",
-      "The classmate is right because English always agrees with the last noun",
-      "Both is and are are always correct",
+      "sva6-p6",
+      "Either the coaches or the captain ____ speaking.",
+      "is",
+      "are",
+      "be",
       "a",
-      "Modifiers after of do not become the subject. Last-noun agreement is the misconception.",
-      "Replace the whole subject with it: It is on the board.",
-      "Proximity is not the grammar rule.",
-      {
-        a: "Head noun wins.",
-        b: "Last noun would make The colour of the walls are... which is non-standard.",
-        c: "Standard writing chooses one match.",
-      },
-    ),
-    q(
-      "sva6-r2",
-      "Either the coaches or the captain ____ speaking. Which verb, and why?",
-      "is — agree with captain, the nearer subject after or",
-      "are — always use are after or",
-      "is — because coaches looks like a country",
-      "a",
-      "With or, the nearer subject (captain) is singular, so is. Flip the order and it becomes are: Either the captain or the coaches are speaking.",
+      "With or, agree with the nearer subject: captain is singular, so is. Flip: Either the captain or the coaches are speaking.",
       "Or/nor → nearer subject.",
       "There is no 'always are after or'.",
       {
         a: "Nearer-subject rule.",
-        b: "Either the captain or the coaches are... would use are because coaches is nearer.",
-        c: "Coaches is a plural job title, not the reason here.",
+        b: "Are would be right if coaches were nearer: Either the captain or the coaches are speaking.",
+        c: "Be is not the agreeing present form here.",
       },
     ),
   ],
+  reasoning: [
+    explainQ(
+      "sva6-r1",
+      "A classmate says: 'In A list of names ___, the word near the verb is names, so the verb must be are.' Why is that wrong?",
+      "The head of the noun phrase is list; of names only describes it. The verb matches the real subject, not the nearest noun. So is is the match: A list of names is on the board. You can test by replacing the whole subject with it: It is on the board.",
+      "Cover the of-phrase. What is the sentence still about?",
+      "Agreeing with the nearest noun is the misconception.",
+      ["list", "names", "subject"],
+    ),
+    explainQ(
+      "sva6-r2",
+      "Why is 'There is many reasons' wrong in standard writing even if people say it?",
+      "There is not the subject. The real subject is many reasons, which is plural, so the verb should be are: There are many reasons. Flip the sentence: Many reasons are there. Casual speech (there's + plural) is not the written rule.",
+      "Flip the sentence and find who or what exists.",
+      "Letting spoken 'there's' decide the written verb is the trap.",
+      ["there", "reasons", "are"],
+    ),
+    q(
+      "sva6-r3",
+      "Why is 'Does she plays cricket?' wrong even though she often takes -s?",
+      "Does already matches she; the main verb must stay play",
+      "She never takes -s",
+      "Plays is needed because cricket is plural",
+      "a",
+      "The helper holds the agreement. Does she play? / She plays. You do not mark both.",
+      "Compare She plays with Does she play?",
+      "Double -s (does + plays) is the extra error.",
+      {
+        a: "One agreement mark, not two.",
+        b: "She plays when there is no does.",
+        c: "The sport's name is not driving the verb ending.",
+      },
+    ),
+  ],
+  retrieve: [
+    q(
+      "sva6-t1",
+      "Riya and Aman ____ ready. Why that verb?",
+      "are — and joins two people, so the subject is plural",
+      "is — pick the first name only",
+      "is — because ready is an adjective",
+      "a",
+      "Compound subject with and is usually plural. Adjectives do not pick is/are by themselves.",
+      "How many people is the sentence about?",
+      "Choosing the first noun only, or letting the adjective decide, both fail.",
+      {
+        a: "Two people → are.",
+        b: "Both names are the subject.",
+        c: "Ready describes them; the verb still matches the subject.",
+      },
+    ),
+    writeQ(
+      "sva6-t2",
+      "Correct this sentence. Write the full corrected sentence: Each of the answers are wrong.",
+      [
+        "eachoftheanswersiswrong.",
+        "eachoftheanswersiswrong",
+        "eachoftheanswersiswrong!",
+      ],
+      "Each is singular. Answers sits in an of-phrase. Each of the answers is wrong.",
+      "Who is the real subject — each or answers?",
+      "The nearest plural (answers) stealing are is the trap.",
+    ),
+    q(
+      "sva6-t3",
+      "The bird ____ every morning. (present tense)",
+      "sings",
+      "sing",
+      "singing",
+      "a",
+      "One bird is singular, like it. It sings. The birds sing. Singing would need a helper (is singing).",
+      "One bird or many?",
+      "A singular noun still needs the -s on the present-tense verb.",
+      {
+        a: "Third-person singular takes -s.",
+        b: "Sing would match they or the birds.",
+        c: "Singing is not the simple-present match here.",
+      },
+    ),
+  ],
+  misconceptions: [
+    {
+      idea: "Agree with the nearest noun (the word sitting just before the verb).",
+      correction:
+        "Agree with the real subject. The box of pencils is open. The colour of the walls is bright.",
+    },
+    {
+      idea: "There's + plural is the written rule because it sounds natural.",
+      correction:
+        "In standard writing, there are matches a plural subject: There are many reasons. Flip the sentence to test.",
+    },
+    {
+      idea: "If the noun already has -s, add -s to the verb too — or add -s after does as well.",
+      correction:
+        "Plural nouns take a bare verb: The cats run. Does already carries the agreement: Does she play?",
+    },
+    {
+      idea: "And and or follow the same rule.",
+      correction:
+        "And usually makes a plural subject. With or/nor, match the nearer subject.",
+    },
+  ],
   reflect: {
     prompt:
-      "Write one there are sentence, one each/everyone sentence, and one sentence with of-phrase. Underline the real subject in each.",
+      "What used to trick you about matching verbs — nearest nouns, there is, or compound subjects? What do you check now before you pick is/are or -s?",
+    keyIdeas: ["subject", "verb"],
   },
   mastery: q(
     "sva6-m1",
     "Which explanation is complete and true?",
-    "The verb matches the real subject — which may come after there, hide behind of, or sit nearer after or — not simply the closest plural-looking noun",
+    "The verb matches the real subject — which may come after there, hide behind of, sit nearer after or, or become plural with and — not simply the closest plural-looking noun",
     "Always match the verb to the longest word in the sentence",
     "Spoken habits like 'there's many' are the written rule",
     "a",
@@ -507,10 +717,11 @@ const grade6: GradeLessonContent = {
     },
   ),
   masteryCriteria:
-    "You can correct there is + plural, each/everyone + plural verb, and of-phrase traps, and explain the real subject.",
+    "You can name the subject and verb, match singular/plural in the present tense, correct there is + plural and of-phrase traps, handle and versus or, write a sentence of your own, and explain why the verb is correct — not merely pick a letter.",
   teach: {
     prompt:
-      "Teach Ivshi how to find the real subject in 'There are two reasons' and in 'A list of names is on the desk', then fix 'Each of the answers are wrong.'",
+      "Teach Ivshi how to find the real subject, then show: a singular and a plural pair (The bird sings / The birds sing), a there are sentence, a list of names is sentence, and a Riya and Aman are sentence. Explain why each verb matches.",
+    keyIdeas: ["subject", "sings", "there", "list"],
   },
 };
 
