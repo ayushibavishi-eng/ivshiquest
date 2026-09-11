@@ -2,7 +2,16 @@ import type { Metadata } from "next";
 import { ComingNext } from "@/components/layout/coming-next";
 import { getLearnAreaTitle, getLearnBrowseParams } from "@/content/mocks/learn";
 import { SUBJECT_LABELS, SUBJECTS, type Subject } from "@/domain";
+import {
+  LearningWorldScreen,
+  WeatherWorldScreen,
+} from "@/features/learning-world";
 import { ROUTES } from "@/lib/constants";
+import {
+  WEATHER_WORLD_ID,
+  getCurriculumWorld,
+} from "@/services/curriculum";
+import { getCurrentStudent } from "@/services/student";
 
 type BrowsePageProps = {
   params: Promise<{ subject: string; areaId: string }>;
@@ -31,6 +40,16 @@ export async function generateMetadata({
 
 export default async function BrowseAreaPage({ params }: BrowsePageProps) {
   const { subject, areaId } = await params;
+  const student = await getCurrentStudent();
+  const world = getCurriculumWorld(areaId);
+
+  if (world && isSubject(subject) && world.subjectId === subject) {
+    if (world.id === WEATHER_WORLD_ID) {
+      return <WeatherWorldScreen world={world} grade={student.grade} />;
+    }
+    return <LearningWorldScreen world={world} grade={student.grade} />;
+  }
+
   const subjectLabel = isSubject(subject)
     ? SUBJECT_LABELS[subject]
     : "this subject";

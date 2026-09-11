@@ -1,3 +1,4 @@
+import type { CuriosityCategory, DiscoveryDifficulty } from "./curiosity";
 import type { Grade, Subject } from "./types";
 
 export const DISCOVERY_PHASES = [
@@ -31,22 +32,33 @@ export type DiscoveryExplanation = {
   simple: string;
 };
 
+export type DiscoveryExplorationVisual = "wires" | "reveal";
+
 export type DiscoveryContent = {
   id: string;
   subject: Subject;
   subjectLabel: string;
   topic: string;
-  conceptId: string;
+  category: CuriosityCategory;
+  tags: string[];
+  difficulty: DiscoveryDifficulty;
+  conceptId?: string;
+  relatedConceptIds: string[];
+  curriculumLinked: boolean;
+  trackIndex: number;
   gradeRange: Grade[];
   durationMinutes: number;
   question: string;
+  questionByGrade?: Partial<Record<Grade, string>>;
   wonderPrompt: string;
   predictionChoices: DiscoveryChoice[];
   predictResponse: string;
   predictEncouragement: string;
   exploration: {
     prompt: string;
+    lookPrompt: string;
     captionAfterReveal: string;
+    visual: DiscoveryExplorationVisual;
   };
   explanations: Partial<Record<Grade, DiscoveryExplanation>> & {
     default: DiscoveryExplanation;
@@ -80,4 +92,15 @@ export function getExplanationForGrade(
   grade: Grade,
 ): DiscoveryExplanation {
   return discovery.explanations[grade] ?? discovery.explanations.default;
+}
+
+export function resolveDiscoveryForGrade(
+  discovery: DiscoveryContent,
+  grade: Grade,
+): DiscoveryContent {
+  const question = discovery.questionByGrade?.[grade] ?? discovery.question;
+  if (question === discovery.question) {
+    return discovery;
+  }
+  return { ...discovery, question };
 }

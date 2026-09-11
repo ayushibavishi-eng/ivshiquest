@@ -1,15 +1,20 @@
 import type { Metadata } from "next";
-import { ComingNext } from "@/components/layout/coming-next";
+import { KnowledgeTreeScreen } from "@/features/knowledge-tree";
+import { getCurrentStudent } from "@/services/student";
+
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Knowledge Tree",
 };
 
-export default function TreePage() {
+export default async function TreePage() {
+  const student = await getCurrentStudent();
+
   return (
-    <ComingNext
-      title="Your Knowledge Tree"
-      description="A full view of what you're growing, learning, and mastering will live here next."
+    <KnowledgeTreeScreen
+      grade={student.grade}
+      subjects={student.subjects}
     />
   );
 }

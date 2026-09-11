@@ -3,6 +3,7 @@ import {
   AskIvshiEngineError,
   createAskIvshiReply,
 } from "@/services/ask-ivshi/gemini-engine";
+import { getAskContext } from "@/services/ask-ivshi/get-ask-context";
 import { parseAskIvshiRequest } from "@/services/ask-ivshi/parse-request";
 
 export const runtime = "nodejs";
@@ -60,7 +61,19 @@ export async function POST(request: Request) {
   }
 
   try {
-    const reply = await createAskIvshiReply(parsed.request);
+    const serverContext = await getAskContext();
+    const reply = await createAskIvshiReply({
+      ...parsed.request,
+      context: {
+        ...parsed.request.context,
+        grade: serverContext.grade ?? parsed.request.context.grade,
+        currentSubject:
+          serverContext.currentSubject ?? parsed.request.context.currentSubject,
+        currentTopic:
+          serverContext.currentTopic ?? parsed.request.context.currentTopic,
+        lesson: serverContext.lesson ?? parsed.request.context.lesson,
+      },
+    });
     return Response.json(reply);
   } catch (error) {
     if (error instanceof AskIvshiEngineError) {

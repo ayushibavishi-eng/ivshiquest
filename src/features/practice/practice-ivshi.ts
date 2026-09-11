@@ -19,27 +19,22 @@ export function getPracticeIvshiMoment(options: {
   status: PracticeCheckStatus;
   questionIndex: number;
   difficulty: PracticeDifficulty;
-  improved: boolean;
 }): PracticeIvshiMoment | null {
-  const { view, status, questionIndex, difficulty, improved } = options;
+  const { view, status, questionIndex, difficulty } = options;
 
   if (view === "complete") {
     return { message: "You worked through it!", state: "celebrating" };
   }
 
-  if (view !== "question") {
+  if (view !== "question" || status !== "idle") {
     return null;
   }
 
-  if (status === "correct" && improved) {
-    return { message: "You're getting stronger.", state: "celebrating" };
-  }
-
-  if (status === "idle" && questionIndex === 0) {
+  if (questionIndex === 0) {
     return { message: "Let's see what you can figure out.", state: "curious" };
   }
 
-  if (status === "idle" && HARD_DIFFICULTIES.includes(difficulty)) {
+  if (HARD_DIFFICULTIES.includes(difficulty)) {
     return { message: "Take your time.", state: "thinking" };
   }
 

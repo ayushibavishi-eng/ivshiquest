@@ -2,10 +2,12 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { useIvshiPresence } from "@/components/ivshi/ivshi-presence";
+import { companionFeedbackPhrase } from "@/domain/companion-feedback";
 import type { AskChallenge } from "@/domain/ask-ivshi";
 import { AnswerChoice } from "@/features/discovery/answer-choice";
-
-import { useIvshiPresence } from "@/components/ivshi/ivshi-presence";
+import { QuestionResult } from "@/features/lesson/feedback/question-result";
+import { readLearnerGrade } from "@/services/student/learner-grade";
 
 type ChallengeStatus = "idle" | "incorrect" | "correct";
 
@@ -17,6 +19,7 @@ export function AskChallengeCard({ challenge }: AskChallengeCardProps) {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [status, setStatus] = useState<ChallengeStatus>("idle");
   const ivshiPresence = useIvshiPresence();
+  const grade = readLearnerGrade();
 
   function check() {
     if (!selectedId) {
@@ -58,20 +61,22 @@ export function AskChallengeCard({ challenge }: AskChallengeCardProps) {
         ))}
       </fieldset>
       {status === "correct" ? (
-        <div aria-live="polite" className="flex flex-col gap-2">
-          <p className="text-base font-medium text-ink">
-            Yes — you kept the amount the same.
-          </p>
-          <p className="text-base leading-7 text-ink">{challenge.explanation}</p>
-        </div>
+        <QuestionResult
+          kind="found"
+          phrase={companionFeedbackPhrase("found", grade, challenge.id)}
+          detail={challenge.explanation}
+        />
       ) : null}
       {status === "incorrect" ? (
-        <div aria-live="polite" className="flex flex-col gap-2">
-          <p className="text-base font-medium text-ink">
-            Not quite — let&apos;s look at it.
-          </p>
-          <p className="text-base leading-7 text-ink-muted">{challenge.hint}</p>
-        </div>
+        <QuestionResult
+          kind="look-again"
+          phrase={companionFeedbackPhrase(
+            "look-again",
+            grade,
+            `${challenge.id}:look-again`,
+          )}
+          clue={challenge.hint}
+        />
       ) : null}
       {status === "correct" ? null : status === "incorrect" ? (
         <Button

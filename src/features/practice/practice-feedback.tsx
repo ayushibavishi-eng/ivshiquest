@@ -1,8 +1,12 @@
 import { Button } from "@/components/ui/button";
+import { companionFeedbackPhrase } from "@/domain/companion-feedback";
+import { QuestionResult } from "@/features/lesson/feedback/question-result";
 import type { PracticeCheckStatus } from "@/features/practice/practice-ivshi";
 
 type PracticeFeedbackProps = {
   status: PracticeCheckStatus;
+  grade: number;
+  questionId: string;
   explanation: string;
   hint: string;
   onNext: () => void;
@@ -11,6 +15,8 @@ type PracticeFeedbackProps = {
 
 export function PracticeFeedback({
   status,
+  grade,
+  questionId,
   explanation,
   hint,
   onNext,
@@ -22,11 +28,12 @@ export function PracticeFeedback({
 
   if (status === "correct") {
     return (
-      <div className="flex flex-col gap-4" aria-live="polite">
-        <p className="text-lg font-medium text-ink">
-          Yes! You got it. <span aria-hidden="true">🎉</span>
-        </p>
-        <p className="max-w-prose text-base leading-7 text-ink">{explanation}</p>
+      <div className="flex flex-col gap-4">
+        <QuestionResult
+          kind="found"
+          phrase={companionFeedbackPhrase("found", grade, questionId)}
+          detail={explanation}
+        />
         <Button onClick={onNext} className="self-start">
           Next →
         </Button>
@@ -35,11 +42,16 @@ export function PracticeFeedback({
   }
 
   return (
-    <div className="flex flex-col gap-4" aria-live="polite">
-      <p className="text-lg font-medium text-ink">
-        Not quite — let&apos;s look at it.
-      </p>
-      <p className="max-w-prose text-base leading-7 text-ink-muted">{hint}</p>
+    <div className="flex flex-col gap-4">
+      <QuestionResult
+        kind="look-again"
+        phrase={companionFeedbackPhrase(
+          "look-again",
+          grade,
+          `${questionId}:look-again`,
+        )}
+        clue={hint}
+      />
       <Button
         variant="ghost"
         onClick={onRetry}

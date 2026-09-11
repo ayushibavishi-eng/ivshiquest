@@ -56,7 +56,7 @@ export function PracticeReview({ items, onBack }: PracticeReviewProps) {
                   </dd>
                 </div>
                 <div>
-                  <dt className="font-semibold text-ink">Correct answer</dt>
+                  <dt className="font-semibold text-ink">What matches</dt>
                   <dd className="text-ink-muted">
                     {choiceLabel(correctChoice ?? null)}
                   </dd>

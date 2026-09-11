@@ -15,7 +15,7 @@ export function PracticeComplete({
   return (
     <section className="flex flex-col gap-6 py-2" data-ivshi-anchor="success">
       <h2 className="text-[1.65rem] font-semibold leading-tight tracking-tight text-ink sm:text-3xl">
-        Practice complete <span aria-hidden="true">🎉</span>
+        Practice complete
       </h2>
       <p className="text-lg leading-8 text-ink">
         You practised {topicTitle}.

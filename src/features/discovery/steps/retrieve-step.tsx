@@ -1,16 +1,18 @@
-import { IvshiCompanion } from "@/components/companion";
 import { Button } from "@/components/ui/button";
+import { companionFeedbackPhrase } from "@/domain/companion-feedback";
 import type { DiscoveryChoice } from "@/domain";
 import { AnswerChoice } from "@/features/discovery/answer-choice";
+import { QuestionResult } from "@/features/lesson/feedback/question-result";
 
 type RetrieveStepProps = {
   question: string;
+  questionId?: string;
+  grade: number;
   choices: DiscoveryChoice[];
   selectedId: string | null;
   status: "idle" | "incorrect" | "correct";
   showHint: boolean;
   incorrectFeedback: string;
-  correctFeedback: string;
   hint: string;
   onSelect: (id: string) => void;
   onCheck: () => void;
@@ -21,12 +23,13 @@ type RetrieveStepProps = {
 
 export function RetrieveStep({
   question,
+  questionId = "retrieve",
+  grade,
   choices,
   selectedId,
   status,
   showHint,
   incorrectFeedback,
-  correctFeedback,
   hint,
   onSelect,
   onCheck,
@@ -54,30 +57,36 @@ export function RetrieveStep({
         ))}
       </fieldset>
       {status === "incorrect" ? (
-        <div className="flex flex-col gap-3" aria-live="polite">
-          <p className="max-w-prose text-base leading-7 text-ink">
-            {incorrectFeedback}
-          </p>
+        <div className="flex flex-col gap-3">
+          <QuestionResult
+            kind="look-again"
+            phrase={companionFeedbackPhrase(
+              "look-again",
+              grade,
+              `${questionId}:look-again`,
+            )}
+            clue={incorrectFeedback}
+          />
           {showHint ? (
-            <IvshiCompanion
-              state="helping"
-              size={18}
-              label={hint}
-              className="text-base leading-7 text-ink-muted"
-            />
+            <p className="max-w-prose text-base leading-7 text-ink-muted">
+              {hint}
+            </p>
           ) : (
-            <Button variant="quiet" size="inline" onClick={onHint} className="self-start">
+            <Button
+              variant="quiet"
+              size="inline"
+              onClick={onHint}
+              className="self-start"
+            >
               Want a hint?
             </Button>
           )}
         </div>
       ) : null}
       {status === "correct" ? (
-        <IvshiCompanion
-          state="celebrating"
-          size={18}
-          label={correctFeedback}
-          className="text-lg font-medium text-ink"
+        <QuestionResult
+          kind="found"
+          phrase={companionFeedbackPhrase("found", grade, questionId)}
         />
       ) : null}
       {status === "correct" ? (
@@ -85,12 +94,16 @@ export function RetrieveStep({
           Continue →
         </Button>
       ) : status === "incorrect" ? (
-        <Button variant="ghost" onClick={onRetry} className="self-start ring-1 ring-line">
+        <Button
+          variant="ghost"
+          onClick={onRetry}
+          className="self-start ring-1 ring-line"
+        >
           Try again
         </Button>
       ) : (
         <Button onClick={onCheck} disabled={!selectedId} className="self-start">
-          Check my answer
+          Check
         </Button>
       )}
     </section>

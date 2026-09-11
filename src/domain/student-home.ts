@@ -5,6 +5,7 @@ export type TodayDiscovery = {
   title: string;
   durationLabel: string;
   subject: Subject;
+  date: string;
 };
 
 export type ActiveQuest = {

@@ -1,0 +1,60 @@
+.plant-kitchen {
+  display: block;
+  width: 100%;
+  max-width: 18rem;
+  height: auto;
+  margin-inline: auto;
+}
+
+.plant-flow,
+.plant-sugar,
+.plant-store,
+.plant-soil {
+  opacity: 0;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.plant-flow.is-on,
+.plant-soil.is-on {
+  opacity: 1;
+}
+
+.plant-sugar {
+  transform: translateY(6px);
+}
+
+.plant-sugar.is-on {
+  opacity: 1;
+  transform: none;
+}
+
+.plant-store {
+  transition-delay: 0.35s;
+}
+
+.plant-store.is-on {
+  opacity: 1;
+}
+
+.plant-beam {
+  stroke-dasharray: 5 7;
+}
+
+.plant-kitchen.is-cooking .plant-leaf-glow {
+  opacity: 0.55;
+}
+
+.plant-leaf-glow {
+  opacity: 0;
+  transition: opacity 0.45s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .plant-store {
+    transition-delay: 0s;
+  }
+
+  .plant-sugar {
+    transform: none;
+  }
+}

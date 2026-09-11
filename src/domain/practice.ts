@@ -74,9 +74,14 @@ export function buildPracticeSummary(signals: PracticeAttemptSignal[]): string {
   const lookedAgain = signals.filter(
     (signal) => signal.retryUsed || signal.hintUsed,
   ).length;
+  const fractions = signals.every(
+    (signal) => signal.concept === "equivalent-fractions",
+  );
 
   if (firstTryCorrect === signals.length) {
-    return "You noticed equivalent amounts all the way through. That kind of careful looking is growing.";
+    return fractions
+      ? "You noticed equivalent amounts all the way through. That kind of careful looking is growing."
+      : "You stayed careful all the way through. That kind of looking is growing.";
   }
 
   if (lookedAgain > 0 && firstTryCorrect >= 2) {
@@ -87,5 +92,7 @@ export function buildPracticeSummary(signals: PracticeAttemptSignal[]): string {
     return "You used a second look and kept practising. Coming back to ideas like this makes them stronger.";
   }
 
-  return "You practised seeing the same amount in different forms. That's a useful connection.";
+  return fractions
+    ? "You practised seeing the same amount in different forms. That's a useful connection."
+    : "You practised connecting the ideas. That's a useful kind of looking.";
 }

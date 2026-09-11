@@ -4,6 +4,7 @@ import {
   type AskConversationMessage,
   type AskIvshiRequest,
   type AskLearnerContext,
+  type AskLessonContext,
   type AskLearnerProgress,
   type AskMessageRole,
 } from "@/domain/ask-ivshi";
@@ -13,6 +14,7 @@ const EMPTY_LEARNER_CONTEXT: AskLearnerContext = {
   subjects: [],
   currentSubject: null,
   currentTopic: null,
+  lesson: null,
   learningDNA: null,
   previousMistakes: null,
   learnerPreferences: null,
@@ -100,6 +102,82 @@ function parseSubjects(value: unknown): string[] {
     .slice(0, 8);
 }
 
+function parseExamples(value: unknown): AskLessonContext["examples"] {
+  if (!Array.isArray(value)) {
+    return [];
+  }
+
+  return value
+    .filter(isRecord)
+    .map((item) => ({
+      caption: readTrimmedString(item.caption) ?? "",
+      body: readTrimmedString(item.body) ?? "",
+    }))
+    .filter((item) => item.caption || item.body)
+    .slice(0, 8);
+}
+
+function parseMisconceptions(
+  value: unknown,
+): AskLessonContext["misconceptions"] {
+  if (!Array.isArray(value)) {
+    return [];
+  }
+
+  return value
+    .filter(isRecord)
+    .map((item) => ({
+      idea: readTrimmedString(item.idea) ?? "",
+      correction: readTrimmedString(item.correction) ?? "",
+    }))
+    .filter((item) => item.idea || item.correction)
+    .slice(0, 8);
+}
+
+function parseLesson(value: unknown): AskLessonContext | null {
+  if (!isRecord(value)) {
+    return null;
+  }
+
+  const lessonId = readTrimmedString(value.lessonId);
+  const conceptId = readTrimmedString(value.conceptId);
+  const lessonTitle = readTrimmedString(value.lessonTitle);
+  const learningObjective = readTrimmedString(value.learningObjective);
+  const currentLearningStage = readTrimmedString(value.currentLearningStage);
+  const explanation = readTrimmedString(value.explanation) ?? "";
+  const subject = readTrimmedString(value.subject);
+  const gradeValue = value.grade;
+  const grade =
+    typeof gradeValue === "number" && Number.isFinite(gradeValue)
+      ? gradeValue
+      : null;
+
+  if (
+    grade === null ||
+    !subject ||
+    !lessonId ||
+    !conceptId ||
+    !lessonTitle ||
+    !learningObjective ||
+    !currentLearningStage
+  ) {
+    return null;
+  }
+
+  return {
+    grade,
+    subject,
+    lessonId,
+    conceptId,
+    lessonTitle,
+    learningObjective,
+    currentLearningStage,
+    explanation,
+    examples: parseExamples(value.examples),
+    misconceptions: parseMisconceptions(value.misconceptions),
+  };
+}
+
 function parseContext(value: unknown): AskLearnerContext {
   if (!isRecord(value)) {
     return EMPTY_LEARNER_CONTEXT;
@@ -114,6 +192,7 @@ function parseContext(value: unknown): AskLearnerContext {
     subjects: parseSubjects(value.subjects),
     currentSubject: readTrimmedString(value.currentSubject),
     currentTopic: readTrimmedString(value.currentTopic),
+    lesson: parseLesson(value.lesson),
     learningDNA: null,
     previousMistakes: null,
     learnerPreferences: null,

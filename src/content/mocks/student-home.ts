@@ -9,6 +9,7 @@ export const MOCK_STUDENT_HOME: StudentHome = {
       "Why don't birds get electrocuted when they sit on electric wires?",
     durationLabel: "3-minute discovery",
     subject: "science",
+    date: "2026-09-11",
   },
   activeQuest: {
     id: "quest-equivalent-fractions",

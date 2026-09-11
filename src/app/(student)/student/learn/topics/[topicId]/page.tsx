@@ -4,7 +4,31 @@ import {
   getLearnTopicIds,
   getLearnTopicMeta,
 } from "@/content/mocks/learn";
+import { LessonExperience } from "@/features/lesson";
+import {
+  ConceptJourney,
+  ConceptOverview,
+  LearningWorldScreen,
+  TopicJourneyScreen,
+  WeatherWorldScreen,
+} from "@/features/learning-world";
 import { ROUTES } from "@/lib/constants";
+import {
+  WEATHER_WORLD_ID,
+  appliesToGrade,
+  getCurriculumConcept,
+  getCurriculumTopic,
+  getCurriculumWorld,
+  getNextConceptInWorld,
+  getWorldForNode,
+  isCurriculumConceptId,
+  isCurriculumTopicId,
+  isCurriculumWorldId,
+} from "@/services/curriculum";
+import { getCompleteLesson } from "@/services/lessons";
+import { getCurrentStudent } from "@/services/student";
+
+export const dynamic = "force-dynamic";
 
 type TopicStartPageProps = {
   params: Promise<{ topicId: string }>;
@@ -27,6 +51,84 @@ export async function generateMetadata({
 
 export default async function TopicStartPage({ params }: TopicStartPageProps) {
   const { topicId } = await params;
+  const student = await getCurrentStudent();
+  const grade = student.grade;
+
+  if (isCurriculumWorldId(topicId)) {
+    const world = getCurriculumWorld(topicId);
+    if (world) {
+      if (world.id === WEATHER_WORLD_ID) {
+        return <WeatherWorldScreen world={world} grade={grade} />;
+      }
+      return <LearningWorldScreen world={world} grade={grade} />;
+    }
+  }
+
+  if (isCurriculumTopicId(topicId)) {
+    const topic = getCurriculumTopic(topicId);
+    const world = topic ? getWorldForNode(topic.id) : undefined;
+    if (topic && world) {
+      return (
+        <TopicJourneyScreen
+          topic={topic}
+          worldTitle={world.title}
+          worldId={world.id}
+          grade={grade}
+        />
+      );
+    }
+  }
+
+  if (isCurriculumConceptId(topicId)) {
+    const concept = getCurriculumConcept(topicId);
+    const world = concept ? getWorldForNode(concept.id) : undefined;
+    if (concept && world) {
+      const pathNext = getNextConceptInWorld(world, concept.id, grade);
+      const pathNextRef = pathNext
+        ? { id: pathNext.id, title: pathNext.title }
+        : undefined;
+      const completeLesson = getCompleteLesson(concept.id, grade);
+      if (completeLesson) {
+        let lessonNext: { id: string; title: string } | undefined;
+        for (const id of completeLesson.nextConceptIds) {
+          const item = getCurriculumConcept(id);
+          if (item && appliesToGrade(item.grades, grade)) {
+            lessonNext = { id: item.id, title: item.title };
+            break;
+          }
+        }
+        return (
+          <LessonExperience
+            lesson={completeLesson}
+            worldTitle={world.title}
+            worldId={world.id}
+            nextConcept={lessonNext ?? pathNextRef}
+          />
+        );
+      }
+      if (concept.experience) {
+        return (
+          <ConceptJourney
+            concept={concept}
+            worldTitle={world.title}
+            worldId={world.id}
+            grade={grade}
+            nextConcept={pathNextRef}
+          />
+        );
+      }
+
+      return (
+        <ConceptOverview
+          concept={concept}
+          worldTitle={world.title}
+          worldId={world.id}
+          nextConcept={pathNextRef}
+        />
+      );
+    }
+  }
+
   const meta = getLearnTopicMeta(topicId);
   const title = meta?.title ?? "This topic";
   const isCuriosity = meta?.kind === "curiosity";

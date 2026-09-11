@@ -30,12 +30,44 @@ export type GeminiContentTurn = {
   parts: Array<{ text: string }>;
 };
 
+function lessonLines(context: AskLearnerContext): string[] {
+  const lesson = context.lesson;
+  if (!lesson) {
+    return ["Current lesson: none"];
+  }
+
+  const examples = lesson.examples
+    .map((example) => `- ${example.caption}: ${example.body}`)
+    .join("\n");
+  const misconceptions = lesson.misconceptions
+    .map((item) => `- Mix-up: ${item.idea} → ${item.correction}`)
+    .join("\n");
+
+  return [
+    `Current lesson grade: ${String(lesson.grade)}`,
+    `Current lesson subject: ${lesson.subject}`,
+    `Current lesson ID: ${lesson.lessonId}`,
+    `Current concept ID: ${lesson.conceptId}`,
+    `Current lesson title: ${lesson.lessonTitle}`,
+    `Learning objective: ${lesson.learningObjective}`,
+    `Current learning stage: ${lesson.currentLearningStage}`,
+    `Lesson explanation:\n${lesson.explanation}`,
+    examples
+      ? `Lesson examples:\n${examples}`
+      : "Lesson examples: none",
+    misconceptions
+      ? `Known misconceptions:\n${misconceptions}`
+      : "Known misconceptions: none",
+  ];
+}
+
 export function buildInstructions(context: AskLearnerContext): string {
   const contextLines = [
     `Grade: ${context.grade ?? "unknown"}`,
     `Subjects: ${context.subjects.length > 0 ? context.subjects.join(", ") : "unknown"}`,
     `Current subject: ${context.currentSubject ?? "none"}`,
     `Current topic: ${context.currentTopic ?? "none"}`,
+    ...lessonLines(context),
     "Learning DNA: not available yet",
     "Previous mistakes: not available yet",
     "Learner preferences: not available yet",

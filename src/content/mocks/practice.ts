@@ -1,3 +1,5 @@
+import { getWeatherPracticeSet } from "@/content/curriculum/weather-practice";
+import { WEATHER_WORLD_ID } from "@/content/curriculum/weather";
 import type { PracticeSet } from "@/domain/practice";
 
 export const EQUIVALENT_FRACTIONS_PRACTICE_ID = "equivalent-fractions";
@@ -91,6 +93,10 @@ export const MOCK_EQUIVALENT_FRACTIONS_PRACTICE: PracticeSet = {
 export function getMockPracticeSet(areaId?: string): PracticeSet | null {
   if (!areaId || areaId === EQUIVALENT_FRACTIONS_AREA_ID) {
     return MOCK_EQUIVALENT_FRACTIONS_PRACTICE;
+  }
+
+  if (areaId === WEATHER_WORLD_ID) {
+    return getWeatherPracticeSet();
   }
 
   return null;

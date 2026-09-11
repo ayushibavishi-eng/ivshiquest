@@ -42,6 +42,30 @@ export type AskLearnerProgress = {
   mastered: number;
 };
 
+export type AskLessonExample = {
+  caption: string;
+  body: string;
+};
+
+export type AskLessonMisconception = {
+  idea: string;
+  correction: string;
+};
+
+/** Lesson the child is currently inside, when Ask Ivshi is opened from a lesson. */
+export type AskLessonContext = {
+  grade: number;
+  subject: string;
+  lessonId: string;
+  conceptId: string;
+  lessonTitle: string;
+  learningObjective: string;
+  currentLearningStage: string;
+  explanation: string;
+  examples: AskLessonExample[];
+  misconceptions: AskLessonMisconception[];
+};
+
 /**
  * Structured learner context for Ask Ivshi.
  * Fields that the product does not yet track are null.
@@ -51,6 +75,7 @@ export type AskLearnerContext = {
   subjects: string[];
   currentSubject: string | null;
   currentTopic: string | null;
+  lesson: AskLessonContext | null;
   learningDNA: null;
   previousMistakes: null;
   learnerPreferences: null;

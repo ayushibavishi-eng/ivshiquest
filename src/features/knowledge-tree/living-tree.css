@@ -1,0 +1,25 @@
+.knowledge-tree-mastered-glow {
+  filter: drop-shadow(0 0 6px rgb(255 246 224 / 0.45));
+}
+
+@keyframes tree-card-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.tree-concept-card {
+  animation: tree-card-in 0.32s ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tree-concept-card {
+    animation: none;
+  }
+}

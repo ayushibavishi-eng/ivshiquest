@@ -124,6 +124,59 @@ dialog:not([open]) {
   animation: current-flow 1.1s linear infinite;
 }
 
+@keyframes weather-drift {
+  from {
+    transform: translateX(-10px);
+  }
+
+  to {
+    transform: translateX(12px);
+  }
+}
+
+@keyframes weather-glow {
+  0%,
+  100% {
+    opacity: 0.45;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.8;
+    transform: scale(1.08);
+  }
+}
+
+@keyframes weather-breeze {
+  from {
+    stroke-dashoffset: 0;
+  }
+
+  to {
+    stroke-dashoffset: -28;
+  }
+}
+
+.weather-drift {
+  animation: weather-drift 7s ease-in-out infinite alternate;
+}
+
+.weather-drift-slow {
+  animation: weather-drift 11s ease-in-out infinite alternate-reverse;
+}
+
+.weather-sun-glow {
+  animation: weather-glow 3.4s ease-in-out infinite;
+}
+
+.weather-breeze {
+  animation: weather-breeze 1.2s linear infinite;
+}
+
+.weather-kite {
+  transition: transform 0.7s ease;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

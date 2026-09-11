@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
+import { calendarDateISO } from "@/domain/curiosity";
 import { DiscoveryExperience } from "@/features/discovery";
-import { getTodayDiscovery } from "@/services/discovery";
+import { getTodaysDiscovery } from "@/services/discovery";
 import { getCurrentStudent } from "@/services/student";
 
 export const metadata: Metadata = {
@@ -8,10 +9,8 @@ export const metadata: Metadata = {
 };
 
 export default async function DiscoverPage() {
-  const [discovery, student] = await Promise.all([
-    getTodayDiscovery(),
-    getCurrentStudent(),
-  ]);
+  const student = await getCurrentStudent();
+  const discovery = await getTodaysDiscovery(student, calendarDateISO());
 
   return <DiscoveryExperience discovery={discovery} grade={student.grade} />;
 }
