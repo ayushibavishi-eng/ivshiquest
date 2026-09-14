@@ -1,5 +1,36 @@
 import type { CompleteLessonDefinition, GradeLessonContent } from "@/domain/complete-lesson";
 import { explainQ, q, writeQ } from "@/content/lessons/question";
+import { lessonVideo } from "@/content/lessons/video";
+
+/**
+ * DEV/TEST ONLY — proof integration for the Video Explanation system.
+ * Uses a tiny local MP4 so the existing native player can actually play.
+ * Do not treat this as production curriculum content.
+ */
+export const PHOTOSYNTHESIS_G6_DEV_VIDEO_PROOF = lessonVideo({
+  id: "dev-proof-g6-photosynthesis-video",
+  title: "[DEV] Photosynthesis test video",
+  description:
+    "Development/test asset only — a tiny local MP4. Verifies UNDERSTAND → playable video → Ivshi reflection → Practice.",
+  durationSeconds: 2,
+  posterUrl: "/images/ivshi/Ivshi_butterfly_exact_crop.png",
+  source: {
+    kind: "ivshi",
+    mediaUrl: "/videos/dev/dev-proof-photosynthesis-test.mp4",
+  },
+  accessibility: {
+    transcript:
+      "[DEV TEST VIDEO] Leaves use light, water, and carbon dioxide to make glucose and release oxygen. Soil is not a sandwich. This clip is a synthetic development asset, not a teaching film.",
+    notes:
+      "Development test MP4 only. Replace with a real IvshiQuest explanation video before production.",
+  },
+  reflection: {
+    prompt:
+      "From the video idea, name one thing a leaf needs and one thing photosynthesis makes.",
+    keyIdeas: ["light|water|carbon|co2|air", "glucose|sugar|oxygen|food|starch"],
+    companionLabel: "[DEV] Quick check after the test video — what stuck?",
+  },
+});
 
 const grade4: GradeLessonContent = {
   objective:
@@ -505,6 +536,7 @@ const grade6: GradeLessonContent = {
       "Why it matters: almost every food chain starts with a producer that photosynthesises. A cow's grass, your rice, and much of the oxygen you breathe sit on this process. A potato is last season's sunlight, packed as starch.",
       "Cause and effect: take away light, or water, or carbon dioxide, and the rate drops. A sealed sunny jar may run short of CO₂. Heavy cloud can limit a crop even when the soil is wet.",
     ],
+    video: PHOTOSYNTHESIS_G6_DEV_VIDEO_PROOF,
   },
   examples: [
     {

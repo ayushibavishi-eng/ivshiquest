@@ -1,4 +1,6 @@
 import { GRADES, type Grade } from "@/domain/types";
+import { clearActiveCurriculumTopic } from "@/services/curriculum/active-topic";
+import { clearActiveLesson, readActiveLessonPointer } from "@/services/lessons/active-lesson";
 
 export const LEARNER_GRADE_COOKIE = "ivshi-learner-grade";
 
@@ -31,5 +33,15 @@ export function writeLearnerGrade(grade: Grade) {
     return;
   }
 
+  const previous = readLearnerGrade(grade);
   document.cookie = `${LEARNER_GRADE_COOKIE}=${String(grade)}; path=/; max-age=2592000; samesite=lax`;
+
+  // Changing grade must not resume an unrelated lesson or topic.
+  if (previous !== grade) {
+    const active = readActiveLessonPointer();
+    if (!active || active.grade !== grade) {
+      clearActiveLesson();
+    }
+    clearActiveCurriculumTopic();
+  }
 }

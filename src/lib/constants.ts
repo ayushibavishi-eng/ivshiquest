@@ -3,6 +3,7 @@ export const APP_NAME = "IvshiQuest";
 export const ROUTES = {
   student: {
     home: "/student",
+    onboarding: "/student/onboarding",
     discover: "/student/discover",
     quest: "/student/quest",
     learn: "/student/learn",
@@ -32,7 +33,7 @@ export const STUDENT_NAV = [
   { id: "home", href: ROUTES.student.home, label: "Home" },
   { id: "discover", href: ROUTES.student.discover, label: "Discover" },
   { id: "learn", href: ROUTES.student.learn, label: "Learn" },
-  { id: "tree", href: ROUTES.student.tree, label: "Tree" },
+  { id: "tree", href: ROUTES.student.tree, label: "Journey" },
   { id: "me", href: ROUTES.student.me, label: "Me" },
 ] as const;
 

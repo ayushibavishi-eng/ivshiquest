@@ -1,4 +1,5 @@
 import type { CuriosityCategory, DiscoveryDifficulty } from "./curiosity";
+import type { CurriculumId } from "./curriculum-identity";
 import type { Grade, Subject } from "./types";
 
 export const DISCOVERY_PHASES = [
@@ -45,6 +46,11 @@ export type DiscoveryContent = {
   conceptId?: string;
   relatedConceptIds: string[];
   curriculumLinked: boolean;
+  /**
+   * When omitted or empty, the discovery is shared across curricula.
+   * When set, only those curriculum systems may receive it.
+   */
+  curriculumIds?: CurriculumId[];
   trackIndex: number;
   gradeRange: Grade[];
   durationMinutes: number;

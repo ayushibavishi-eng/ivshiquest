@@ -1,13 +1,27 @@
 "use client";
 
+import type { OpenResponseEvaluation } from "@/domain/complete-lesson";
+import type { LessonVideoExplanation } from "@/domain/lesson-video";
+import { VideoExplanation } from "@/features/lesson/video-explanation";
+
 export function UnderstandPhase({
   paragraphs,
   examples,
   connection,
+  video,
+  grade,
+  videoReflectionValue,
+  videoReflectionEvaluation,
+  onVideoReflectionChange,
 }: {
   paragraphs: string[];
   examples: Array<{ caption: string; body: string }>;
   connection: string;
+  video?: LessonVideoExplanation;
+  grade: number;
+  videoReflectionValue: string;
+  videoReflectionEvaluation: OpenResponseEvaluation;
+  onVideoReflectionChange: (value: string) => void;
 }) {
   return (
     <div className="flex flex-col gap-4">
@@ -16,6 +30,17 @@ export function UnderstandPhase({
           {paragraph}
         </p>
       ))}
+
+      {video ? (
+        <VideoExplanation
+          video={video}
+          grade={grade}
+          reflectionValue={videoReflectionValue}
+          reflectionEvaluation={videoReflectionEvaluation}
+          onReflectionChange={onVideoReflectionChange}
+        />
+      ) : null}
+
       <ul className="flex flex-col gap-3">
         {examples.map((example) => (
           <li

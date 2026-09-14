@@ -4,6 +4,8 @@ import { useEffect } from "react";
 import { IvshiCompanion } from "@/components/companion";
 import { ButtonLink } from "@/components/ui/button";
 import type { CurriculumConcept, CurriculumSkill } from "@/domain/curriculum";
+import { isCurriculumGrade } from "@/domain/curriculum";
+import type { Grade } from "@/domain/types";
 import { islandClassForId } from "@/features/learning-world/world-path-map";
 import { studentLearnTopicHref } from "@/lib/constants";
 import { cn } from "@/lib/cn";
@@ -11,11 +13,14 @@ import {
   raiseCurriculumProgress,
   writeActiveCurriculumTopic,
 } from "@/services/curriculum";
+import { getActiveLearnerId } from "@/services/student/active-learner";
+import { readLearnerCurriculumId } from "@/services/student/learner-profile";
 
 type ConceptOverviewProps = {
   concept: CurriculumConcept;
   worldTitle: string;
   worldId: string;
+  grade: Grade;
   nextConcept?: { id: string; title: string };
 };
 
@@ -23,12 +28,25 @@ export function ConceptOverview({
   concept,
   worldTitle,
   worldId,
+  grade,
   nextConcept,
 }: ConceptOverviewProps) {
   useEffect(() => {
-    writeActiveCurriculumTopic(concept.id);
-    raiseCurriculumProgress(concept.id, "started");
-  }, [concept.id]);
+    if (!isCurriculumGrade(grade)) {
+      return;
+    }
+    const scope = {
+      learnerId: getActiveLearnerId(),
+      grade,
+      subject: concept.subjectId,
+      curriculumId: readLearnerCurriculumId(),
+    };
+    writeActiveCurriculumTopic(concept.id, {
+      learnerId: scope.learnerId,
+      grade: scope.grade,
+    });
+    raiseCurriculumProgress(concept.id, "started", scope);
+  }, [concept.id, concept.subjectId, grade]);
 
   const mark = concept.title
     .replace(/[^A-Za-z0-9]/g, "")

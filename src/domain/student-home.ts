@@ -17,6 +17,7 @@ export type ActiveQuest = {
 
 export type ContinueLearning = {
   id: string;
+  conceptId: string;
   subject: Subject;
   subjectLabel: string;
   topic: string;

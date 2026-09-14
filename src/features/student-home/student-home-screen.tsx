@@ -13,7 +13,10 @@ type StudentHomeScreenProps = {
 export function StudentHomeScreen({ home }: StudentHomeScreenProps) {
   return (
     <div className="flex flex-1 flex-col gap-10 pb-4">
-      <HomeHeader displayName={home.student.displayName} />
+      <HomeHeader
+        displayName={home.student.displayName}
+        grade={home.student.grade}
+      />
       <DiscoveryHero discovery={home.todayDiscovery} />
       <QuestCard quest={home.activeQuest} />
       <ContinueLearningCard item={home.continueLearning} />

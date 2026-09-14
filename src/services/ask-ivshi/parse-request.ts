@@ -11,6 +11,8 @@ import {
 
 const EMPTY_LEARNER_CONTEXT: AskLearnerContext = {
   grade: null,
+  country: null,
+  curriculumId: null,
   subjects: [],
   currentSubject: null,
   currentTopic: null,
@@ -189,6 +191,8 @@ function parseContext(value: unknown): AskLearnerContext {
 
   return {
     grade: parsedGrade,
+    country: readTrimmedString(value.country),
+    curriculumId: readTrimmedString(value.curriculumId),
     subjects: parseSubjects(value.subjects),
     currentSubject: readTrimmedString(value.currentSubject),
     currentTopic: readTrimmedString(value.currentTopic),

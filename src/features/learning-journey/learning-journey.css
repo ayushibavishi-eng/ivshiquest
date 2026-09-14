@@ -1,0 +1,85 @@
+.journey-landscape {
+  background: linear-gradient(
+    180deg,
+    #eef8fb 0%,
+    #e4f3f8 42%,
+    #d7edf4 62%,
+    #c5e0ea 78%,
+    #b4d5e1 100%
+  );
+  min-height: min(70dvh, 40rem);
+}
+
+.journey-sky {
+  pointer-events: none;
+  position: absolute;
+  inset: 0 0 48% 0;
+  background:
+    radial-gradient(ellipse 70% 45% at 70% 18%, rgb(255 246 224 / 0.55), transparent 70%),
+    radial-gradient(ellipse 50% 40% at 18% 30%, rgb(255 255 255 / 0.35), transparent 65%);
+}
+
+.journey-horizon {
+  pointer-events: none;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 46%;
+  height: 18%;
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgb(180 213 225 / 0.35) 40%,
+    rgb(90 158 174 / 0.2) 100%
+  );
+}
+
+.journey-water {
+  pointer-events: none;
+  position: absolute;
+  inset: 58% 0 0 0;
+  background:
+    linear-gradient(
+      180deg,
+      rgb(90 158 174 / 0.22) 0%,
+      rgb(61 125 144 / 0.28) 55%,
+      rgb(61 125 144 / 0.18) 100%
+    ),
+    repeating-linear-gradient(
+      95deg,
+      transparent 0,
+      transparent 28px,
+      rgb(243 238 228 / 0.08) 28px,
+      rgb(243 238 228 / 0.08) 30px
+    );
+}
+
+.journey-path {
+  margin: 0 auto 1.1rem;
+  width: 2px;
+  height: 1.35rem;
+  border-radius: 999px;
+  background: linear-gradient(
+    180deg,
+    rgb(26 108 118 / 0.15),
+    rgb(26 108 118 / 0.45),
+    rgb(26 108 118 / 0.15)
+  );
+}
+
+.journey-destination-current {
+  box-shadow: 0 0 0 1px rgb(26 108 118 / 0.18), 0 10px 24px rgb(14 68 80 / 0.08);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .journey-destination {
+    transition:
+      box-shadow 200ms ease,
+      transform 200ms ease,
+      background-color 200ms ease;
+  }
+
+  .journey-destination:hover {
+    transform: translateY(-1px);
+  }
+}

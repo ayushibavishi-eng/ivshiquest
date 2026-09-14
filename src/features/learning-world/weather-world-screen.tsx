@@ -13,6 +13,9 @@ import {
   subscribeCurriculumProgress,
   writeActiveCurriculumTopic,
 } from "@/services/curriculum";
+import { getActiveLearnerId } from "@/services/student/active-learner";
+import { readLearnerCurriculumId } from "@/services/student/learner-profile";
+import { isCurriculumGrade } from "@/domain/curriculum";
 
 type WeatherWorldScreenProps = {
   world: CurriculumWorld;
@@ -24,9 +27,18 @@ function getEmptyProgress() {
 }
 
 export function WeatherWorldScreen({ world, grade }: WeatherWorldScreenProps) {
+  const learnerId = getActiveLearnerId();
   const progress = useSyncExternalStore(
     subscribeCurriculumProgress,
-    getAllCurriculumProgress,
+    () =>
+      isCurriculumGrade(grade)
+        ? getAllCurriculumProgress({
+            learnerId,
+            grade,
+            subject: world.subjectId,
+            curriculumId: readLearnerCurriculumId(),
+          })
+        : EMPTY_CURRICULUM_PROGRESS,
     getEmptyProgress,
   );
 
@@ -36,8 +48,11 @@ export function WeatherWorldScreen({ world, grade }: WeatherWorldScreenProps) {
   );
 
   useEffect(() => {
-    writeActiveCurriculumTopic(world.id);
-  }, [world.id]);
+    if (!isCurriculumGrade(grade)) {
+      return;
+    }
+    writeActiveCurriculumTopic(world.id, { learnerId, grade });
+  }, [world.id, grade, learnerId]);
 
   const nextConcept = useMemo(() => {
     return (

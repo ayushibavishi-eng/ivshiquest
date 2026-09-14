@@ -1,0 +1,893 @@
+/* Ivshi's journey — storytelling (~52s)
+   0–4s intro hold · 4–11s explore/eat · 11–17s grow/stronger holds
+   17–23s rest · 23–32s chrysalis + time-lapse · 32–41s emerge/wow
+   41–48s flight · 48–52s closing */
+
+.ivshi-transform {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  width: 100vw;
+  width: 100dvw;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+  isolation: isolate;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  background: #d4ebf2;
+  animation:
+    ivshi-transform-enter 0.75s ease-out both,
+    ivshi-transform-exit 52s ease-in-out both;
+}
+
+.ivshi-transform-world {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.ivshi-transform-sky {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 120% 70% at 72% -10%, #fff8e8 0%, transparent 55%),
+    radial-gradient(ellipse 80% 50% at 12% 90%, rgba(90, 158, 174, 0.2), transparent 50%),
+    linear-gradient(
+      180deg,
+      #e8f4f9 0%,
+      #d4ebf2 28%,
+      #c5e0e8 52%,
+      #d9e8d4 78%,
+      #eadcc8 100%
+    );
+  animation: ivshi-sky-timelapse 52s ease-in-out both;
+}
+
+.ivshi-transform-sun {
+  position: absolute;
+  width: min(30vw, 13rem);
+  height: min(30vw, 13rem);
+  border-radius: 50%;
+  background: radial-gradient(circle, #fff6e0 0%, rgba(255, 220, 160, 0.5) 38%, transparent 70%);
+  filter: blur(2px);
+  opacity: 0.75;
+  animation: ivshi-sun-arc 52s ease-in-out both;
+}
+
+.ivshi-transform-moon {
+  position: absolute;
+  width: min(10vw, 4.5rem);
+  height: min(10vw, 4.5rem);
+  border-radius: 50%;
+  background: radial-gradient(circle, #f0f4f8 0%, rgba(200, 210, 220, 0.4) 50%, transparent 70%);
+  opacity: 0;
+  animation: ivshi-moon-pass 52s ease-in-out both;
+}
+
+.ivshi-transform-light-beam {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    115deg,
+    transparent 30%,
+    rgba(255, 246, 224, 0.12) 48%,
+    transparent 62%
+  );
+  opacity: 0;
+  animation: ivshi-light-beam 52s ease-in-out both;
+  pointer-events: none;
+}
+
+.ivshi-transform-haze {
+  position: absolute;
+  inset: -8%;
+  pointer-events: none;
+}
+
+.ivshi-transform-haze--far {
+  background:
+    radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.35), transparent 40%),
+    radial-gradient(circle at 78% 55%, rgba(255, 246, 224, 0.25), transparent 45%);
+  animation: ivshi-haze-far 52s ease-in-out both;
+}
+
+.ivshi-transform-haze--near {
+  background:
+    radial-gradient(circle at 40% 80%, rgba(90, 158, 174, 0.12), transparent 35%),
+    radial-gradient(circle at 85% 25%, rgba(255, 246, 224, 0.2), transparent 40%);
+  animation: ivshi-haze-near 52s ease-in-out both;
+}
+
+.ivshi-transform-scene {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.ivshi-layer-far {
+  animation: ivshi-parallax-far 52s ease-in-out both;
+  transform-origin: 50% 80%;
+}
+
+.ivshi-layer-mid {
+  animation: ivshi-parallax-mid 52s ease-in-out both;
+}
+
+.ivshi-plant--1 {
+  transform-origin: 90px 700px;
+  animation: ivshi-plant-sway-a 52s ease-in-out both;
+}
+
+.ivshi-plant--2 {
+  transform-origin: 910px 700px;
+  animation: ivshi-plant-sway-b 52s ease-in-out both;
+}
+
+.ivshi-plant--3 {
+  transform-origin: 70px 680px;
+  animation: ivshi-plant-sway-a 52s ease-in-out both;
+  animation-delay: -1.4s;
+}
+
+.ivshi-main-leaf {
+  transform-origin: 340px 400px;
+  animation: ivshi-leaf-breathe 52s ease-in-out both;
+}
+
+.ivshi-chew-crumb--1 { animation: ivshi-crumb-1 52s ease-in-out both; }
+.ivshi-chew-crumb--2 { animation: ivshi-crumb-2 52s ease-in-out both; }
+.ivshi-chew-crumb--3 { animation: ivshi-crumb-3 52s ease-in-out both; }
+
+.ivshi-side-leaf--1 {
+  transform-origin: 720px 300px;
+  animation: ivshi-leaf-drift-a 52s ease-in-out both;
+}
+
+.ivshi-side-leaf--2 {
+  transform-origin: 160px 350px;
+  animation: ivshi-leaf-drift-b 52s ease-in-out both;
+}
+
+.ivshi-leaf-shadow {
+  animation: ivshi-shadow-shift 52s ease-in-out both;
+}
+
+/* Meal leaves stay still so bite masks stay aligned; mid-layer breeze still moves. */
+
+.ivshi-fg-leaf {
+  animation: ivshi-fg-drift 52s ease-in-out both;
+  transform-origin: 820px 650px;
+}
+
+/* —— Caterpillar —— */
+.ivshi-caterpillar {
+  transform-origin: 60px 0px;
+  animation: ivshi-caterpillar-journey 52s cubic-bezier(0.42, 0.05, 0.28, 1) both;
+}
+
+.ivshi-caterpillar-grow {
+  transform-origin: 34px 0px;
+  animation: ivshi-caterpillar-grow 52s ease-in-out both;
+}
+
+.ivshi-caterpillar-body {
+  transform-origin: 34px 0px;
+  animation:
+    ivshi-caterpillar-undulate 0.48s ease-in-out infinite alternate,
+    ivshi-caterpillar-feed 52s ease-in-out both;
+}
+
+/* —— Chrysalis —— */
+.ivshi-chrysalis {
+  opacity: 0;
+  transform-origin: 648px 301px;
+  animation: ivshi-chrysalis-form 52s ease-in-out both;
+}
+
+.ivshi-chrysalis-body {
+  transform-origin: 644px 328px;
+  animation: ivshi-chrysalis-sway 52s ease-in-out both;
+}
+
+.ivshi-chrysalis-shell--jade {
+  animation: ivshi-chrysalis-jade 52s ease-in-out both;
+}
+
+.ivshi-chrysalis-shell--late {
+  animation: ivshi-chrysalis-darken 52s ease-in-out both;
+}
+
+.ivshi-chrysalis-split {
+  transform-origin: 644px 328px;
+  animation: ivshi-chrysalis-open 52s ease-in-out both;
+}
+
+.ivshi-chrysalis-half--l {
+  transform-origin: 644px 328px;
+  animation: ivshi-chrysalis-half-l 52s ease-in-out both;
+}
+
+.ivshi-chrysalis-half--r {
+  transform-origin: 644px 328px;
+  animation: ivshi-chrysalis-half-r 52s ease-in-out both;
+}
+
+.ivshi-crack {
+  stroke-dasharray: 55;
+  stroke-dashoffset: 55;
+  opacity: 0;
+  animation: ivshi-crack-reveal 52s ease-in-out both;
+}
+
+.ivshi-crack--1 { animation-delay: 0s; }
+.ivshi-crack--2 { animation-delay: 0.15s; }
+.ivshi-crack--3 { animation-delay: 0.28s; }
+
+.ivshi-wow-glow {
+  opacity: 0;
+  animation: ivshi-wow-glow 52s ease-in-out both;
+  pointer-events: none;
+}
+
+.ivshi-emerge {
+  opacity: 0;
+  transform-origin: 648px 370px;
+  animation: ivshi-emerge-struggle 52s cubic-bezier(0.4, 0.02, 0.3, 1) both;
+}
+
+.ivshi-emerge-wings {
+  transform-origin: 648px 380px;
+  animation: ivshi-emerge-fold 52s ease-in-out both;
+}
+
+.ivshi-emerge-clip-shape {
+  transform-origin: 648px 368px;
+  animation: ivshi-emerge-window 52s ease-in-out both;
+}
+
+.ivshi-flight {
+  opacity: 0;
+  transform-origin: 0 0;
+  animation: ivshi-flight-path 52s cubic-bezier(0.28, 0.08, 0.22, 1) both;
+}
+
+.ivshi-flight-wings {
+  transform-origin: 0 8%;
+  animation:
+    ivshi-wings-open 52s ease-out both,
+    ivshi-wings-beat 0.55s ease-in-out 41s 16 alternate;
+}
+
+/* —— Narrative —— */
+.ivshi-transform-narrative {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: max(4.75rem, calc(3.5rem + env(safe-area-inset-bottom)));
+  z-index: 3;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+  padding: 0 clamp(1.25rem, 5vw, 3rem);
+  text-align: center;
+}
+
+.ivshi-narrate {
+  grid-area: 1 / 1;
+  margin: 0;
+  max-width: 34rem;
+  font-size: clamp(1.08rem, 2.9vw, 1.5rem);
+  font-weight: 500;
+  letter-spacing: -0.015em;
+  line-height: 1.45;
+  color: rgba(36, 53, 58, 0.9);
+  text-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.55),
+    0 8px 28px rgba(212, 235, 242, 0.85);
+  opacity: 0;
+  animation-name: ivshi-line-fade;
+  animation-timing-function: ease-in-out;
+  animation-fill-mode: both;
+}
+
+/* Read-holds: visual action freezes at major beats while lines dwell */
+.ivshi-narrate--1 { animation-duration: 3.2s; animation-delay: 0.6s; }
+.ivshi-narrate--2 { animation-duration: 3.6s; animation-delay: 4.2s; }
+.ivshi-narrate--3 { animation-duration: 3.2s; animation-delay: 11.4s; }
+.ivshi-narrate--4 { animation-duration: 3.2s; animation-delay: 14.8s; }
+.ivshi-narrate--5 { animation-duration: 2.9s; animation-delay: 18.2s; }
+.ivshi-narrate--6 { animation-duration: 2.9s; animation-delay: 21.2s; }
+.ivshi-narrate--7 { animation-duration: 4.2s; animation-delay: 25.2s; }
+.ivshi-narrate--8 { animation-duration: 3.6s; animation-delay: 32.8s; }
+.ivshi-narrate--9 { animation-duration: 3.2s; animation-delay: 37.8s; }
+.ivshi-narrate--10 { animation-duration: 2.3s; animation-delay: 43s; }
+.ivshi-narrate--11 { animation-duration: 2.3s; animation-delay: 45.4s; }
+.ivshi-narrate--12 { animation-duration: 2.5s; animation-delay: 47.8s; }
+.ivshi-narrate--13 {
+  animation-duration: 1.8s;
+  animation-delay: 50.4s;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: #1a6c76;
+}
+
+.ivshi-transform-skip {
+  position: absolute;
+  top: max(0.75rem, env(safe-area-inset-top));
+  right: max(0.75rem, env(safe-area-inset-right));
+  z-index: 5;
+  min-height: 2.5rem;
+  padding: 0.45rem 0.95rem;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.38);
+  color: rgba(36, 53, 58, 0.78);
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.ivshi-transform-skip:hover,
+.ivshi-transform-skip:focus-visible {
+  background: rgba(255, 255, 255, 0.62);
+  color: #24353a;
+  outline: 2px solid rgba(26, 108, 118, 0.45);
+  outline-offset: 2px;
+}
+
+body[data-ivshi-transform="open"] nav[aria-label="Student"],
+body[data-ivshi-transform="open"] [data-ivshi-ask-fab] {
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+/* ========== Keyframes ========== */
+
+@keyframes ivshi-line-fade {
+  0% { opacity: 0; transform: translateY(10px); }
+  10% { opacity: 1; transform: translateY(0); }
+  82% { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(-6px); }
+}
+
+@keyframes ivshi-transform-enter {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes ivshi-transform-exit {
+  0%, 94% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* Time-lapse during chrysalis hold */
+@keyframes ivshi-sky-timelapse {
+  0%, 46% { filter: saturate(1) brightness(1) hue-rotate(0deg); }
+  50% { filter: saturate(1.08) brightness(1.08) hue-rotate(6deg); }
+  54% { filter: saturate(1.02) brightness(0.88) hue-rotate(-6deg); }
+  58% { filter: saturate(0.88) brightness(0.55) hue-rotate(-20deg); }
+  61% { filter: saturate(0.85) brightness(0.45) hue-rotate(-28deg); }
+  65% { filter: saturate(0.95) brightness(0.82) hue-rotate(-8deg); }
+  72%, 100% { filter: saturate(1.05) brightness(1.05) hue-rotate(0deg); }
+}
+
+@keyframes ivshi-sun-arc {
+  0%, 46% { left: 18%; top: 8%; opacity: 0.7; transform: scale(0.9); }
+  50% { left: 42%; top: 2%; opacity: 0.95; transform: scale(1.05); }
+  54% { left: 64%; top: 8%; opacity: 0.65; transform: scale(0.9); }
+  58% { left: 78%; top: 20%; opacity: 0.2; transform: scale(0.65); }
+  61% { left: 82%; top: 28%; opacity: 0; transform: scale(0.5); }
+  66% { left: 16%; top: 10%; opacity: 0.5; transform: scale(0.85); }
+  100% { left: 26%; top: 5%; opacity: 0.85; transform: scale(1); }
+}
+
+@keyframes ivshi-moon-pass {
+  0%, 54% { left: 70%; top: 14%; opacity: 0; }
+  57% { left: 60%; top: 10%; opacity: 0.45; }
+  60% { left: 48%; top: 8%; opacity: 0.55; }
+  63% { left: 36%; top: 12%; opacity: 0.18; }
+  66%, 100% { left: 28%; top: 16%; opacity: 0; }
+}
+
+@keyframes ivshi-light-beam {
+  0%, 48% { opacity: 0; transform: translateX(-4%); }
+  52% { opacity: 0.65; transform: translateX(0); }
+  58% { opacity: 0.2; transform: translateX(6%); }
+  62% { opacity: 0; transform: translateX(10%); }
+  70% { opacity: 0.45; transform: translateX(-2%); }
+  100% { opacity: 0.3; transform: translateX(0); }
+}
+
+@keyframes ivshi-haze-far {
+  0% { transform: translate3d(0, 0, 0); opacity: 0.7; }
+  54% { transform: translate3d(-3.5%, 1.2%, 0); opacity: 0.28; }
+  100% { transform: translate3d(2%, -1%, 0); opacity: 0.75; }
+}
+
+@keyframes ivshi-haze-near {
+  0% { transform: translate3d(0, 0, 0); opacity: 0.6; }
+  54% { transform: translate3d(2.2%, -1.5%, 0); opacity: 0.25; }
+  100% { transform: translate3d(-1.5%, 1%, 0); opacity: 0.65; }
+}
+
+@keyframes ivshi-parallax-far {
+  0%, 46% { transform: translate3d(0, 0, 0) scale(1); }
+  58% { transform: translate3d(-2%, 1%, 0) scale(1.03); }
+  100% { transform: translate3d(1%, -0.5%, 0) scale(1); }
+}
+
+@keyframes ivshi-parallax-mid {
+  0% { transform: translate3d(0, 0, 0); }
+  54% { transform: translate3d(1.4%, -0.8%, 0); }
+  100% { transform: translate3d(-0.9%, 0.5%, 0); }
+}
+
+@keyframes ivshi-plant-sway-a {
+  0%, 46% { transform: rotate(-0.6deg); }
+  54% { transform: rotate(2.8deg); }
+  62% { transform: rotate(-2.2deg); }
+  100% { transform: rotate(0.4deg); }
+}
+
+@keyframes ivshi-plant-sway-b {
+  0%, 46% { transform: rotate(0.6deg); }
+  54% { transform: rotate(-2.4deg); }
+  62% { transform: rotate(1.8deg); }
+  100% { transform: rotate(-0.4deg); }
+}
+
+@keyframes ivshi-leaf-breathe {
+  0%, 46% { transform: rotate(0) translateY(0); }
+  54% { transform: rotate(1deg) translateY(2px); }
+  62% { transform: rotate(-1.5deg) translateY(3px); }
+  100% { transform: rotate(0) translateY(0); }
+}
+
+@keyframes ivshi-leaf-drift-a {
+  0%, 46% { transform: rotate(0); }
+  54% { transform: rotate(-2.5deg); }
+  68% { transform: rotate(1.8deg); }
+  100% { transform: rotate(0); }
+}
+
+@keyframes ivshi-leaf-drift-b {
+  0%, 46% { transform: rotate(0); }
+  54% { transform: rotate(2deg); }
+  68% { transform: rotate(-1.2deg); }
+  100% { transform: rotate(0); }
+}
+
+@keyframes ivshi-fg-drift {
+  0%, 78% { transform: rotate(0) translateY(0); opacity: 0.45; }
+  86% { transform: rotate(-2deg) translateY(-4px); opacity: 0.65; }
+  100% { transform: rotate(1deg) translateY(0); opacity: 0.5; }
+}
+
+@keyframes ivshi-shadow-shift {
+  0%, 46% { transform: translateX(0); opacity: 0.9; }
+  54% { transform: translateX(30px); opacity: 0.4; }
+  60% { transform: translateX(42px); opacity: 0.18; }
+  70% { transform: translateX(-4px); opacity: 0.78; }
+  100% { transform: translateX(0); opacity: 0.85; }
+}
+
+/*
+  Story timeline (% of 52s):
+  0–8% intro hold · 8–22% explore/eat · 22–32% grow/stronger holds
+  32–44% climb + rest hold · 44%+ chrysalis
+*/
+@keyframes ivshi-caterpillar-journey {
+  0% {
+    opacity: 0;
+    transform: translate(155px, 422px) scale(0.7) rotate(-8deg);
+  }
+  1.5% {
+    opacity: 1;
+    transform: translate(175px, 408px) scale(0.7) rotate(-2deg);
+  }
+  /* HOLD — Every learner starts somewhere */
+  2%, 7.5% {
+    opacity: 1;
+    transform: translate(180px, 405px) scale(0.7) rotate(0deg);
+  }
+  8.5% {
+    transform: translate(320px, 350px) scale(0.72) rotate(4deg);
+  }
+  9% {
+    transform: translate(460px, 318px) scale(0.72) rotate(-6deg);
+  }
+  9.5%, 11.5% {
+    transform: translate(472px, 314px) scale(0.72) rotate(11deg);
+  }
+  12.2% {
+    transform: translate(430px, 308px) scale(0.82) rotate(2deg);
+  }
+  13% {
+    transform: translate(400px, 305px) scale(0.86) rotate(-4deg);
+  }
+  13.5%, 15.5% {
+    transform: translate(410px, 300px) scale(0.86) rotate(11deg);
+  }
+  16.2% {
+    transform: translate(370px, 302px) scale(0.96) rotate(2deg);
+  }
+  17% {
+    transform: translate(340px, 300px) scale(1) rotate(-3deg);
+  }
+  17.5%, 19.5% {
+    transform: translate(350px, 296px) scale(1) rotate(11deg);
+  }
+  20.5% {
+    transform: translate(380px, 300px) scale(1.08) rotate(0deg);
+  }
+  /* HOLD — grow / knowledge */
+  21.5%, 27% {
+    transform: translate(390px, 298px) scale(1.1) rotate(2deg);
+  }
+  28%, 31% {
+    transform: translate(400px, 296px) scale(1.14) rotate(-2deg);
+  }
+  33% {
+    transform: translate(520px, 310px) scale(1.14) rotate(-12deg);
+  }
+  36% {
+    transform: translate(600px, 315px) scale(1.14) rotate(-28deg);
+  }
+  /* HOLD — rest / think */
+  38%, 43% {
+    opacity: 1;
+    transform: translate(618px, 312px) scale(1.14) rotate(-34deg);
+  }
+  45% {
+    opacity: 0.35;
+    transform: translate(636px, 304px) scale(0.9) rotate(-50deg);
+  }
+  47%,
+  100% {
+    opacity: 0;
+    transform: translate(644px, 300px) scale(0.65) rotate(-58deg);
+  }
+}
+
+@keyframes ivshi-caterpillar-grow {
+  0%, 9% { transform: scale(0.72); }
+  12% { transform: scale(0.86); }
+  16% { transform: scale(0.9); }
+  20% { transform: scale(1.02); }
+  22%, 27% { transform: scale(1.1); }
+  29%, 100% { transform: scale(1.2); }
+}
+
+@keyframes ivshi-caterpillar-undulate {
+  from { transform: translateY(0) scaleX(1); }
+  to { transform: translateY(1.6px) scaleX(1.04); }
+}
+
+@keyframes ivshi-caterpillar-feed {
+  0%, 9% { transform: rotate(0); }
+  9.5%, 11.2% { transform: rotate(9deg) translate(2px, 3px); }
+  12% { transform: rotate(0); }
+  13.5%, 15.2% { transform: rotate(9deg) translate(2px, 3px); }
+  16% { transform: rotate(0); }
+  17.5%, 19.2% { transform: rotate(9deg) translate(2px, 3px); }
+  20%, 100% { transform: rotate(0); }
+}
+
+@keyframes ivshi-crumb-1 {
+  0%, 9% { opacity: 0; transform: translate(0, 0) scale(0.4); }
+  10.5% { opacity: 0.55; transform: translate(4px, 6px) scale(1); }
+  12.5% { opacity: 0; transform: translate(8px, 14px) scale(0.6); }
+  100% { opacity: 0; }
+}
+@keyframes ivshi-crumb-2 {
+  0%, 13.5% { opacity: 0; transform: translate(0, 0) scale(0.4); }
+  15% { opacity: 0.5; transform: translate(-3px, 5px) scale(1); }
+  17% { opacity: 0; transform: translate(-6px, 12px) scale(0.6); }
+  100% { opacity: 0; }
+}
+@keyframes ivshi-crumb-3 {
+  0%, 17.5% { opacity: 0; transform: translate(0, 0) scale(0.4); }
+  19% { opacity: 0.45; transform: translate(2px, 5px) scale(1); }
+  21% { opacity: 0; transform: translate(5px, 12px) scale(0.6); }
+  100% { opacity: 0; }
+}
+
+@keyframes ivshi-chrysalis-form {
+  0%, 44% { opacity: 0; transform: scale(0.08); }
+  46% { opacity: 0.55; transform: scale(0.55); }
+  48% { opacity: 1; transform: scale(1.04); }
+  50% { transform: scale(1); }
+  61% { opacity: 1; transform: scale(1); }
+  66% { opacity: 0.3; }
+  70%, 100% { opacity: 0; transform: scale(1); }
+}
+
+@keyframes ivshi-chrysalis-sway {
+  0%, 48% { transform: rotate(0); }
+  52% { transform: rotate(2.2deg); }
+  56% { transform: rotate(-2.8deg); }
+  60% { transform: rotate(1.5deg); }
+  100% { transform: rotate(0); }
+}
+
+@keyframes ivshi-chrysalis-jade {
+  0%, 52% { opacity: 1; }
+  58% { opacity: 0.3; }
+  62%, 100% { opacity: 0; }
+}
+
+@keyframes ivshi-chrysalis-darken {
+  0%, 52% { opacity: 0; }
+  56% { opacity: 0.7; }
+  60% { opacity: 1; }
+  65% { opacity: 0.25; }
+  70%, 100% { opacity: 0; }
+}
+
+@keyframes ivshi-chrysalis-open {
+  0%, 62% { opacity: 0; }
+  64% { opacity: 1; }
+  72% { opacity: 0.4; }
+  76%, 100% { opacity: 0; }
+}
+
+@keyframes ivshi-chrysalis-half-l {
+  0%, 62% { transform: rotate(0); }
+  66% { transform: rotate(-18deg) translate(-4px, 3px); }
+  72% { transform: rotate(-34deg) translate(-14px, 12px); }
+  100% { transform: rotate(-38deg) translate(-16px, 16px); }
+}
+
+@keyframes ivshi-chrysalis-half-r {
+  0%, 62% { transform: rotate(0); }
+  66% { transform: rotate(16deg) translate(4px, 3px); }
+  72% { transform: rotate(32deg) translate(14px, 12px); }
+  100% { transform: rotate(36deg) translate(16px, 16px); }
+}
+
+@keyframes ivshi-crack-reveal {
+  0%, 60% { opacity: 0; stroke-dashoffset: 55; }
+  63% { opacity: 1; stroke-dashoffset: 0; }
+  70% { opacity: 0.3; }
+  74%, 100% { opacity: 0; }
+}
+
+@keyframes ivshi-emerge-struggle {
+  0%, 62% {
+    opacity: 0;
+    transform: translate(0, 22px) scale(0.22) rotate(-6deg);
+  }
+  63.5% {
+    opacity: 0.75;
+    transform: translate(0, 18px) scale(0.28) rotate(4deg);
+  }
+  65% {
+    opacity: 1;
+    transform: translate(-5px, 12px) scale(0.34) rotate(-8deg);
+  }
+  66.5% {
+    transform: translate(5px, 8px) scale(0.42) rotate(7deg);
+  }
+  68% {
+    transform: translate(-4px, 4px) scale(0.52) rotate(-5deg);
+  }
+  69.5% {
+    transform: translate(3px, -2px) scale(0.64) rotate(4deg);
+  }
+  71% {
+    transform: translate(-2px, -10px) scale(0.78) rotate(-2deg);
+  }
+  72.5% {
+    transform: translate(1px, -18px) scale(0.9) rotate(1deg);
+  }
+  /* HOLD — wow reveal */
+  74%, 77% {
+    opacity: 1;
+    transform: translate(0, -24px) scale(1) rotate(0);
+  }
+  79% {
+    opacity: 0;
+    transform: translate(0, -28px) scale(1.05) rotate(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(0, -28px) scale(1.05);
+  }
+}
+
+@keyframes ivshi-emerge-fold {
+  0%, 62% { transform: scaleX(0.18) scaleY(0.86); }
+  68% { transform: scaleX(0.32) scaleY(0.92); }
+  72% { transform: scaleX(0.5) scaleY(1); }
+  75% { transform: scaleX(0.72) scaleY(1); }
+  100% { transform: scaleX(0.85) scaleY(1); }
+}
+
+@keyframes ivshi-emerge-window {
+  0%, 62% { transform: scale(0.18) translateY(12px); }
+  66% { transform: scale(0.48) translateY(4px); }
+  71% { transform: scale(1.05) translateY(-10px); }
+  76% { transform: scale(1.7) translateY(-20px); }
+  100% { transform: scale(2) translateY(-24px); }
+}
+
+@keyframes ivshi-wings-open {
+  0%, 72% { transform: scaleX(0.16) scaleY(0.92); }
+  75% { transform: scaleX(0.5) scaleY(1); }
+  77% { transform: scaleX(1.06) scaleY(1.03); }
+  78.5% { transform: scaleX(0.96) scaleY(1); }
+  80%, 100% { transform: scaleX(1) scaleY(1); }
+}
+
+@keyframes ivshi-wings-beat {
+  from { transform: scaleX(1) scaleY(1) rotate(0); }
+  to { transform: scaleX(0.92) scaleY(1.04) rotate(-2deg); }
+}
+
+@keyframes ivshi-wow-glow {
+  0%, 72% { opacity: 0; transform: scale(0.6); }
+  74% { opacity: 0.55; transform: scale(1); }
+  77% { opacity: 0.35; transform: scale(1.15); }
+  80%, 100% { opacity: 0; transform: scale(1.3); }
+}
+
+@keyframes ivshi-flight-path {
+  0%, 77% {
+    opacity: 0;
+    transform: translate(648px, 320px) scale(0.7) rotate(-10deg);
+  }
+  79% {
+    opacity: 1;
+    transform: translate(648px, 280px) scale(0.9) rotate(-3deg);
+  }
+  82% {
+    transform: translate(560px, 180px) scale(1.1) rotate(6deg);
+  }
+  86% {
+    transform: translate(380px, 110px) scale(1.15) rotate(-12deg);
+  }
+  90% {
+    transform: translate(200px, 90px) scale(1.05) rotate(10deg);
+  }
+  94% {
+    opacity: 0.9;
+    transform: translate(40px, 120px) scale(0.9) rotate(-6deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-120px, 80px) scale(0.65) rotate(4deg);
+  }
+}
+
+/* —— Reduced motion —— */
+.ivshi-transform--reduced {
+  animation: ivshi-transform-enter 0.4s ease-out both !important;
+}
+
+.ivshi-transform--reduced .ivshi-caterpillar-body,
+.ivshi-transform--reduced .ivshi-plant--1,
+.ivshi-transform--reduced .ivshi-plant--2,
+.ivshi-transform--reduced .ivshi-plant--3,
+.ivshi-transform--reduced .ivshi-flight-wings {
+  animation: none !important;
+}
+
+.ivshi-transform--reduced .ivshi-transform-sky,
+.ivshi-transform--reduced .ivshi-transform-sun,
+.ivshi-transform--reduced .ivshi-transform-moon,
+.ivshi-transform--reduced .ivshi-transform-light-beam,
+.ivshi-transform--reduced .ivshi-transform-haze,
+.ivshi-transform--reduced .ivshi-layer-far,
+.ivshi-transform--reduced .ivshi-layer-mid,
+.ivshi-transform--reduced .ivshi-main-leaf,
+.ivshi-transform--reduced .ivshi-side-leaf--1,
+.ivshi-transform--reduced .ivshi-side-leaf--2,
+.ivshi-transform--reduced .ivshi-leaf-shadow,
+.ivshi-transform--reduced .ivshi-fg-leaf,
+.ivshi-transform--reduced .ivshi-caterpillar,
+.ivshi-transform--reduced .ivshi-caterpillar-grow,
+.ivshi-transform--reduced .ivshi-chew-crumb--1,
+.ivshi-transform--reduced .ivshi-chew-crumb--2,
+.ivshi-transform--reduced .ivshi-chew-crumb--3,
+.ivshi-transform--reduced .ivshi-chrysalis,
+.ivshi-transform--reduced .ivshi-chrysalis-body,
+.ivshi-transform--reduced .ivshi-chrysalis-shell--jade,
+.ivshi-transform--reduced .ivshi-chrysalis-shell--late,
+.ivshi-transform--reduced .ivshi-chrysalis-split,
+.ivshi-transform--reduced .ivshi-chrysalis-half--l,
+.ivshi-transform--reduced .ivshi-chrysalis-half--r,
+.ivshi-transform--reduced .ivshi-crack,
+.ivshi-transform--reduced .ivshi-wow-glow,
+.ivshi-transform--reduced .ivshi-emerge,
+.ivshi-transform--reduced .ivshi-emerge-wings,
+.ivshi-transform--reduced .ivshi-emerge-clip-shape,
+.ivshi-transform--reduced .ivshi-flight,
+.ivshi-transform--reduced .ivshi-narrate {
+  animation: none !important;
+}
+
+.ivshi-transform--reduced .ivshi-chrysalis,
+.ivshi-transform--reduced .ivshi-emerge,
+.ivshi-transform--reduced .ivshi-flight,
+.ivshi-transform--reduced .ivshi-wow-glow,
+.ivshi-transform--reduced .ivshi-chew-crumb--1,
+.ivshi-transform--reduced .ivshi-chew-crumb--2,
+.ivshi-transform--reduced .ivshi-chew-crumb--3,
+.ivshi-transform--reduced .ivshi-narrate {
+  opacity: 0;
+}
+
+.ivshi-transform--reduced .ivshi-caterpillar {
+  opacity: 1;
+  transform: translate(280px, 380px) scale(1);
+}
+
+.ivshi-transform--reduced .ivshi-caterpillar-grow {
+  transform: scale(0.9);
+}
+
+.ivshi-transform--reduced .ivshi-transform-sun {
+  left: 40%;
+  top: 6%;
+  opacity: 0.7;
+}
+
+.ivshi-transform--reduced[data-reduced-step="0"] .ivshi-narrate--1 {
+  opacity: 1;
+}
+
+.ivshi-transform--reduced[data-reduced-step="1"] .ivshi-caterpillar {
+  opacity: 0;
+}
+
+.ivshi-transform--reduced[data-reduced-step="1"] .ivshi-chrysalis {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.ivshi-transform--reduced[data-reduced-step="1"] .ivshi-chrysalis-shell--jade {
+  opacity: 1;
+}
+
+.ivshi-transform--reduced[data-reduced-step="1"] .ivshi-narrate--7 {
+  opacity: 1;
+}
+
+.ivshi-transform--reduced[data-reduced-step="2"] .ivshi-caterpillar,
+.ivshi-transform--reduced[data-reduced-step="2"] .ivshi-chrysalis {
+  opacity: 0;
+}
+
+.ivshi-transform--reduced[data-reduced-step="2"] .ivshi-flight {
+  opacity: 1;
+  transform: translate(520px, 220px) scale(1.08);
+}
+
+.ivshi-transform--reduced[data-reduced-step="2"] .ivshi-narrate--9 {
+  opacity: 1;
+}
+
+.ivshi-transform--reduced[data-reduced-step="3"] .ivshi-caterpillar,
+.ivshi-transform--reduced[data-reduced-step="3"] .ivshi-chrysalis {
+  opacity: 0;
+}
+
+.ivshi-transform--reduced[data-reduced-step="3"] .ivshi-flight {
+  opacity: 1;
+  transform: translate(340px, 150px) scale(1.15);
+}
+
+.ivshi-transform--reduced[data-reduced-step="3"] .ivshi-narrate--13 {
+  opacity: 1;
+}

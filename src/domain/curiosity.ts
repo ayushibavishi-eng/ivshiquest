@@ -1,4 +1,5 @@
 import type { Grade, Subject } from "./types";
+import type { CurriculumId } from "./curriculum-identity";
 
 export const CURIOSITY_CATEGORIES = [
   "science-nature",
@@ -162,6 +163,8 @@ export type DiscoveryDifficulty = "early" | "core" | "stretch";
 export type DiscoveryLearnerContext = {
   learnerId: string;
   grade: Grade;
+  /** Defaults to India in selectors when omitted. */
+  curriculumId?: CurriculumId;
   completedDiscoveryIds: readonly string[];
   recentDiscoveryIds?: readonly string[];
   recentCategoryIds?: readonly string[];

@@ -23,8 +23,8 @@ export function GrowPhase({
           </p>
           <p className="mt-1 text-[1.35rem] font-semibold leading-snug text-ink">
             {mastered
-              ? `${title} has blossomed on your Knowledge Tree.`
-              : `${title} is still growing on your Knowledge Tree.`}
+              ? `${title} has blossomed on your Learning Journey.`
+              : `${title} is still growing on your Learning Journey.`}
           </p>
           <p className="mt-2 text-sm leading-6 text-ink-muted">
             {mastered
@@ -39,7 +39,7 @@ export function GrowPhase({
         size="inline"
         className="self-start"
       >
-        See it on the Knowledge Tree
+        See it on My Learning Journey
       </ButtonLink>
     </div>
   );

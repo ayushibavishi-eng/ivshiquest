@@ -37,7 +37,7 @@ export {
   hashString,
   subjectForCuriosityCategory,
 } from "./curiosity";
-export { discoveriesForGrade, selectTodaysDiscovery } from "./curiosity-select";
+export { discoveriesForGrade, discoveryAppliesToCurriculum, selectTodaysDiscovery } from "./curiosity-select";
 export { selectTodaysDiscovery as getTodaysDiscovery } from "./curiosity-select";
 export type {
   ConceptStatus,
@@ -113,8 +113,10 @@ export {
 } from "./companion-feedback";
 export type {
   CurriculumConcept,
+  CurriculumCountry,
   CurriculumExperience,
   CurriculumGrade,
+  CurriculumId,
   CurriculumNcertRef,
   CurriculumNode,
   CurriculumProgressState,
@@ -126,12 +128,21 @@ export type {
   NcertSourceStatus,
 } from "./curriculum";
 export {
+  CURRICULUM_COUNTRIES,
   CURRICULUM_GRADES,
+  CURRICULUM_IDS,
+  CURRICULUM_META,
   CURRICULUM_NODE_KINDS,
+  DEFAULT_CURRICULUM_ID,
   LEARNING_EXPERIENCE_PHASE_LABELS,
   LEARNING_EXPERIENCE_PHASES,
   NCERT_SOURCE_STATUSES,
+  curriculumCountry,
+  curriculumLabel,
   isCurriculumGrade,
+  isCurriculumId,
+  parseCurriculumId,
+  resolveCurriculumId,
 } from "./curriculum";
 export type {
   CompleteLessonDefinition,
@@ -171,6 +182,20 @@ export {
   writeAnswerSucceeds,
   writeQuestionPlaceholder,
 } from "./complete-lesson";
+export type {
+  LessonVideoAccessibility,
+  LessonVideoExplanation,
+  LessonVideoPlayback,
+  LessonVideoProvider,
+  LessonVideoReflection,
+  LessonVideoSource,
+  LessonVideoSourceKind,
+} from "./lesson-video";
+export {
+  formatLessonVideoDuration,
+  lessonHasVideoExplanation,
+  resolveLessonVideoPlayback,
+} from "./lesson-video";
 export type {
   KnowledgeTreeCluster,
   KnowledgeTreeConceptNode,

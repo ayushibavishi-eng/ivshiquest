@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { IvshiCompanion, IvshiMark } from "@/components/companion";
 import { useIvshiPresence } from "@/components/ivshi/ivshi-presence";
 import { Button, ButtonLink } from "@/components/ui/button";
@@ -31,6 +31,9 @@ import {
   raiseCurriculumProgress,
   writeActiveCurriculumTopic,
 } from "@/services/curriculum";
+import { getActiveLearnerId } from "@/services/student/active-learner";
+import { readLearnerCurriculumId } from "@/services/student/learner-profile";
+import { isCurriculumGrade } from "@/domain/curriculum";
 
 const PHASES: LearningExperiencePhase[] = [
   "wonder",
@@ -57,6 +60,18 @@ export function ConceptJourney({
   grade,
   nextConcept,
 }: ConceptJourneyProps) {
+  const progressScope = useMemo(
+    () =>
+      isCurriculumGrade(grade)
+        ? {
+            learnerId: getActiveLearnerId(),
+            grade,
+            subject: concept.subjectId,
+            curriculumId: readLearnerCurriculumId(),
+          }
+        : null,
+    [concept.subjectId, grade],
+  );
   const [phaseIndex, setPhaseIndex] = useState(0);
   const [practiceIndex, setPracticeIndex] = useState(0);
   const [selectedId, setSelectedId] = useState<string | null>(null);
@@ -77,17 +92,26 @@ export function ConceptJourney({
     .toUpperCase();
 
   useEffect(() => {
-    writeActiveCurriculumTopic(concept.id);
-    raiseCurriculumProgress(concept.id, "started");
-  }, [concept.id]);
+    if (!progressScope) {
+      return;
+    }
+    writeActiveCurriculumTopic(concept.id, {
+      learnerId: progressScope.learnerId,
+      grade: progressScope.grade,
+    });
+    raiseCurriculumProgress(concept.id, "started", progressScope);
+  }, [concept.id, progressScope]);
 
   function goNext() {
+    if (!progressScope) {
+      return;
+    }
     if (phase === "practice") {
-      raiseCurriculumProgress(concept.id, "practiced");
+      raiseCurriculumProgress(concept.id, "practiced", progressScope);
     }
 
     if (phase === "mastery") {
-      raiseCurriculumProgress(concept.id, "mastered");
+      raiseCurriculumProgress(concept.id, "mastered", progressScope);
       setFinished(true);
       return;
     }
@@ -99,15 +123,15 @@ export function ConceptJourney({
   }
 
   function checkQuestion(question: CurriculumQuestion) {
-    if (!selectedId) {
+    if (!selectedId || !progressScope) {
       return;
     }
     setChecked(true);
     if (phase === "practice") {
-      raiseCurriculumProgress(concept.id, "practiced");
+      raiseCurriculumProgress(concept.id, "practiced", progressScope);
     }
     if (phase === "mastery" && selectedId === question.correctChoiceId) {
-      raiseCurriculumProgress(concept.id, "mastered");
+      raiseCurriculumProgress(concept.id, "mastered", progressScope);
     }
   }
 

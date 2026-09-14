@@ -238,7 +238,9 @@ describe("Grade 4 Maths Mela lesson batch", () => {
       assert.equal(hosted.conceptId, row.hostConceptId);
       assert.equal(hosted.title, host.title);
       assert.ok(hosted.coveredSkillIds.includes(row.id));
-      assert.equal(getCompleteLesson(row.id, 5), undefined);
+      if (!concept.grades.includes(5)) {
+        assert.equal(getCompleteLesson(row.id, 5), undefined);
+      }
     }
   });
 

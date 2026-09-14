@@ -5,6 +5,7 @@ import type {
   CurriculumSkill,
   CurriculumWorld,
 } from "@/domain/curriculum";
+import { DEFAULT_CURRICULUM_ID } from "@/domain/curriculum";
 
 const GRADES: CurriculumGrade[] = [4, 5, 6];
 
@@ -916,6 +917,7 @@ export const WEATHER_WORLD: CurriculumWorld = {
   parentId: null,
   grades: GRADES,
   kind: "world",
+  curriculumId: DEFAULT_CURRICULUM_ID,
   category: "Earth & Sky",
   hook: "Something is always happening above you.",
   path: WEATHER_CONCEPTS.map((item) => item.id),

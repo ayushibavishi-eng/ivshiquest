@@ -17,6 +17,9 @@ import {
   subscribeCurriculumProgress,
   writeActiveCurriculumTopic,
 } from "@/services/curriculum";
+import { getActiveLearnerId } from "@/services/student/active-learner";
+import { readLearnerCurriculumId } from "@/services/student/learner-profile";
+import { isCurriculumGrade } from "@/domain/curriculum";
 
 type LearningWorldScreenProps = {
   world: CurriculumWorld;
@@ -28,9 +31,18 @@ function getEmptyProgress() {
 }
 
 export function LearningWorldScreen({ world, grade }: LearningWorldScreenProps) {
+  const learnerId = getActiveLearnerId();
   const progress = useSyncExternalStore(
     subscribeCurriculumProgress,
-    getAllCurriculumProgress,
+    () =>
+      isCurriculumGrade(grade)
+        ? getAllCurriculumProgress({
+            learnerId,
+            grade,
+            subject: world.subjectId,
+            curriculumId: readLearnerCurriculumId(),
+          })
+        : EMPTY_CURRICULUM_PROGRESS,
     getEmptyProgress,
   );
 
@@ -50,8 +62,14 @@ export function LearningWorldScreen({ world, grade }: LearningWorldScreenProps) 
   const firstHref = topics[0]?.id ?? directConcepts[0]?.id;
 
   useEffect(() => {
-    writeActiveCurriculumTopic(world.id);
-  }, [world.id]);
+    if (!isCurriculumGrade(grade)) {
+      return;
+    }
+    writeActiveCurriculumTopic(world.id, {
+      learnerId,
+      grade,
+    });
+  }, [world.id, grade, learnerId]);
 
   return (
     <WorldJourney
@@ -82,9 +100,18 @@ export function TopicJourneyScreen({
   worldId,
   grade,
 }: TopicJourneyScreenProps) {
+  const learnerId = getActiveLearnerId();
   const progress = useSyncExternalStore(
     subscribeCurriculumProgress,
-    getAllCurriculumProgress,
+    () =>
+      isCurriculumGrade(grade)
+        ? getAllCurriculumProgress({
+            learnerId,
+            grade,
+            subject: topic.subjectId,
+            curriculumId: readLearnerCurriculumId(),
+          })
+        : EMPTY_CURRICULUM_PROGRESS,
     getEmptyProgress,
   );
 
@@ -94,8 +121,14 @@ export function TopicJourneyScreen({
   );
 
   useEffect(() => {
-    writeActiveCurriculumTopic(topic.id);
-  }, [topic.id]);
+    if (!isCurriculumGrade(grade)) {
+      return;
+    }
+    writeActiveCurriculumTopic(topic.id, {
+      learnerId,
+      grade,
+    });
+  }, [topic.id, grade, learnerId]);
 
   return (
     <WorldJourney

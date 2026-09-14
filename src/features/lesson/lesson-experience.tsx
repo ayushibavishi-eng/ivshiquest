@@ -19,6 +19,7 @@ import {
   openResponseAllowsContinue,
   writeAnswerSucceeds,
 } from "@/domain/complete-lesson";
+import { lessonHasVideoExplanation } from "@/domain/lesson-video";
 import { OpenResponseNote } from "@/features/lesson/open-response-note";
 import { ExplorePhase } from "@/features/lesson/phases/explore-phase";
 import { GrowPhase } from "@/features/lesson/phases/grow-phase";
@@ -36,15 +37,24 @@ import {
   subscribeCurriculumProgress,
   writeActiveCurriculumTopic,
 } from "@/services/curriculum";
-import { writeActiveLesson } from "@/services/lessons";
+import {
+  writeActiveLesson,
+} from "@/services/lessons";
+import { getActiveLearnerId } from "@/services/student/active-learner";
+import { readLearnerCurriculumId } from "@/services/student/learner-profile";
 
 function raiseLessonFamilyProgress(
   lesson: ResolvedCompleteLesson,
   state: "started" | "practiced" | "mastered",
 ) {
-  raiseCurriculumProgress(lesson.conceptId, state);
+  const scope = {
+    learnerId: getActiveLearnerId(),
+    grade: lesson.grade,
+    subject: lesson.subject,
+  };
+  raiseCurriculumProgress(lesson.conceptId, state, scope);
   for (const skillId of lesson.coveredSkillIds) {
-    raiseCurriculumProgress(skillId, state);
+    raiseCurriculumProgress(skillId, state, scope);
   }
 }
 
@@ -53,6 +63,8 @@ type LessonExperienceProps = {
   worldTitle: string;
   worldId: string;
   nextConcept?: { id: string; title: string };
+  /** Restored phase from the active-lesson cookie (server-read on refresh). */
+  initialPhaseIndex?: number;
 };
 
 function questionIsCorrect(
@@ -71,8 +83,23 @@ export function LessonExperience({
   worldTitle,
   worldId,
   nextConcept,
+  initialPhaseIndex = 0,
 }: LessonExperienceProps) {
-  const [phaseIndex, setPhaseIndex] = useState(0);
+  const progressScope = useMemo(
+    () => ({
+      learnerId: getActiveLearnerId(),
+      grade: lesson.grade,
+      subject: lesson.subject,
+      curriculumId: readLearnerCurriculumId(),
+    }),
+    [lesson.grade, lesson.subject],
+  );
+  const [phaseIndex, setPhaseIndex] = useState(() =>
+    Math.max(
+      0,
+      Math.min(initialPhaseIndex, COMPLETE_LESSON_PHASES.length - 1),
+    ),
+  );
   const [itemIndex, setItemIndex] = useState(0);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [checked, setChecked] = useState(false);
@@ -80,6 +107,7 @@ export function LessonExperience({
   const [exploreId, setExploreId] = useState<string | null>(null);
   const [tryRevealed, setTryRevealed] = useState(false);
   const [writeValue, setWriteValue] = useState("");
+  const [videoReflectionValue, setVideoReflectionValue] = useState("");
   const [finished, setFinished] = useState(false);
   const [teachEvaluation, setTeachEvaluation] =
     useState<OpenResponseEvaluation | null>(null);
@@ -99,6 +127,12 @@ export function LessonExperience({
     .slice(0, 2)
     .toUpperCase();
 
+  const hasUnderstandVideo = lessonHasVideoExplanation(content.understand);
+  const videoReflectionEvaluation = evaluateOpenResponse(
+    videoReflectionValue,
+    content.understand.video?.reflection.keyIdeas ?? [],
+  );
+
   const promptKeyIdeas =
     phase === "reflect"
       ? content.reflect.keyIdeas
@@ -108,24 +142,35 @@ export function LessonExperience({
   const promptEvaluation = evaluateOpenResponse(writeValue, promptKeyIdeas);
   const progressState = useSyncExternalStore(
     subscribeCurriculumProgress,
-    () => getCurriculumProgress(lesson.conceptId),
+    () => getCurriculumProgress(lesson.conceptId, progressScope),
     () => "unvisited",
   );
 
   useEffect(() => {
-    writeActiveCurriculumTopic(lesson.conceptId);
+    writeActiveCurriculumTopic(lesson.conceptId, {
+      learnerId: progressScope.learnerId,
+      grade: lesson.grade,
+    });
     raiseLessonFamilyProgress(lesson, "started");
-  }, [lesson]);
+  }, [lesson, progressScope.learnerId]);
 
   useEffect(() => {
     writeActiveLesson({
+      learnerId: progressScope.learnerId,
       conceptId: lesson.conceptId,
       lessonId: lesson.lessonId,
       grade: lesson.grade,
       subject: lesson.subject,
       stage: phase,
     });
-  }, [lesson.conceptId, lesson.grade, lesson.lessonId, lesson.subject, phase]);
+  }, [
+    lesson.conceptId,
+    lesson.grade,
+    lesson.lessonId,
+    lesson.subject,
+    phase,
+    progressScope.learnerId,
+  ]);
 
   const canContinue = useMemo(() => {
     if (phase === "explore") {
@@ -133,6 +178,9 @@ export function LessonExperience({
         return Boolean(exploreId);
       }
       return Boolean(exploreId) && tryRevealed;
+    }
+    if (phase === "understand" && hasUnderstandVideo) {
+      return openResponseAllowsContinue(videoReflectionEvaluation);
     }
     if (phase === "practice" || phase === "reasoning" || phase === "retrieve" || phase === "mastery") {
       return checked;
@@ -145,9 +193,11 @@ export function LessonExperience({
     checked,
     exploreId,
     hasExploreInvestigation,
+    hasUnderstandVideo,
     phase,
     promptEvaluation,
     tryRevealed,
+    videoReflectionEvaluation,
   ]);
 
   function resetQuestionState() {
@@ -155,6 +205,10 @@ export function LessonExperience({
     setChecked(false);
     setHintOpen(false);
     setWriteValue("");
+  }
+
+  function resetUnderstandVideoState() {
+    setVideoReflectionValue("");
   }
 
   function goNext() {
@@ -190,6 +244,7 @@ export function LessonExperience({
     }
 
     resetQuestionState();
+    resetUnderstandVideoState();
     setTryRevealed(false);
     setExploreId(null);
     setItemIndex(0);
@@ -343,11 +398,11 @@ export function LessonExperience({
               </ButtonLink>
             ) : (
               <ButtonLink href={ROUTES.student.tree}>
-                Back to the Knowledge Tree
+                Back to My Learning Journey
               </ButtonLink>
             )}
             <ButtonLink href={ROUTES.student.tree} variant="quiet" size="inline">
-              See it on the Knowledge Tree
+              See it on My Learning Journey
             </ButtonLink>
             <ButtonLink
               href={studentLearnTopicHref(worldId)}
@@ -388,12 +443,17 @@ export function LessonExperience({
               paragraphs={content.understand.paragraphs}
               examples={content.examples}
               connection={content.connection}
+              video={content.understand.video}
+              grade={lesson.grade}
+              videoReflectionValue={videoReflectionValue}
+              videoReflectionEvaluation={videoReflectionEvaluation}
+              onVideoReflectionChange={setVideoReflectionValue}
             />
           ) : null}
           {phase === "grow" ? (
             <GrowPhase
               title={lesson.title}
-              progress={getCurriculumProgress(lesson.conceptId)}
+              progress={getCurriculumProgress(lesson.conceptId, progressScope)}
             />
           ) : null}
           {question && questionPhase ? (
@@ -483,9 +543,14 @@ export function LessonExperience({
             {phase === "explore" && canContinue ? (
               <Button onClick={goNext}>Continue</Button>
             ) : null}
-            {phase === "wonder" || phase === "understand" || phase === "grow" ? (
+            {phase === "wonder" || phase === "grow" ? (
               <Button onClick={goNext}>
                 {phase === "grow" ? "Teach this idea" : "Continue"}
+              </Button>
+            ) : null}
+            {phase === "understand" ? (
+              <Button onClick={goNext} disabled={!canContinue}>
+                Continue
               </Button>
             ) : null}
             {phase === "reflect" || phase === "teach" ? (
@@ -504,7 +569,7 @@ export function LessonExperience({
           size="inline"
           className="self-start"
         >
-          Back to the Knowledge Tree
+          Back to My Learning Journey
         </ButtonLink>
         <ButtonLink
           href={studentLearnTopicHref(worldId)}

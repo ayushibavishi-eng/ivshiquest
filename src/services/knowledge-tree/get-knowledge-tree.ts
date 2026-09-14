@@ -1,4 +1,5 @@
 import { getCompleteLesson } from "@/content/lessons";
+import { getGrammarSiblingCatalogueIds } from "@/content/grammar";
 import {
   addUniqueEdge,
   type KnowledgeTreeCluster,
@@ -8,6 +9,11 @@ import {
   type KnowledgeTreeGraph,
 } from "@/domain/knowledge-tree";
 import type { Subject } from "@/domain/types";
+import {
+  DEFAULT_CURRICULUM_ID,
+  isCurriculumGrade,
+  type CurriculumId,
+} from "@/domain/curriculum";
 import {
   filterTopicsForGrade,
   getCurriculumWorldsForSubject,
@@ -21,8 +27,9 @@ function uniqueIds(ids: string[]) {
 export function getKnowledgeTreeGraph(
   subject: Subject,
   grade: number,
+  curriculumId: CurriculumId = DEFAULT_CURRICULUM_ID,
 ): KnowledgeTreeGraph {
-  const worlds = getCurriculumWorldsForSubject(subject, grade);
+  const worlds = getCurriculumWorldsForSubject(subject, grade, curriculumId);
   const concepts: KnowledgeTreeConceptNode[] = [];
   const conceptIds = new Set<string>();
   const edges: KnowledgeTreeEdge[] = [];
@@ -72,6 +79,9 @@ export function getKnowledgeTreeGraph(
           ...(lesson?.nextConceptIds ?? []),
           ...(lesson?.coveredSkillIds ?? []),
           ...(lesson && lesson.conceptId !== concept.id ? [lesson.conceptId] : []),
+          ...(subject === "english" && isCurriculumGrade(grade)
+            ? getGrammarSiblingCatalogueIds(concept.id, grade)
+            : []),
         ]);
 
         concepts.push({

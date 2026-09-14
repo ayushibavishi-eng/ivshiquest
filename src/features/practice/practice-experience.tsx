@@ -17,7 +17,9 @@ import { PracticeQuestionCard } from "@/features/practice/practice-question-card
 import { PracticeReview } from "@/features/practice/practice-review";
 import { recordPracticeSession } from "@/services/practice/practice-repository";
 import { writeActiveCurriculumTopic } from "@/services/curriculum";
+import { getActiveLearnerId } from "@/services/student/active-learner";
 import type { Grade } from "@/domain/types";
+import { isCurriculumGrade } from "@/domain/curriculum";
 
 type QuestionAttempt = {
   selectedChoiceId: string | null;
@@ -57,8 +59,14 @@ export function PracticeExperience({
   const ivshiPresence = useIvshiPresence();
 
   useEffect(() => {
-    writeActiveCurriculumTopic(practice.areaId);
-  }, [practice.areaId]);
+    if (!isCurriculumGrade(grade)) {
+      return;
+    }
+    writeActiveCurriculumTopic(practice.areaId, {
+      learnerId: getActiveLearnerId(),
+      grade,
+    });
+  }, [practice.areaId, grade]);
 
   const question = practice.questions[questionIndex];
   const attempt = attempts[questionIndex];

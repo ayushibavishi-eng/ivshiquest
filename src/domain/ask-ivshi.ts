@@ -72,6 +72,10 @@ export type AskLessonContext = {
  */
 export type AskLearnerContext = {
   grade: number | null;
+  /** ISO-style country code when known (e.g. IN, US). */
+  country: string | null;
+  /** Curriculum system id (e.g. india-current, us). */
+  curriculumId: string | null;
   subjects: string[];
   currentSubject: string | null;
   currentTopic: string | null;

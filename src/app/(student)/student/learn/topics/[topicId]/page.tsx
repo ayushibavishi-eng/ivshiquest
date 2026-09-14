@@ -1,3 +1,4 @@
+import { cookies } from "next/headers";
 import type { Metadata } from "next";
 import { ComingNext } from "@/components/layout/coming-next";
 import {
@@ -25,7 +26,12 @@ import {
   isCurriculumTopicId,
   isCurriculumWorldId,
 } from "@/services/curriculum";
-import { getCompleteLesson } from "@/services/lessons";
+import {
+  ACTIVE_LESSON_COOKIE,
+  getCompleteLesson,
+  parseActiveLessonPointer,
+  resumePhaseIndexForLesson,
+} from "@/services/lessons";
 import { getCurrentStudent } from "@/services/student";
 
 export const dynamic = "force-dynamic";
@@ -97,12 +103,24 @@ export default async function TopicStartPage({ params }: TopicStartPageProps) {
             break;
           }
         }
+        const cookieStore = await cookies();
+        const initialPhaseIndex = resumePhaseIndexForLesson(
+          parseActiveLessonPointer(
+            cookieStore.get(ACTIVE_LESSON_COOKIE)?.value,
+          ),
+          {
+            ...completeLesson,
+            learnerId: student.id,
+          },
+        );
         return (
           <LessonExperience
+            key={completeLesson.lessonId}
             lesson={completeLesson}
             worldTitle={world.title}
             worldId={world.id}
             nextConcept={lessonNext ?? pathNextRef}
+            initialPhaseIndex={initialPhaseIndex}
           />
         );
       }
@@ -123,6 +141,7 @@ export default async function TopicStartPage({ params }: TopicStartPageProps) {
           concept={concept}
           worldTitle={world.title}
           worldId={world.id}
+          grade={grade}
           nextConcept={pathNextRef}
         />
       );

@@ -13,8 +13,10 @@ import { WEATHER_WORLD } from "@/content/curriculum/weather";
 import { isCompleteLessonConcept } from "@/content/lessons";
 import {
   CURRICULUM_GRADES,
+  DEFAULT_CURRICULUM_ID,
   type CurriculumConcept,
   type CurriculumGrade,
+  type CurriculumId,
   type CurriculumNode,
   type CurriculumSkill,
   type CurriculumTopic,
@@ -144,9 +146,13 @@ export function isCurriculumConceptId(id: string): boolean {
 export function getCurriculumWorldsForSubject(
   subject: Subject,
   grade?: number,
+  curriculumId: CurriculumId = DEFAULT_CURRICULUM_ID,
 ): CurriculumWorld[] {
   return WORLDS.filter((world) => {
     if (world.subjectId !== subject) {
+      return false;
+    }
+    if (world.curriculumId !== curriculumId) {
       return false;
     }
     if (grade === undefined) {
@@ -491,7 +497,7 @@ export function getCurriculumCatalogueAudit(): CurriculumCatalogueAudit {
   };
 }
 
-export { appliesToGrade } from "@/content/curriculum/build";
+export { appliesToGrade, appliesToCurriculum } from "@/content/curriculum/build";
 export {
   WEATHER_CONCEPTS,
   WEATHER_WORLD,

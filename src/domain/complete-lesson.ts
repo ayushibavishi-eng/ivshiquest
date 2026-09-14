@@ -1,4 +1,5 @@
 import { isCurriculumGrade, type CurriculumGrade } from "./curriculum";
+import type { LessonVideoExplanation } from "./lesson-video";
 import type { Subject } from "./types";
 
 export const COMPLETE_LESSON_PHASES = [
@@ -55,10 +56,10 @@ export const LESSON_LOOP_LABELS: Record<LessonLoopStage, string> = {
 export const LESSON_LOOP_HINTS: Record<LessonLoopStage, string> = {
   wonder: "A question to sit with.",
   explore: "Try, observe, and predict.",
-  understand: "Ivshi explains.",
+  understand: "Ivshi explains — sometimes with a short video.",
   practice: "Reasoning challenges.",
   master: "Can you explain it?",
-  grow: "This idea changes on your Knowledge Tree.",
+  grow: "This idea changes on your Learning Journey.",
   teach: "Explain it to someone else.",
 };
 
@@ -148,7 +149,14 @@ export type GradeLessonContent = {
     text: string;
     activity: LessonExploreActivity;
   };
-  understand: { paragraphs: string[] };
+  understand: {
+    paragraphs: string[];
+    /**
+     * Optional Video Explanation inside Understand.
+     * Omit when no approved video exists yet — Wonder → Explore → Practice stay unchanged.
+     */
+    video?: LessonVideoExplanation;
+  };
   examples: LessonExample[];
   connection: string;
   try: { prompt: string; reveal: string };

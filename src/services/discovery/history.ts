@@ -6,8 +6,10 @@ import {
   DISCOVERY_COMPLETED_COOKIE,
   DISCOVERY_RECENT_COOKIE,
   DISCOVERY_TODAY_COOKIE,
+  discoveryHistoryCookieName,
   parseIdList,
   parseTodayLock,
+  readLearnerDiscoveryCookieValue,
 } from "./history-codec";
 
 export async function readDiscoveryLearnerContext(
@@ -21,14 +23,28 @@ export async function readDiscoveryLearnerContext(
 
   try {
     const jar = await cookies();
-    completedDiscoveryIds = parseIdList(
+    const completedRaw = readLearnerDiscoveryCookieValue(
+      learnerId,
+      jar.get(discoveryHistoryCookieName(DISCOVERY_COMPLETED_COOKIE, learnerId))
+        ?.value,
       jar.get(DISCOVERY_COMPLETED_COOKIE)?.value,
     );
-    recentDiscoveryIds = parseIdList(jar.get(DISCOVERY_RECENT_COOKIE)?.value);
-    lockedDiscoveryId = parseTodayLock(
-      jar.get(DISCOVERY_TODAY_COOKIE)?.value,
-      date,
+    const recentRaw = readLearnerDiscoveryCookieValue(
+      learnerId,
+      jar.get(discoveryHistoryCookieName(DISCOVERY_RECENT_COOKIE, learnerId))
+        ?.value,
+      jar.get(DISCOVERY_RECENT_COOKIE)?.value,
     );
+    const todayRaw = readLearnerDiscoveryCookieValue(
+      learnerId,
+      jar.get(discoveryHistoryCookieName(DISCOVERY_TODAY_COOKIE, learnerId))
+        ?.value,
+      jar.get(DISCOVERY_TODAY_COOKIE)?.value,
+    );
+
+    completedDiscoveryIds = parseIdList(completedRaw);
+    recentDiscoveryIds = parseIdList(recentRaw);
+    lockedDiscoveryId = parseTodayLock(todayRaw, date);
   } catch {
     // Cookies are unavailable in some non-request test contexts.
   }

@@ -2,11 +2,13 @@ import type {
   CurriculumConcept,
   CurriculumExperience,
   CurriculumGrade,
+  CurriculumId,
   CurriculumNcertRef,
   CurriculumSkill,
   CurriculumTopic,
   CurriculumWorld,
 } from "@/domain/curriculum";
+import { DEFAULT_CURRICULUM_ID } from "@/domain/curriculum";
 import type { Subject } from "@/domain/types";
 
 export const G4: CurriculumGrade[] = [4];
@@ -61,6 +63,8 @@ export type WorldSpec = {
   concepts?: ConceptSpec[];
   topics?: TopicSpec[];
   ncert?: CurriculumNcertRef;
+  /** Defaults to India when omitted so existing specs stay compatible. */
+  curriculumId?: CurriculumId;
 };
 
 function slugSkill(parentId: string, index: number, title: string): string {
@@ -188,6 +192,7 @@ export function compileWorld(spec: WorldSpec): CurriculumWorld {
     parentId: null,
     grades: spec.grades,
     kind: "world",
+    curriculumId: spec.curriculumId ?? DEFAULT_CURRICULUM_ID,
     category: spec.category,
     hook: spec.hook,
     path: concepts.map((concept) => concept.id),
@@ -206,4 +211,11 @@ export function appliesToGrade(
   grade: number,
 ): boolean {
   return grades.some((item) => item === grade);
+}
+
+export function appliesToCurriculum(
+  worldCurriculumId: CurriculumId,
+  curriculumId: CurriculumId,
+): boolean {
+  return worldCurriculumId === curriculumId;
 }

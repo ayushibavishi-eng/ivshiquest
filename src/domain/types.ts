@@ -1,3 +1,5 @@
+import type { CurriculumId } from "./curriculum-identity";
+
 export type Role = "student" | "parent" | "teacher";
 
 export const GRADES = [4, 5, 6, 7, 8] as const;
@@ -22,4 +24,6 @@ export type Student = {
   displayName: string;
   grade: Grade;
   subjects: Subject[];
+  /** Defaults to India when absent (pre-architecture profiles). */
+  curriculumId: CurriculumId;
 };

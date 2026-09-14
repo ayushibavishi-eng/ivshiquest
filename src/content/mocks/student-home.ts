@@ -1,6 +1,11 @@
 import type { StudentHome } from "@/domain/student-home";
 import { MOCK_CURRENT_STUDENT } from "./current-student";
 
+/**
+ * Template shell for Student Home.
+ * Quest / Knowledge Tree / continue learning must never ship demo progress —
+ * getStudentHome overlays the active learner's real (or empty) state.
+ */
 export const MOCK_STUDENT_HOME: StudentHome = {
   student: MOCK_CURRENT_STUDENT,
   todayDiscovery: {
@@ -11,27 +16,15 @@ export const MOCK_STUDENT_HOME: StudentHome = {
     subject: "science",
     date: "2026-09-11",
   },
-  activeQuest: {
-    id: "quest-equivalent-fractions",
-    title: "Master Equivalent Fractions",
-    completedChallenges: 2,
-    totalChallenges: 5,
-  },
-  continueLearning: {
-    id: "continue-equivalent-fractions",
-    subject: "math",
-    subjectLabel: "Mathematics",
-    topic: "Equivalent Fractions",
-    lastExploredLabel: "Last explored yesterday",
-  },
+  activeQuest: null,
+  continueLearning: null,
   knowledgeTree: {
-    growing: 12,
-    learned: 18,
-    mastered: 7,
+    growing: 0,
+    learned: 0,
+    mastered: 0,
   },
-  teachIt: {
-    topic: "The Water Cycle",
-  },
+  /** Never ship a demo Teach It topic — only real learner-scoped mastery. */
+  teachIt: null,
   askIvshiPrompts: [
     "I don't understand fractions.",
     "Why is the sky blue?",

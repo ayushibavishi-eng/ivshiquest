@@ -1,4 +1,5 @@
 export {
+  appliesToCurriculum,
   appliesToGrade,
   filterConceptsForGrade,
   filterTopicsForGrade,
@@ -25,13 +26,26 @@ export {
   WEATHER_WORLD,
   WEATHER_WORLD_ID,
 } from "@/content/curriculum";
-export { ACTIVE_CURRICULUM_COOKIE, writeActiveCurriculumTopic } from "./active-topic";
+export {
+  ACTIVE_CURRICULUM_COOKIE,
+  clearActiveCurriculumTopic,
+  parseActiveCurriculumTopic,
+  writeActiveCurriculumTopic,
+  type ActiveCurriculumTopicPointer,
+} from "./active-topic";
 export {
   EMPTY_CURRICULUM_PROGRESS,
   countWeatherProgress,
+  curriculumProgressKey,
   getAllCurriculumProgress,
   getCurriculumProgress,
+  migrateLegacyProgressEntries,
+  migrateProgressKeysToCurriculumScoped,
+  parseCurriculumProgressKey,
   raiseCurriculumProgress,
+  resolveProgressCurriculumId,
   subscribeCurriculumProgress,
   type CurriculumProgressMap,
+  type CurriculumProgressQuery,
+  type CurriculumProgressScope,
 } from "./progress";

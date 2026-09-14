@@ -3,15 +3,19 @@
 import { useSyncExternalStore } from "react";
 import { ButtonLink } from "@/components/ui/button";
 import type { CurriculumWorld } from "@/domain/curriculum";
+import { isCurriculumGrade, type CurriculumGrade } from "@/domain/curriculum";
 import { studentLearnTopicHref } from "@/lib/constants";
 import {
   EMPTY_CURRICULUM_PROGRESS,
   getAllCurriculumProgress,
   subscribeCurriculumProgress,
 } from "@/services/curriculum";
+import { getActiveLearnerId } from "@/services/student/active-learner";
+import { readLearnerCurriculumId } from "@/services/student/learner-profile";
 
 type WeatherTreePanelProps = {
   world: CurriculumWorld;
+  grade: CurriculumGrade;
 };
 
 const LABEL = {
@@ -25,10 +29,19 @@ function getEmptyProgress() {
   return EMPTY_CURRICULUM_PROGRESS;
 }
 
-export function WeatherTreePanel({ world }: WeatherTreePanelProps) {
+export function WeatherTreePanel({ world, grade }: WeatherTreePanelProps) {
+  const learnerId = getActiveLearnerId();
   const progress = useSyncExternalStore(
     subscribeCurriculumProgress,
-    getAllCurriculumProgress,
+    () =>
+      isCurriculumGrade(grade)
+        ? getAllCurriculumProgress({
+            learnerId,
+            grade,
+            subject: world.subjectId,
+            curriculumId: readLearnerCurriculumId(),
+          })
+        : EMPTY_CURRICULUM_PROGRESS,
     getEmptyProgress,
   );
 

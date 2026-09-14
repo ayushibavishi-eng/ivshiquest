@@ -27,6 +27,9 @@ import {
   subscribeCurriculumProgress,
 } from "@/services/curriculum";
 import { getKnowledgeTreeGraph } from "@/services/knowledge-tree";
+import { getActiveLearnerId } from "@/services/student/active-learner";
+import { readLearnerCurriculumId } from "@/services/student/learner-profile";
+import { isCurriculumGrade } from "@/domain/curriculum";
 
 type KnowledgeTreeScreenProps = {
   grade: number;
@@ -45,6 +48,7 @@ export function KnowledgeTreeScreen({
     () => SUBJECTS.filter((subject) => subjects.includes(subject)),
     [subjects],
   );
+  const learnerId = getActiveLearnerId();
   const [progress, setProgress] = useState(getEmptyProgress);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [focus, setFocus] = useState<KnowledgeTreeFocus>({ kind: "tree" });
@@ -78,7 +82,17 @@ export function KnowledgeTreeScreen({
 
   useEffect(() => {
     const onChange = () => {
-      setProgress(getAllCurriculumProgress());
+      if (!isCurriculumGrade(grade)) {
+        setProgress(EMPTY_CURRICULUM_PROGRESS);
+        return;
+      }
+      setProgress(
+        getAllCurriculumProgress({
+          learnerId,
+          grade,
+          curriculumId: readLearnerCurriculumId(),
+        }),
+      );
     };
     const unsubscribe = subscribeCurriculumProgress(onChange);
     const frameId = window.requestAnimationFrame(onChange);
@@ -86,10 +100,13 @@ export function KnowledgeTreeScreen({
       window.cancelAnimationFrame(frameId);
       unsubscribe();
     };
-  }, []);
+  }, [grade, learnerId]);
 
   const graphs = useMemo(
-    () => availableSubjects.map((subject) => getKnowledgeTreeGraph(subject, grade)),
+    () =>
+      availableSubjects.map((subject) =>
+        getKnowledgeTreeGraph(subject, grade, readLearnerCurriculumId()),
+      ),
     [availableSubjects, grade],
   );
   const layout = useMemo(() => layoutMagicalKnowledgeTree(graphs), [graphs]);

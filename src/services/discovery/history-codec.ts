@@ -1,9 +1,23 @@
+import { fallbackLearnerId } from "@/services/student/learner-profile";
+
 export const DISCOVERY_TODAY_COOKIE = "ivshi-discovery-today";
 export const DISCOVERY_COMPLETED_COOKIE = "ivshi-discovery-completed";
 export const DISCOVERY_RECENT_COOKIE = "ivshi-discovery-recent";
 
 export const MAX_COMPLETED_DISCOVERY_IDS = 150;
 export const MAX_RECENT_DISCOVERY_IDS = 40;
+
+/** Cookie name scoped to one learner so discovery history never crosses identities. */
+export function discoveryHistoryCookieName(
+  base:
+    | typeof DISCOVERY_TODAY_COOKIE
+    | typeof DISCOVERY_COMPLETED_COOKIE
+    | typeof DISCOVERY_RECENT_COOKIE,
+  learnerId: string,
+): string {
+  const safe = learnerId.replace(/[^a-zA-Z0-9_-]/g, "_").slice(0, 80);
+  return `${base}.${safe}`;
+}
 
 export function parseTodayLock(
   value: string | undefined,
@@ -51,4 +65,23 @@ export function nextRecentCookieValue(
   const ids = parseIdList(current).filter((item) => item !== id);
   ids.push(id);
   return encodeIdList(ids, MAX_RECENT_DISCOVERY_IDS);
+}
+
+/**
+ * Read a discovery cookie for this learner.
+ * Legacy unscoped cookies are only visible to the demo fallback identity —
+ * newly onboarded learners start with empty discovery history.
+ */
+export function readLearnerDiscoveryCookieValue(
+  learnerId: string,
+  scopedValue: string | undefined,
+  legacyUnscopedValue: string | undefined,
+): string | undefined {
+  if (scopedValue !== undefined && scopedValue.length > 0) {
+    return scopedValue;
+  }
+  if (learnerId === fallbackLearnerId() && legacyUnscopedValue) {
+    return legacyUnscopedValue;
+  }
+  return undefined;
 }

@@ -72,6 +72,7 @@ export function ncertBookWorld(input: {
     category: input.category,
     grades: [input.grade],
     hook: input.hook,
+    curriculumId: "india-current",
     ncert: bookNcert,
     topics: input.chapters.map((chapter) => {
       const chapterNcert = ncertRef(

@@ -3,6 +3,7 @@
 import { useMemo, useSyncExternalStore } from "react";
 import { ButtonLink } from "@/components/ui/button";
 import type { CurriculumWorld } from "@/domain/curriculum";
+import { isCurriculumGrade } from "@/domain/curriculum";
 import { SUBJECT_LABELS, type Subject } from "@/domain/types";
 import { studentLearnTopicHref } from "@/lib/constants";
 import {
@@ -11,6 +12,8 @@ import {
   getWorldPathForGrade,
   subscribeCurriculumProgress,
 } from "@/services/curriculum";
+import { getActiveLearnerId } from "@/services/student/active-learner";
+import { readLearnerCurriculumId } from "@/services/student/learner-profile";
 
 type CurriculumTreePanelProps = {
   worlds: CurriculumWorld[];
@@ -34,9 +37,17 @@ export function CurriculumTreePanel({
   worlds,
   grade,
 }: CurriculumTreePanelProps) {
+  const learnerId = getActiveLearnerId();
   const progress = useSyncExternalStore(
     subscribeCurriculumProgress,
-    getAllCurriculumProgress,
+    () =>
+      isCurriculumGrade(grade)
+        ? getAllCurriculumProgress({
+            learnerId,
+            grade,
+            curriculumId: readLearnerCurriculumId(),
+          })
+        : EMPTY_CURRICULUM_PROGRESS,
     getEmptyProgress,
   );
 

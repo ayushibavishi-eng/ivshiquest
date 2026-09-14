@@ -1,4 +1,18 @@
 import type { Subject } from "./types";
+import type { CurriculumId } from "./curriculum-identity";
+
+export type { CurriculumCountry, CurriculumId } from "./curriculum-identity";
+export {
+  CURRICULUM_COUNTRIES,
+  CURRICULUM_IDS,
+  CURRICULUM_META,
+  DEFAULT_CURRICULUM_ID,
+  curriculumCountry,
+  curriculumLabel,
+  isCurriculumId,
+  parseCurriculumId,
+  resolveCurriculumId,
+} from "./curriculum-identity";
 
 export const CURRICULUM_GRADES = [4, 5, 6, 7, 8] as const;
 export type CurriculumGrade = (typeof CURRICULUM_GRADES)[number];
@@ -135,6 +149,8 @@ export type CurriculumWorld = {
   parentId: null;
   grades: CurriculumGrade[];
   kind: "world";
+  /** Which national curriculum system this world belongs to. */
+  curriculumId: CurriculumId;
   category?: string;
   hook: string;
   path: string[];

@@ -8,13 +8,15 @@ import {
   msUntilNextGreetingChange,
   type Greeting,
 } from "@/features/student-home/greeting";
+import { homeGradeLabel } from "@/features/student-home/home-grade-label";
 import { ROUTES } from "@/lib/constants";
 
 type HomeHeaderProps = {
   displayName: string;
+  grade: number;
 };
 
-export function HomeHeader({ displayName }: HomeHeaderProps) {
+export function HomeHeader({ displayName, grade }: HomeHeaderProps) {
   const initial = displayName.trim().charAt(0).toUpperCase() || "S";
   const [greeting, setGreeting] = useState<Greeting | null>(null);
 
@@ -55,6 +57,9 @@ export function HomeHeader({ displayName }: HomeHeaderProps) {
         </h1>
         <p className="mt-1 text-base text-ink-muted sm:text-lg">
           Ready for today&apos;s adventure?
+        </p>
+        <p className="mt-1 text-sm font-medium text-teal">
+          {homeGradeLabel(grade)}
         </p>
       </div>
       <div className="flex shrink-0 items-center gap-1">

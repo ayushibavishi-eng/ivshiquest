@@ -4,23 +4,37 @@ import type { AskLearnerContext, AskLessonContext } from "@/domain/ask-ivshi";
 import { SUBJECT_LABELS, type Subject } from "@/domain/types";
 import { getCompleteLesson } from "@/content/lessons";
 import { buildLessonTutorContext } from "@/domain/complete-lesson";
+import {
+  curriculumCountry,
+  isCurriculumGrade,
+  resolveCurriculumId,
+} from "@/domain/curriculum";
 import { getStudentHome } from "@/services/home";
 import { getCurrentStudent } from "@/services/student";
 import {
   ACTIVE_CURRICULUM_COOKIE,
   getCurriculumNode,
+  parseActiveCurriculumTopic,
 } from "@/services/curriculum";
 import {
   ACTIVE_LESSON_COOKIE,
+  activeLessonMatchesContext,
   parseActiveLessonPointer,
 } from "@/services/lessons";
 
-function lessonFromCookie(raw: string | undefined): {
+function lessonFromCookie(
+  raw: string | undefined,
+  learnerId: string,
+  grade: number,
+): {
   subject: Subject;
   context: AskLessonContext;
 } | null {
   const pointer = parseActiveLessonPointer(raw);
-  if (!pointer) {
+  if (
+    !isCurriculumGrade(grade) ||
+    !activeLessonMatchesContext(pointer, { learnerId, grade })
+  ) {
     return null;
   }
 
@@ -54,15 +68,32 @@ export const getAskContext = cache(async (): Promise<AskLearnerContext> => {
     cookies(),
   ]);
 
-  const rawActiveId = cookieStore.get(ACTIVE_CURRICULUM_COOKIE)?.value;
-  const activeId = rawActiveId ? decodeURIComponent(rawActiveId) : undefined;
-  const currentFromCatalog = activeId ? getCurriculumNode(activeId) : undefined;
+  const learnerId = student.id;
+  const activeTopic = parseActiveCurriculumTopic(
+    cookieStore.get(ACTIVE_CURRICULUM_COOKIE)?.value,
+  );
+  const topicMatchesGrade =
+    activeTopic &&
+    activeTopic.learnerId === learnerId &&
+    isCurriculumGrade(student.grade) &&
+    activeTopic.grade === student.grade
+      ? activeTopic
+      : undefined;
+  const currentFromCatalog = topicMatchesGrade
+    ? getCurriculumNode(topicMatchesGrade.topicId)
+    : undefined;
   const activeLesson = lessonFromCookie(
     cookieStore.get(ACTIVE_LESSON_COOKIE)?.value,
+    learnerId,
+    student.grade,
   );
+
+  const curriculumId = resolveCurriculumId(student.curriculumId);
 
   return {
     grade: student.grade,
+    country: curriculumCountry(curriculumId),
+    curriculumId,
     subjects: student.subjects.map((subject) => SUBJECT_LABELS[subject]),
     currentSubject: activeLesson
       ? SUBJECT_LABELS[activeLesson.subject]

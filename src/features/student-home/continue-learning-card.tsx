@@ -1,6 +1,6 @@
 import { ButtonLink } from "@/components/ui/button";
 import type { ContinueLearning } from "@/domain";
-import { ROUTES } from "@/lib/constants";
+import { studentLearnTopicHref } from "@/lib/constants";
 
 type ContinueLearningCardProps = {
   item: ContinueLearning | null;
@@ -31,7 +31,7 @@ export function ContinueLearningCard({ item }: ContinueLearningCardProps) {
           <p className="mt-1 text-sm text-ink-muted">{item.lastExploredLabel}</p>
         </div>
         <ButtonLink
-          href={ROUTES.student.learn}
+          href={studentLearnTopicHref(item.conceptId)}
           variant="quiet"
           size="inline"
           className="self-start sm:self-auto"

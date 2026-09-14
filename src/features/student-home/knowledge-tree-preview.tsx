@@ -23,7 +23,7 @@ export function KnowledgeTreePreview({ summary }: KnowledgeTreePreviewProps) {
         id="tree-heading"
         className="text-xs font-semibold uppercase tracking-[0.18em] text-ink-muted"
       >
-        Your Knowledge Tree
+        My Learning Journey
       </h2>
       <div className="flex items-end justify-between gap-6">
         <ul className="flex flex-1 gap-6">
@@ -55,7 +55,7 @@ export function KnowledgeTreePreview({ summary }: KnowledgeTreePreviewProps) {
         size="inline"
         className="self-start"
       >
-        Explore my tree →
+        Explore my journey →
       </ButtonLink>
     </section>
   );

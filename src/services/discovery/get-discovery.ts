@@ -8,7 +8,7 @@ import { getCurrentStudent } from "@/services/student";
 import { readDiscoveryLearnerContext } from "./history";
 
 export async function getTodaysDiscovery(
-  learner: Pick<Student, "id" | "grade">,
+  learner: Pick<Student, "id" | "grade" | "curriculumId">,
   date: string = calendarDateISO(),
 ): Promise<DiscoveryContent> {
   const history = await readDiscoveryLearnerContext(learner.id, learner.grade, date);
@@ -19,7 +19,11 @@ export async function getTodaysDiscovery(
 
   const selected = selectTodaysDiscovery(
     library,
-    { ...history, recentCategoryIds },
+    {
+      ...history,
+      recentCategoryIds,
+      curriculumId: learner.curriculumId,
+    },
     date,
   );
   return resolveDiscoveryForGrade(selected, learner.grade);

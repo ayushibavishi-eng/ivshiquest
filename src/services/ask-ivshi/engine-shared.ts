@@ -64,6 +64,8 @@ function lessonLines(context: AskLearnerContext): string[] {
 export function buildInstructions(context: AskLearnerContext): string {
   const contextLines = [
     `Grade: ${context.grade ?? "unknown"}`,
+    `Country: ${context.country ?? "unknown"}`,
+    `Curriculum: ${context.curriculumId ?? "unknown"}`,
     `Subjects: ${context.subjects.length > 0 ? context.subjects.join(", ") : "unknown"}`,
     `Current subject: ${context.currentSubject ?? "none"}`,
     `Current topic: ${context.currentTopic ?? "none"}`,

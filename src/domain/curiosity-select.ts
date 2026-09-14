@@ -8,14 +8,36 @@ import {
   resolveDiscoveryForGrade,
   type DiscoveryContent,
 } from "./discovery";
+import {
+  DEFAULT_CURRICULUM_ID,
+  resolveCurriculumId,
+  type CurriculumId,
+} from "./curriculum-identity";
 
 const AVOID_CATEGORY_MIN_POOL = 8;
+
+/** Shared discoveries (no curriculumIds) apply to every curriculum. */
+export function discoveryAppliesToCurriculum(
+  item: Pick<DiscoveryContent, "curriculumIds">,
+  curriculumId: CurriculumId,
+): boolean {
+  const ids = item.curriculumIds;
+  if (!ids || ids.length === 0) {
+    return true;
+  }
+  return ids.includes(curriculumId);
+}
 
 export function discoveriesForGrade(
   library: readonly DiscoveryContent[],
   grade: DiscoveryLearnerContext["grade"],
+  curriculumId: CurriculumId = DEFAULT_CURRICULUM_ID,
 ): DiscoveryContent[] {
-  return library.filter((item) => item.gradeRange.includes(grade));
+  return library.filter(
+    (item) =>
+      item.gradeRange.includes(grade) &&
+      discoveryAppliesToCurriculum(item, curriculumId),
+  );
 }
 
 export function selectTodaysDiscovery(
@@ -27,16 +49,24 @@ export function selectTodaysDiscovery(
     throw new Error("Curiosity Library is empty.");
   }
 
+  const curriculumId = resolveCurriculumId(
+    context.curriculumId,
+    DEFAULT_CURRICULUM_ID,
+  );
   const byId = new Map(library.map((item) => [item.id, item]));
   const locked = context.lockedDiscoveryId
     ? byId.get(context.lockedDiscoveryId)
     : undefined;
 
-  if (locked && locked.gradeRange.includes(context.grade)) {
+  if (
+    locked &&
+    locked.gradeRange.includes(context.grade) &&
+    discoveryAppliesToCurriculum(locked, curriculumId)
+  ) {
     return resolveDiscoveryForGrade(locked, context.grade);
   }
 
-  const suitable = discoveriesForGrade(library, context.grade);
+  const suitable = discoveriesForGrade(library, context.grade, curriculumId);
   const pool = suitable.length > 0 ? suitable : [...library];
   const completed = new Set(context.completedDiscoveryIds);
   const unseen = pool.filter((item) => !completed.has(item.id));
@@ -62,7 +92,9 @@ export function selectTodaysDiscovery(
     left.id.localeCompare(right.id),
   );
   const index =
-    hashString(`${context.learnerId}|${date}|${context.grade}`) % sorted.length;
+    hashString(
+      `${context.learnerId}|${date}|${context.grade}|${curriculumId}`,
+    ) % sorted.length;
   const chosen = sorted[index];
   if (!chosen) {
     const fallback = pool[0] ?? library[0];

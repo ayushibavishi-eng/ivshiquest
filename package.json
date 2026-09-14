@@ -9,7 +9,7 @@
     "start": "next start",
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
-    "test": "tsx --test src/domain/complete-lesson.test.ts src/content/curriculum/catalogue.test.ts src/content/lessons/grade-4-math.test.ts src/content/curiosity/library.test.ts src/domain/curiosity-select.test.ts"
+    "test": "tsx --test src/domain/complete-lesson.test.ts src/domain/lesson-video.test.ts src/content/curriculum/catalogue.test.ts src/content/curriculum/curriculum-architecture.test.ts src/content/lessons/grade-4-math.test.ts src/content/lessons/grade-5-math.test.ts src/content/lessons/grade-6-math.test.ts src/content/lessons/grade-7-math.test.ts src/content/lessons/grade-8-math.test.ts src/content/lessons/grade-4-evs.test.ts src/content/lessons/grade-5-evs.test.ts src/content/lessons/grade-6-science.test.ts src/content/lessons/grade-7-science.test.ts src/content/lessons/grade-8-science.test.ts src/content/lessons/grade-4-english.test.ts src/content/lessons/grade-5-english.test.ts src/content/lessons/grade-6-english.test.ts src/content/lessons/grade-7-english.test.ts src/content/lessons/grade-8-english.test.ts src/content/grammar/grammar.test.ts src/content/curiosity/library.test.ts src/domain/curiosity-select.test.ts src/services/curriculum/progress.test.ts src/services/discovery/history-codec.test.ts src/services/home/get-student-home.test.ts src/services/lessons/active-lesson.test.ts src/services/student/learner-grade.test.ts src/services/student/learner-profile.test.ts src/services/ivshi/transform-seen.test.ts src/features/learning-journey/journey-status.test.ts"
   },
   "engines": {
     "node": ">=20"
